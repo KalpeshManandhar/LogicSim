@@ -16,5 +16,6 @@ public:
     bool isPressed(int buttonKey);
     void getMouseState();
     int pollEvents();
+    void printMousePos();
 
 };

@@ -1,6 +1,11 @@
 #pragma once
 #include "SDL2/SDL.h"
 
+enum{
+	CLOSED, 
+};
+
+
 class Graphics {
 	SDL_Window* window;
 	SDL_Surface* loadingSurface;
@@ -9,8 +14,11 @@ class Graphics {
 public:
 	Graphics();
 	~Graphics();
-	void mainLoop();
-
+	int mainLoop();
+	Uint32 getTime();
+	void delay(Uint32 ms);
+	void display();
+	void clearScreen(Uint8 r, Uint8 g, Uint8 b);
 
 };
 

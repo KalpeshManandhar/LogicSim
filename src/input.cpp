@@ -1,4 +1,5 @@
 #include "input.h"
+#include <iostream>
 
 // gets state of mouse buttons and position of cursor
 void Input::getMouseState(){
@@ -16,4 +17,8 @@ bool Input::isPressed(int buttonKey){
 int Input::pollEvents(){
     SDL_PollEvent(&event);
     return(event.type);
+}
+
+void Input::printMousePos(){
+    std::cout<<mousePos.x<<" , "<<mousePos.y<<std::endl;
 }

@@ -5,6 +5,9 @@
 #define WIN_HEIGHT 720
 #define WIN_WIDTH 1280
 
+#define FPS 24
+#define FRAME_LIMIT (1000/FPS)
+
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
@@ -26,14 +29,44 @@ Graphics::~Graphics(){
     SDL_Quit();
 }
 
-void Graphics::mainLoop(){
-    Input input;
-    while(isRunning){
-        input.pollEvents();
-        if ()
+Uint32 Graphics::getTime(){
+    return(SDL_GetTicks());
+}
 
+int Graphics::mainLoop(){
+    Input input;
+    Uint32 frameStart;
+    int frameTime;
+    while(isRunning){
+        frameStart = getTime();
+        switch (input.pollEvents())
+        {
+        case SDL_QUIT:
+            isRunning = false;
+            return(CLOSED);
+        default:
+            break;
+        }
+        clearScreen(68,75,110);
+        display();
+        input.getMouseState();
+        input.printMousePos();
+        frameTime = getTime() - frameStart;
+        if (frameTime < FRAME_LIMIT)
+            delay(FRAME_LIMIT - frameTime);
     }
 
 }
 
+void Graphics::delay(Uint32 ms){
+    SDL_Delay(ms);
+}
 
+void Graphics::display(){
+    SDL_RenderPresent(renderer);
+}
+
+void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b){
+    SDL_SetRenderDrawColor(renderer, r,g,b,255);
+    SDL_RenderClear(renderer);
+}
