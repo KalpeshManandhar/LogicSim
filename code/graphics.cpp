@@ -37,8 +37,7 @@ int Graphics::mainLoop(){
     Input input;
     Uint32 frameStart;    
     int frameTime;    
-    //loadSprite();
-
+    loadSprite();
     while(isRunning){
         frameStart = getTime();
         switch (input.pollEvents())
@@ -49,6 +48,7 @@ int Graphics::mainLoop(){
         default:
             break;
         }
+        rectangle={input.mousePos.x,input.mousePos.y,122,128};
         clearScreen(68,75,110);
         display();
         input.getMouseState();
@@ -69,14 +69,15 @@ void Graphics::display(){
 }
 
 void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b){
-    SDL_SetRenderDrawColor(renderer, r,g,b,255);
     SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, r,g,b,255);    
+    SDL_RenderCopy(renderer,texture,NULL,&rectangle);
+    
 }
 void Graphics::loadSprite()
-{
-    // SDL_Rect rectangle={0,0,122,128};
-    // loadingSurface = IMG_Load("E:/Programming/Cpp/and.png");
-    // texture=SDL_CreateTextureFromSurface(renderer,loadingSurface);
-    // SDL_FreeSurface(loadingSurface);
-    // SDL_RenderCopy(renderer,texture,NULL,&rectangle);
+{    
+    loadingSurface = IMG_Load("E:/Programming/Cpp/and.png");
+    texture=SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    SDL_FreeSurface(loadingSurface);
+    
 }
