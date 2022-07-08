@@ -2,6 +2,6 @@
 
 int main(int argc, char** argv){
     Graphics graphic;
-    
+    graphic.mainLoop();
 
 }

@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include "input.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
@@ -26,7 +27,12 @@ Graphics::~Graphics(){
 }
 
 void Graphics::mainLoop(){
+    Input input;
+    while(isRunning){
+        input.pollEvents();
+        if ()
 
+    }
 
 }
 
