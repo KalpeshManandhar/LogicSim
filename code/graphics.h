@@ -8,10 +8,10 @@ enum{
 
 
 class Graphics {
-	SDL_Window* window;
-	SDL_Surface* loadingSurface;
-	SDL_Renderer* renderer;
-	SDL_Texture * texture;
+	SDL_Window *window;
+	SDL_Surface *loadingSurface;
+	SDL_Renderer *renderer;
+	SDL_Texture *textureOfGates, *textureOfGrid;
 	SDL_Rect source, destination;
 	bool isRunning;
 public:
@@ -21,8 +21,8 @@ public:
 	Uint32 getTime();
 	void delay(Uint32 ms);
 	void display();
-	void loadSprite();
-	void clearScreen(Uint8 r, Uint8 g, Uint8 b);
-
+	void loadSpriteNGrid();
+	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
+	//void loadgrid();
 };
 

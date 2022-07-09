@@ -19,8 +19,10 @@ Graphics::Graphics(){
     renderer = SDL_CreateRenderer(window,-1, SDL_RENDERER_ACCELERATED);
     if (!renderer){
         std::cout<<"Error creating renderer"<<std::endl;
-    }
+    }    
     isRunning = true;
+    loadSpriteNGrid();
+    //loadgrid();
 }
 
 Graphics::~Graphics(){
@@ -37,7 +39,6 @@ int Graphics::mainLoop(){
     Input input;
     Uint32 frameStart;    
     int frameTime;    
-    loadSprite();
     while(isRunning){
         frameStart = getTime();
         switch (input.pollEvents())
@@ -49,7 +50,7 @@ int Graphics::mainLoop(){
             break;
         }
         destination={input.mousePos.x,input.mousePos.y,600,300};
-        clearScreen(68,75,110);
+        clearScreen(68,75,110, true);
         display();
         input.getMouseState();
         input.printMousePos();
@@ -68,16 +69,20 @@ void Graphics::display(){
     SDL_RenderPresent(renderer);
 }
 
-void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b){
+void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, r,g,b,255);    
-    SDL_RenderCopy(renderer,texture,NULL,&destination);
+    if(grid)
+        SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
     
 }
-void Graphics::loadSprite()
+void Graphics::loadSpriteNGrid()
 {
     source={0,0,215,108};
     loadingSurface = IMG_Load("assets/gates.png");
-    texture=SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    textureOfGates=SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    SDL_FreeSurface(loadingSurface);
+    loadingSurface=IMG_Load("assets/grid_new.png");
+    textureOfGrid=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
