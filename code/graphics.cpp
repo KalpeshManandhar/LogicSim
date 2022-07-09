@@ -48,7 +48,7 @@ int Graphics::mainLoop(){
         default:
             break;
         }
-        rectangle={input.mousePos.x,input.mousePos.y,122,128};
+        destination={input.mousePos.x,input.mousePos.y,600,300};
         clearScreen(68,75,110);
         display();
         input.getMouseState();
@@ -71,12 +71,13 @@ void Graphics::display(){
 void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b){
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, r,g,b,255);    
-    SDL_RenderCopy(renderer,texture,NULL,&rectangle);
+    SDL_RenderCopy(renderer,texture,NULL,&destination);
     
 }
 void Graphics::loadSprite()
-{    
-    loadingSurface = IMG_Load("assets/and.png");
+{
+    source={0,0,215,108};
+    loadingSurface = IMG_Load("assets/gates.png");
     texture=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
