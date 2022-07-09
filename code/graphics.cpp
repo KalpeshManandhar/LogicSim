@@ -1,12 +1,15 @@
 #include "graphics.h"
 #include "input.h"
+#include "component.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
 #define WIN_WIDTH 1280
 
-#define FPS 24
+#define FPS 40
 #define FRAME_LIMIT (1000/FPS)
+
+#define MAX_COMPONENTS 25
 
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
@@ -21,7 +24,7 @@ Graphics::Graphics(){
         std::cout<<"Error creating renderer"<<std::endl;
     }    
     isRunning = true;
-    loadSpriteNGrid();
+    loadSpriteAndGrid();
     
 }
 
@@ -37,7 +40,8 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
-    source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
+    Component components;
+    // source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
     int frameTime;    
     while(isRunning){
@@ -47,15 +51,18 @@ int Graphics::mainLoop(){
         case SDL_QUIT:
             isRunning = false;
             return(CLOSED);
+        case SDL_MOUSEBUTTONDOWN:{
+            input.getMouseState();
+        }
+
         default:
             break;
         }
-        destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
-        clearScreen(68,75,110, true);
+        // destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
+        clearScreen(68,75,110, false);
         drawComponent(true);
         display();
-        input.getMouseState();
-        input.printMousePos();
+        
         frameTime = getTime() - frameStart;
         if (frameTime < FRAME_LIMIT)
             delay(FRAME_LIMIT - frameTime);
@@ -78,9 +85,9 @@ void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
         SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
     
 }
-void Graphics::loadSpriteNGrid()
+void Graphics::loadSpriteAndGrid()
 {    
-    loadingSurface = IMG_Load("assets/gates.png");
+    loadingSurface = IMG_Load("assets/spritesheet.png");
     textureOfGates=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
     loadingSurface=IMG_Load("assets/grid_new.png");
@@ -95,4 +102,12 @@ void Graphics::drawComponent(bool draw)
     }
     else 
         return;
+}
+
+SDL_Renderer* Graphics::getRenderer(){
+    return(renderer);
+}
+
+SDL_Texture* Graphics::getTexture(){
+    return(textureOfGates);
 }

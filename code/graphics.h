@@ -21,8 +21,11 @@ public:
 	Uint32 getTime();
 	void delay(Uint32 ms);
 	void display();
-	void loadSpriteNGrid();
+	void loadSpriteAndGrid();
 	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
 	void drawComponent(bool draw);
+	SDL_Renderer* getRenderer();
+	SDL_Texture* getTexture();
+	
 };
 
