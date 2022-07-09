@@ -76,8 +76,7 @@ void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b){
 }
 void Graphics::loadSprite()
 {    
-    loadingSurface = IMG_Load("E:/Programming/Cpp/and.png");
+    loadingSurface = IMG_Load("assets/and.png");
     texture=SDL_CreateTextureFromSurface(renderer,loadingSurface);
-    SDL_FreeSurface(loadingSurface);
-    
+    SDL_FreeSurface(loadingSurface);    
 }
