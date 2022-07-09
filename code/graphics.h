@@ -12,7 +12,7 @@ class Graphics {
 	SDL_Surface *loadingSurface;
 	SDL_Renderer *renderer;
 	SDL_Texture *textureOfGates, *textureOfGrid;
-	SDL_Rect source, destination;
+	// SDL_Rect source, destination;
 	bool isRunning;
 public:
 	Graphics();

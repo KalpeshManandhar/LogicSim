@@ -1,6 +1,5 @@
 #include "graphics.h"
 #include "input.h"
-#include "component.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
@@ -21,11 +20,10 @@ Graphics::Graphics(){
     }
     renderer = SDL_CreateRenderer(window,-1, SDL_RENDERER_ACCELERATED);
     if (!renderer){
-        std::cout<<"Error creating renderer"<<std::endl;
+        std::cout<<"Error creating renderer"<<SDL_GetError()<<std::endl;
+        
     }    
     isRunning = true;
-    loadSpriteAndGrid();
-    
 }
 
 Graphics::~Graphics(){
@@ -40,10 +38,10 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
-    Component components;
     // source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
     int frameTime;    
+    loadSpriteAndGrid();
     while(isRunning){
         frameStart = getTime();
         switch (input.pollEvents())
@@ -51,16 +49,20 @@ int Graphics::mainLoop(){
         case SDL_QUIT:
             isRunning = false;
             return(CLOSED);
+        case SDL_MOUSEBUTTONUP:
         case SDL_MOUSEBUTTONDOWN:{
-            input.getMouseState();
+            
+            // if (input.isPressed(SDL_BUTTON_LEFT) == 1){}
+            break;
         }
-
         default:
             break;
         }
+        input.getMouseState();
         // destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
-        clearScreen(68,75,110, false);
-        drawComponent(true);
+        clearScreen(68,75,110, true);
+        input.isPressed(SDL_BUTTON_LEFT);
+        // drawComponent(true);
         display();
         
         frameTime = getTime() - frameStart;
@@ -98,7 +100,7 @@ void Graphics::drawComponent(bool draw)
 {
     if(draw)
     {
-        SDL_RenderCopy(renderer,textureOfGates,&source,&destination);
+        // SDL_RenderCopy(renderer,textureOfGates,&source,&destination);
     }
     else 
         return;

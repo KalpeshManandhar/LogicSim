@@ -1,6 +1,11 @@
 #pragma once
 #include <SDL.h>
 
+
+enum {
+    PRESSED, HELD
+};
+
 struct vec2{        // 2d vector for coordinates 
     int x,y;
 };

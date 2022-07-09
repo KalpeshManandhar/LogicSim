@@ -10,6 +10,7 @@ void Input::getMouseState(){
 bool Input::isPressed(int buttonKey){  
     static short clickedFrameNo = 0;
     if (mouseButtons && SDL_BUTTON(buttonKey)!=0){
+        clickedFrameNo++;
         if (clickedFrameNo> 10)
             held = true;
         return(true);
@@ -19,6 +20,7 @@ bool Input::isPressed(int buttonKey){
     }
     else if (clickedFrameNo > 0){
         std::cout<<"Pressed"<<std::endl;
+        printMousePos();
     }
     clickedFrameNo = 0;
     held = false;
