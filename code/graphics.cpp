@@ -22,7 +22,7 @@ Graphics::Graphics(){
     }    
     isRunning = true;
     loadSpriteNGrid();
-    //loadgrid();
+    
 }
 
 Graphics::~Graphics(){
@@ -37,6 +37,7 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
+    source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
     int frameTime;    
     while(isRunning){
@@ -49,8 +50,9 @@ int Graphics::mainLoop(){
         default:
             break;
         }
-        destination={input.mousePos.x,input.mousePos.y,600,300};
+        destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
         clearScreen(68,75,110, true);
+        drawComponent(true);
         display();
         input.getMouseState();
         input.printMousePos();
@@ -77,12 +79,20 @@ void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
     
 }
 void Graphics::loadSpriteNGrid()
-{
-    source={0,0,215,108};
+{    
     loadingSurface = IMG_Load("assets/gates.png");
     textureOfGates=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
     loadingSurface=IMG_Load("assets/grid_new.png");
     textureOfGrid=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
+}
+void Graphics::drawComponent(bool draw)
+{
+    if(draw)
+    {
+        SDL_RenderCopy(renderer,textureOfGates,&source,&destination);
+    }
+    else 
+        return;
 }

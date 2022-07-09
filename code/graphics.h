@@ -23,6 +23,6 @@ public:
 	void display();
 	void loadSpriteNGrid();
 	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
-	//void loadgrid();
+	void drawComponent(bool draw);
 };
 
