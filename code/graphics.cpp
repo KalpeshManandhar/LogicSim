@@ -6,10 +6,10 @@
 #define WIN_HEIGHT 720
 #define WIN_WIDTH 1280
 
-#define FPS 40
+#define FPS 32
 #define FRAME_LIMIT (1000/FPS)
 
-
+Component components[MAX_COMPONENTS];
 
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
@@ -39,8 +39,6 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
-    Component::componentNo = 0;
-    Component::selectedCompNo = -1;
     // source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
     int frameTime;    
@@ -57,9 +55,10 @@ int Graphics::mainLoop(){
         }
         input.getMouseState();
         // destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
-        clearScreen(68,75,110, true);
-        input.isPressed(SDL_BUTTON_LEFT);
-        // drawComponent(true);
+        input.handleMouseInput();
+        clearScreen(68,75,110, false);
+        
+        drawComponents();
         display();
         
         frameTime = getTime() - frameStart;
@@ -93,14 +92,13 @@ void Graphics::loadSpriteAndGrid()
     textureOfGrid=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
-void Graphics::drawComponent(bool draw)
+void Graphics::drawComponents()
 {
-    if(draw)
-    {
-        // SDL_RenderCopy(renderer,textureOfGates,&source,&destination);
+    int i;
+    for(i=0; i<Component::componentNo;i++){
+        if (components[i].getType() != _NOTHING)
+            components[i].draw(renderer, textureOfGates);
     }
-    else 
-        return;
 }
 
 SDL_Renderer* Graphics::getRenderer(){

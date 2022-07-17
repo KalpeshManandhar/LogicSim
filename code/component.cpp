@@ -1,9 +1,10 @@
 #include "component.h"
-#include "utils.h"
 #include "SDL.h"
+#include <iostream>
 
-#define Y_BOUND 680
-#define X_BOUND 1280
+
+short Component::componentNo = 0;
+short Component::selectedCompNo = -1;
 
 Component::Component(){
     spriteSrc.h = 72;
@@ -16,7 +17,16 @@ Component::Component(){
     compPos.y = -200;
 }
 
-void Component::setValues(c_type type, vec2 &mousePos){
+Component::~Component(){
+    spriteSrc.y = 216;
+    spriteSrc.x = 0;
+    compPos.x = -200;
+    compPos.y = -200;
+}
+
+void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
+    
+    // sets the type of component
     this->type = type;
     if (type < 5){
         spriteSrc.y = 0;
@@ -27,11 +37,18 @@ void Component::setValues(c_type type, vec2 &mousePos){
     spriteSrc.x = (type%5) * 146; 
     // this->next[0] = NULL;
 
-    index = componentNo;
+    if (availableIndex == -1){
+        index = componentNo;
+        componentNo++;
+    }
+    else{
+        index = availableIndex;
+    }
     selectedCompNo = index;
     compPos.x = mousePos.x - compPos.w * 0.5;
     compPos.y = mousePos.y - compPos.h * 0.3;
-    Component::componentNo++;
+
+    std::cout<<"COmp added"<<index<<std::endl;
 }
 
 
@@ -47,11 +64,26 @@ bool Component::mouseHover(vec2 &mousePos){
     return(false);
 }
 
-inline void Component::selectComponent(){
+void Component::selectComponent(){
     selectedCompNo = index;
 }
 
 void Component::updateSelectedComp(vec2 &mousePos, vec2 &prev){
     compPos.x += (mousePos.x - prev.x);
     compPos.y += (mousePos.y - prev.y);
+}
+
+void Component::removeComponent(){
+    spriteSrc.y = 216;
+    spriteSrc.x = 0;
+    compPos.x = -200;
+    compPos.y = -200;
+    type = _NOTHING;
+    selectedCompNo = -1;
+    std::cout<<"Removed comp"<<index<<std::endl;
+}
+
+
+c_type Component::getType(){
+    return(type);
 }

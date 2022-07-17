@@ -16,7 +16,7 @@ class Graphics {
 public:
 	SDL_Renderer *renderer;
 
-	
+
 	Graphics();
 	~Graphics();
 	int mainLoop();
@@ -25,7 +25,7 @@ public:
 	void display();
 	void loadSpriteAndGrid();
 	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
-	void drawComponent(bool draw);
+	void drawComponents();
 	SDL_Renderer* getRenderer();
 	SDL_Texture* getTexture();
 	

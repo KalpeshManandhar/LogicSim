@@ -1,14 +1,17 @@
 #pragma once
 
+#include "utils.h"
 #include "graphics.h"
 
 #define MAX_INPUTS 2
 #define MAX_OUTPUTS 5
 #define MAX_COMPONENTS 25
 
+#define Y_BOUND 680
+#define X_BOUND 1200
 
 enum c_type{
-    _AND, _OR, _NOT, _NAND, _NOR, _XOR, _XNOR, _INPUT, _OUTPUT
+    _AND, _OR, _NOT, _NAND, _NOR, _XOR, _XNOR, _INPUT, _OUTPUT, _NOTHING
 };
 
 class Button{
@@ -34,10 +37,12 @@ public:
     Component();
     ~Component();
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
-    void setValues(c_type type, vec2 &mousePos);
+    void setValues(c_type type, vec2 &mousePos, int availableIndex );
     bool mouseHover(vec2 &mousePos);
-    inline void selectComponent();
+    void selectComponent();
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
+    void removeComponent();
+    c_type getType();
     
 
 

@@ -15,11 +15,11 @@ b_States Input::isPressed(int buttonKey){
     static short clickedFrameNo = 0;
     if (mouseButtons && SDL_BUTTON(buttonKey)!=0){
         clickedFrameNo++;
-        if (clickedFrameNo> 6){
+        if (clickedFrameNo > 1){
             held = true;
             return(HELD);
         }
-        if (clickedFrameNo = 1)
+        if (clickedFrameNo == 1)
             return(CLICKED);
         return(PRESSED);
     }
@@ -50,9 +50,14 @@ void Input::handleMouseInput(){
     switch (isPressed(SDL_BUTTON_LEFT))
     {
     case CLICKED:{
+        std::cout<<"CLick";
         int i;
-        if (mousePos.y>680 && Component::componentNo != MAX_COMPONENTS)
+        // adds a new component
+        if (mousePos.y>Y_BOUND && Component::componentNo != MAX_COMPONENTS){
             addComponent();
+            
+            break;
+        }
 
         for(i=0;i<Component::componentNo; i++){
             if (components[i].mouseHover(mousePos) == true){
@@ -74,14 +79,17 @@ void Input::handleMouseInput(){
 
     // updates the position of component if selected
     case HELD:{
+        std::cout<<"HELD"<<std::endl;
         if (Component::selectedCompNo != -1){
-            if (components[Component::selectedCompNo].mouseHover(mousePos)==true)
-                components[Component::selectedCompNo].updateSelectedComp(mousePos, prevMousePos);
+            components[Component::selectedCompNo].updateSelectedComp(mousePos, prevMousePos);
         }
         break;
     }
     case RELEASED:{
-
+        std::cout<<"RELEASED"<<std::endl;
+        if ((mousePos.x > X_BOUND || mousePos.y > Y_BOUND) && Component::selectedCompNo != -1){
+            components[Component::selectedCompNo].removeComponent();
+        }
         break;
     }
     case IDLE:{
@@ -105,5 +113,19 @@ void Input::handleMouseInput(){
 
 
 void Input::addComponent(){
-    components[Component::componentNo].setValues(_AND, mousePos);
+    int availableIndex = -1,i;
+    // checks if any previous index is free due to deleted components
+    for (i=0;i<Component::componentNo;i++){
+        if (components[i].getType() == _NOTHING){
+            availableIndex = i;
+            break;
+        }
+    }
+    if (availableIndex == -1){
+        components[Component::componentNo].setValues(_AND, mousePos,-1);
+    }
+    else{
+        components[availableIndex].setValues(_AND, mousePos, availableIndex);
+    }
 }
+
