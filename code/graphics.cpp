@@ -1,5 +1,6 @@
 #include "graphics.h"
 #include "input.h"
+#include "component.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
@@ -8,7 +9,7 @@
 #define FPS 40
 #define FRAME_LIMIT (1000/FPS)
 
-#define MAX_COMPONENTS 25
+
 
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
@@ -38,6 +39,8 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
+    Component::componentNo = 0;
+    Component::selectedCompNo = -1;
     // source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
     int frameTime;    
@@ -49,12 +52,6 @@ int Graphics::mainLoop(){
         case SDL_QUIT:
             isRunning = false;
             return(CLOSED);
-        case SDL_MOUSEBUTTONUP:
-        case SDL_MOUSEBUTTONDOWN:{
-            
-            // if (input.isPressed(SDL_BUTTON_LEFT) == 1){}
-            break;
-        }
         default:
             break;
         }

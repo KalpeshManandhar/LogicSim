@@ -1,14 +1,12 @@
 #pragma once
+#include "utils.h"
 #include <SDL.h>
 
 
-enum {
-    PRESSED, HELD
+enum b_States{
+    PRESSED, HELD, RELEASED, IDLE, CLICKED
 };
 
-struct vec2{        // 2d vector for coordinates 
-    int x,y;
-};
 
 
 class Input{
@@ -16,11 +14,12 @@ class Input{
     Uint32 mouseButtons;
     bool held;
 public:
-    vec2 mousePos;
-    bool isPressed(int buttonKey);
-    bool isHeld(int buttonKey);
+    vec2 mousePos, prevMousePos;
+    b_States isPressed(int buttonKey);
     void getMouseState();
     int pollEvents();
     void printMousePos();
+    void handleMouseInput();
+    void addComponent();
 
 };

@@ -10,11 +10,13 @@ enum{
 class Graphics {
 	SDL_Window *window;
 	SDL_Surface *loadingSurface;
-	SDL_Renderer *renderer;
 	SDL_Texture *textureOfGates, *textureOfGrid;
 	// SDL_Rect source, destination;
 	bool isRunning;
 public:
+	SDL_Renderer *renderer;
+
+	
 	Graphics();
 	~Graphics();
 	int mainLoop();
