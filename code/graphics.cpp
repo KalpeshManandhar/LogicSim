@@ -1,12 +1,15 @@
 #include "graphics.h"
 #include "input.h"
+#include "component.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
 #define WIN_WIDTH 1280
 
-#define FPS 24
+#define FPS 32
 #define FRAME_LIMIT (1000/FPS)
+
+Component components[MAX_COMPONENTS];
 
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
@@ -18,11 +21,10 @@ Graphics::Graphics(){
     }
     renderer = SDL_CreateRenderer(window,-1, SDL_RENDERER_ACCELERATED);
     if (!renderer){
-        std::cout<<"Error creating renderer"<<std::endl;
+        std::cout<<"Error creating renderer"<<SDL_GetError()<<std::endl;
+        
     }    
     isRunning = true;
-    loadSpriteNGrid();
-    
 }
 
 Graphics::~Graphics(){
@@ -37,9 +39,10 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
-    source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
+    // source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
     int frameTime;    
+    loadSpriteAndGrid();
     while(isRunning){
         frameStart = getTime();
         switch (input.pollEvents())
@@ -50,12 +53,14 @@ int Graphics::mainLoop(){
         default:
             break;
         }
-        destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
-        clearScreen(68,75,110, true);
-        drawComponent(true);
-        display();
         input.getMouseState();
-        input.printMousePos();
+        // destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
+        input.handleMouseInput();
+        clearScreen(68,75,110, false);
+        componentLoad();
+        drawComponents();
+        display();
+        
         frameTime = getTime() - frameStart;
         if (frameTime < FRAME_LIMIT)
             delay(FRAME_LIMIT - frameTime);
@@ -71,28 +76,52 @@ void Graphics::display(){
     SDL_RenderPresent(renderer);
 }
 
-void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, r,g,b,255);    
+void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){       
+    SDL_SetRenderDrawColor(renderer, r,g,b,255);
+    SDL_RenderClear(renderer); 
+     
     if(grid)
         SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
     
 }
-void Graphics::loadSpriteNGrid()
+void Graphics::loadSpriteAndGrid()
 {    
-    loadingSurface = IMG_Load("assets/gates.png");
+    loadingSurface = IMG_Load("assets/spritesheet.png");
     textureOfGates=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
     loadingSurface=IMG_Load("assets/grid_new.png");
     textureOfGrid=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
-void Graphics::drawComponent(bool draw)
+void Graphics::drawComponents()
 {
-    if(draw)
-    {
-        SDL_RenderCopy(renderer,textureOfGates,&source,&destination);
+    int i;
+    for(i=0; i<Component::componentNo;i++){
+        if (components[i].getType() != _NOTHING)
+            components[i].draw(renderer, textureOfGates);
     }
-    else 
-        return;
+}
+
+SDL_Renderer* Graphics::getRenderer(){
+    return(renderer);
+}
+
+SDL_Texture* Graphics::getTexture(){
+    return(textureOfGates);
+}
+
+void Graphics::componentLoad()
+{
+    int shift=50;
+    SDL_Rect source, destination;
+    c_type type;
+    for(short i=0;i<5;i++)
+    {
+        source={i*146,0,146,72};
+        destination={shift+i*146,620,(int)(146*0.7),(int)(72*0.7)};
+        SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    }
+
+
+
 }

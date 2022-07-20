@@ -5,4 +5,5 @@ class Gate
 {
     SDL_Rect output;
     
+    
 };
