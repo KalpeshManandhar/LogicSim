@@ -28,9 +28,12 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     
     // sets the type of component
     this->type = type;
-    setSprites(type);
-    // this->next[0] = NULL;
 
+    setSprites();
+    setInputNo();
+    setPinPos();
+
+    // sets the index of the array where the component is to be stored
     if (availableIndex == -1){
         index = componentNo;
         componentNo++;
@@ -39,6 +42,8 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
         index = availableIndex;
     }
     selectedCompNo = index;
+
+    // sets the spawn position of the component
     compPos.x = mousePos.x - compPos.w * 0.5;
     compPos.y = mousePos.y - compPos.h * 0.3;
 
@@ -46,7 +51,7 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
 }
 
 
-void Component::setSprites(c_type type){
+void Component::setSprites(){
     if (type < 5){
         spriteSrc.y = 0;
     }
@@ -54,6 +59,62 @@ void Component::setSprites(c_type type){
         spriteSrc.y = 72;
     }
     spriteSrc.x = (type%5) * 146; 
+}
+
+void Component::setInputNo(){
+    switch (type)
+    {
+    case _NOT:
+    case _OUTPUT:
+        inputNo = 1;
+        break;
+    case _INPUT:
+        inputNo = 0;
+        break;
+    case _AND:
+    case _OR:
+    case _NAND:
+    case _NOR:
+    case _XOR:
+    case _XNOR:
+        inputNo = 2;
+        break;
+    default:
+        break;
+    }
+
+}
+
+void Component::setPinPos(){
+    // zero output pins
+    if (type == _OUTPUT){               
+        outPinPos.x = -200;
+        outPinPos.y = -400;       
+    }
+    // one output pin
+    else{
+        outPinPos.x = 141;
+        outPinPos.y = 35;
+    }
+    
+    // only one input pin
+    if (type == _NOT || type == _OUTPUT){           
+        inPinPos[0].x = 4;
+        inPinPos[0].y = 36;
+    }
+    // zero input pins
+    else if (type == _INPUT){                       
+        inPinPos[0].x = -200;
+        inPinPos[0].y = -400;
+    }
+    // two input pins
+    else{                                           
+        inPinPos[0].x = 4;
+        inPinPos[0].y = 18;
+        inPinPos[1].x = 4;
+        inPinPos[1].y = 52;
+    }
+
 }
 
 

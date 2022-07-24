@@ -29,19 +29,23 @@ class Component{
 protected:
     SDL_Rect spriteSrc, compPos;
     c_type type;
-    int inputNo;                        // no of inputs for each component
-    bool output[MAX_OUTPUTS], input[MAX_INPUTS];
+    int inputNo;                                    // no of inputs for each component
+    bool output, input[MAX_INPUTS];
     Component *next[MAX_OUTPUTS];
-    short index;                        // index in the array
+    short index;                                    // index in the array
+    vec2 inPinPos[MAX_INPUTS], outPinPos;           // only one output + different number of inputs for different components
+
 public:
-    static short componentNo;           // total no of components added init 0
-    static short selectedCompNo;        // currently selected component index init -1
+    static short componentNo;                       // total no of components added init 0
+    static short selectedCompNo;                    // currently selected component index init -1
 
     Component();
     ~Component();
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
     void setValues(c_type type, vec2 &mousePos, int availableIndex );
-    void setSprites(c_type type);
+    void setSprites();
+    void setInputNo();
+    void setPinPos();
     bool mouseHover(vec2 &mousePos);
     void selectComponent();
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);

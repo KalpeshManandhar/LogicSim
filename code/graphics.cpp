@@ -39,7 +39,6 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
-    // source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
     int frameTime;    
     loadSpriteAndGrid();
@@ -54,7 +53,6 @@ int Graphics::mainLoop(){
             break;
         }
         input.getMouseState();
-        // destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
         input.handleMouseInput();
         clearScreen(68,75,110, false);
         componentLoad();
@@ -113,15 +111,12 @@ SDL_Texture* Graphics::getTexture(){
 void Graphics::componentLoad()
 {
     int shift=50;
-    SDL_Rect source, destination;
+    SDL_Rect source = {0,0,146,72}, destination = {0,620,(int)(146*0.7),(int)(72*0.7)};
     c_type type;
     for(short i=0;i<5;i++)
     {
-        source={i*146,0,146,72};
-        destination={shift+i*146,620,(int)(146*0.7),(int)(72*0.7)};
+        source.x = i*146;
+        destination.x = shift + i*146;
         SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
     }
-
-
-
 }

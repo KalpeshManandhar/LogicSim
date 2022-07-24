@@ -142,34 +142,20 @@ void Input::handleMouseInput(){
 }
 
 
-<<<<<<< HEAD
-void Input::addComponent(){
+void Input::addComponent(c_type type){
     int availableIndex = -1,i;
     // checks if any previous index is free due to deleted components
     for (i=0;i<Component::componentNo;i++){
-=======
-void Input::addComponent(c_type type){
-    int availableIndex = -1;
-    // checks if any previous index is free due to deleted components
-    for (int i=0;i<Component::componentNo;i++){
->>>>>>> e9ddb1d1464e8be5e3507def1a696e1a0a432a66
         if (components[i].getType() == _NOTHING){
             availableIndex = i;
             break;
         }
     }
     if (availableIndex == -1){
-<<<<<<< HEAD
-        components[Component::componentNo].setValues(_AND, mousePos,-1);
-    }
-    else{
-        components[availableIndex].setValues(_AND, mousePos, availableIndex);
-=======
         components[Component::componentNo].setValues(type, mousePos,-1);
     }
     else{
         components[availableIndex].setValues(type, mousePos, availableIndex);
->>>>>>> e9ddb1d1464e8be5e3507def1a696e1a0a432a66
     }
 }
 
