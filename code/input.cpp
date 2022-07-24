@@ -53,11 +53,41 @@ void Input::handleMouseInput(){
         std::cout<<"CLick";
         int i;
         // adds a new component
-        if (mousePos.y>Y_BOUND && Component::componentNo != MAX_COMPONENTS){
-            addComponent();
+        // if (mousePos.y>Y_BOUND && Component::componentNo != MAX_COMPONENTS){
+        //     addComponent();
+            
+        //     break;
+        // }
+        if (mousePos.y>620 && mousePos.y<670)
+        {
+            if (mousePos.x>50+0*146 && mousePos.x<50+(0+1)*100 && Component::componentNo != MAX_COMPONENTS){
+            addComponent(_AND);
             
             break;
         }
+        if (mousePos.x>50+1*146 && mousePos.x<150+1*146 && Component::componentNo != MAX_COMPONENTS){
+            addComponent(_OR);
+            
+            break;
+        }
+        if (mousePos.x>50+2*146 && mousePos.x<150+2*146 && Component::componentNo != MAX_COMPONENTS){
+            addComponent(_NOT);
+            
+            break;
+        }
+        if (mousePos.x>50+3*146 && mousePos.x<150+3*146 && Component::componentNo != MAX_COMPONENTS){
+            addComponent(_NAND);
+            
+            break;
+        }
+        if (mousePos.x>50+4*146 && mousePos.x<150+4*146 && Component::componentNo != MAX_COMPONENTS){
+            addComponent(_NOR);
+            
+            break;
+        }
+
+        }
+        
 
         for(i=0;i<Component::componentNo; i++){
             if (components[i].mouseHover(mousePos) == true){
@@ -112,20 +142,34 @@ void Input::handleMouseInput(){
 }
 
 
+<<<<<<< HEAD
 void Input::addComponent(){
     int availableIndex = -1,i;
     // checks if any previous index is free due to deleted components
     for (i=0;i<Component::componentNo;i++){
+=======
+void Input::addComponent(c_type type){
+    int availableIndex = -1;
+    // checks if any previous index is free due to deleted components
+    for (int i=0;i<Component::componentNo;i++){
+>>>>>>> e9ddb1d1464e8be5e3507def1a696e1a0a432a66
         if (components[i].getType() == _NOTHING){
             availableIndex = i;
             break;
         }
     }
     if (availableIndex == -1){
+<<<<<<< HEAD
         components[Component::componentNo].setValues(_AND, mousePos,-1);
     }
     else{
         components[availableIndex].setValues(_AND, mousePos, availableIndex);
+=======
+        components[Component::componentNo].setValues(type, mousePos,-1);
+    }
+    else{
+        components[availableIndex].setValues(type, mousePos, availableIndex);
+>>>>>>> e9ddb1d1464e8be5e3507def1a696e1a0a432a66
     }
 }
 

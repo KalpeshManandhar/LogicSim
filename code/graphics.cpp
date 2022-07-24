@@ -57,7 +57,7 @@ int Graphics::mainLoop(){
         // destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
         input.handleMouseInput();
         clearScreen(68,75,110, false);
-        
+        componentLoad();
         drawComponents();
         display();
         
@@ -76,9 +76,10 @@ void Graphics::display(){
     SDL_RenderPresent(renderer);
 }
 
-void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, r,g,b,255);    
+void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){       
+    SDL_SetRenderDrawColor(renderer, r,g,b,255);
+    SDL_RenderClear(renderer); 
+     
     if(grid)
         SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
     
@@ -107,4 +108,20 @@ SDL_Renderer* Graphics::getRenderer(){
 
 SDL_Texture* Graphics::getTexture(){
     return(textureOfGates);
+}
+
+void Graphics::componentLoad()
+{
+    int shift=50;
+    SDL_Rect source, destination;
+    c_type type;
+    for(short i=0;i<5;i++)
+    {
+        source={i*146,0,146,72};
+        destination={shift+i*146,620,(int)(146*0.7),(int)(72*0.7)};
+        SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    }
+
+
+
 }

@@ -28,6 +28,7 @@ public:
 	void drawComponents();
 	SDL_Renderer* getRenderer();
 	SDL_Texture* getTexture();
+	void componentLoad();
 	
 };
 

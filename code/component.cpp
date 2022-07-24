@@ -28,13 +28,7 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     
     // sets the type of component
     this->type = type;
-    if (type < 5){
-        spriteSrc.y = 0;
-    }
-    else{
-        spriteSrc.y = 72;
-    }
-    spriteSrc.x = (type%5) * 146; 
+    setSprites(type);
     // this->next[0] = NULL;
 
     if (availableIndex == -1){
@@ -49,6 +43,17 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     compPos.y = mousePos.y - compPos.h * 0.3;
 
     std::cout<<"COmp added"<<index<<std::endl;
+}
+
+
+void Component::setSprites(c_type type){
+    if (type < 5){
+        spriteSrc.y = 0;
+    }
+    else{
+        spriteSrc.y = 72;
+    }
+    spriteSrc.x = (type%5) * 146; 
 }
 
 

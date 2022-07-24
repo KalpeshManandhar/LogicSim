@@ -1,6 +1,7 @@
 #pragma once
 #include "utils.h"
 #include <SDL.h>
+#include "component.h"
 
 
 enum b_States{
@@ -20,7 +21,7 @@ public:
     int pollEvents();
     void printMousePos();
     void handleMouseInput();
-    void addComponent();
+    void addComponent(c_type type);
     
 
 };

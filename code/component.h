@@ -10,26 +10,29 @@
 #define Y_BOUND 680
 #define X_BOUND 1200
 
+
 enum c_type{
     _AND, _OR, _NOT, _NAND, _NOR, _XOR, _XNOR, _INPUT, _OUTPUT, _NOTHING
 };
 
 class Button{
-    char text[10];
     bool pressedFlag;
     SDL_Rect buttonData;
 public:
-    void onPressed();
+    virtual void onPressed();
     void draw(SDL_Renderer* renderer);
 
 };
 
+
 class Component{
+protected:
     SDL_Rect spriteSrc, compPos;
     c_type type;
+    int inputNo;                        // no of inputs for each component
     bool output[MAX_OUTPUTS], input[MAX_INPUTS];
     Component *next[MAX_OUTPUTS];
-    short index;
+    short index;                        // index in the array
 public:
     static short componentNo;           // total no of components added init 0
     static short selectedCompNo;        // currently selected component index init -1
@@ -38,14 +41,24 @@ public:
     ~Component();
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
     void setValues(c_type type, vec2 &mousePos, int availableIndex );
+    void setSprites(c_type type);
     bool mouseHover(vec2 &mousePos);
     void selectComponent();
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     void removeComponent();
     c_type getType();
-    
+};
+
+
+class InputComponent:public Component{
+    Button inputChange;
+public:
+    InputComponent();
 
 
 };
 
+
 extern Component components[MAX_COMPONENTS];
+
+
