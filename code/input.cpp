@@ -90,8 +90,8 @@ void Input::handleMouseInput(){
         
 
         for(i=0;i<Component::componentNo; i++){
-            if (components[i].mouseHover(mousePos) == true){
-                components[i].selectComponent();
+            if (components[i]->mouseHover(mousePos) == true){
+                components[i]->selectComponent();
                 mouseHoverFlag = true;
                 break;
             }
@@ -111,14 +111,14 @@ void Input::handleMouseInput(){
     case HELD:{
         std::cout<<"HELD"<<std::endl;
         if (Component::selectedCompNo != -1){
-            components[Component::selectedCompNo].updateSelectedComp(mousePos, prevMousePos);
+            components[Component::selectedCompNo]->updateSelectedComp(mousePos, prevMousePos);
         }
         break;
     }
     case RELEASED:{
         std::cout<<"RELEASED"<<std::endl;
         if ((mousePos.x > X_BOUND || mousePos.y > Y_BOUND) && Component::selectedCompNo != -1){
-            components[Component::selectedCompNo].removeComponent();
+            components[Component::selectedCompNo]->removeComponent();
         }
         break;
     }
@@ -132,8 +132,8 @@ void Input::handleMouseInput(){
     // if (isPressed(SDL_BUTTON_LEFT)==CLICKED){
     //     int i;
     //     for(i=0;i<Component::componentNo;i++){
-    //         if (components[i].mouseHover(mousePos) == true){
-    //             components[i].selectComponent();
+    //         if (components[i]->mouseHover(mousePos) == true){
+    //             components[i]->selectComponent();
     //         }
     //     }
     // }
@@ -146,16 +146,16 @@ void Input::addComponent(c_type type){
     int availableIndex = -1,i;
     // checks if any previous index is free due to deleted components
     for (i=0;i<Component::componentNo;i++){
-        if (components[i].getType() == _NOTHING){
+        if (components[i]->getType() == _NOTHING){
             availableIndex = i;
             break;
         }
     }
     if (availableIndex == -1){
-        components[Component::componentNo].setValues(type, mousePos,-1);
+        components[Component::componentNo]->setValues(type, mousePos,-1);
     }
     else{
-        components[availableIndex].setValues(type, mousePos, availableIndex);
+        components[availableIndex]->setValues(type, mousePos, availableIndex);
     }
 }
 

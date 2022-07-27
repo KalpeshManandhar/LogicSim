@@ -9,7 +9,7 @@
 #define FPS 32
 #define FRAME_LIMIT (1000/FPS)
 
-Component components[MAX_COMPONENTS];
+Component *components[MAX_COMPONENTS];
 
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
@@ -41,6 +41,11 @@ int Graphics::mainLoop(){
     Input input;
     Uint32 frameStart;    
     int frameTime;    
+    int i;
+    for (i = 0; i < MAX_COMPONENTS; i++){
+        components[i] = new Component;
+    }
+    
     loadSpriteAndGrid();
     while(isRunning){
         frameStart = getTime();
@@ -95,8 +100,8 @@ void Graphics::drawComponents()
 {
     int i;
     for(i=0; i<Component::componentNo;i++){
-        if (components[i].getType() != _NOTHING)
-            components[i].draw(renderer, textureOfGates);
+        if (components[i]->getType() != _NOTHING)
+            components[i]->draw(renderer, textureOfGates);
     }
 }
 
