@@ -53,34 +53,34 @@ void Input::handleMouseInput(){
         std::cout<<"CLick";
         int i;
         // adds a new component
-        // if (mousePos.y>Y_BOUND && Component::componentNo != MAX_COMPONENTS){
+        // if (mousePos.y>Y_BOUND){
         //     addComponent();
             
         //     break;
         // }
-        if (mousePos.y>620 && mousePos.y<670)
+        if (mousePos.y>620 && mousePos.y<670 && Component::componentNo != MAX_COMPONENTS)
         {
-            if (mousePos.x>50+0*146 && mousePos.x<50+(0+1)*100 && Component::componentNo != MAX_COMPONENTS){
+            if (mousePos.x>50+0*146 && mousePos.x<50+(0+1)*100){
             addComponent(_AND);
             
             break;
         }
-        if (mousePos.x>50+1*146 && mousePos.x<150+1*146 && Component::componentNo != MAX_COMPONENTS){
+        if (mousePos.x>50+1*146 && mousePos.x<150+1*146){
             addComponent(_OR);
             
             break;
         }
-        if (mousePos.x>50+2*146 && mousePos.x<150+2*146 && Component::componentNo != MAX_COMPONENTS){
+        if (mousePos.x>50+2*146 && mousePos.x<150+2*146){
             addComponent(_NOT);
             
             break;
         }
-        if (mousePos.x>50+3*146 && mousePos.x<150+3*146 && Component::componentNo != MAX_COMPONENTS){
+        if (mousePos.x>50+3*146 && mousePos.x<150+3*146){
             addComponent(_NAND);
             
             break;
         }
-        if (mousePos.x>50+4*146 && mousePos.x<150+4*146 && Component::componentNo != MAX_COMPONENTS){
+        if (mousePos.x>50+4*146 && mousePos.x<150+4*146){
             addComponent(_NOR);
             
             break;

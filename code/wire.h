@@ -6,7 +6,7 @@
 #define MAX_WIRES 50
 
 enum wire_Condtion{
-    _COMPLETE, _INCOMPLETE, _BLANK 
+    _COMPLETE, _INCOMPLETE, _ISBLANK 
 };
 
 

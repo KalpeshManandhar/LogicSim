@@ -1,5 +1,6 @@
 #include "wire.h"
 #include "component.h"
+#include <iostream>
 
 
 int Wire::totalWires = 0;
@@ -12,7 +13,7 @@ Wire::Wire(){
     start.y = -100;
     end->x = -200;
     end->y = -200;
-    completeFlag = _BLANK;
+    completeFlag = _ISBLANK;
     logic = -1;
 }
 
@@ -35,6 +36,8 @@ void Wire::addWire(vec2 startPoint, vec2 *endPoint, int availableIndex){
     start = startPoint;
     end = endPoint;
     completeFlag = _INCOMPLETE;
+    std::cout<<"Added wire "<<index<<std::endl;
+    std::cout<<start.x<<","<<start.y<<std::endl;
 }
 
 
@@ -65,7 +68,7 @@ void Wire::removeWire(){
     start.y = -100;
     end->x = -200;
     end->x = -200;
-    completeFlag = _BLANK;
+    completeFlag = _ISBLANK;
     logic = -1;
     selectedWireNo = -1;
 }
