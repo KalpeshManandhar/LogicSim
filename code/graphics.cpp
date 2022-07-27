@@ -1,6 +1,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "component.h"
+#include "wire.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
@@ -10,6 +11,7 @@
 #define FRAME_LIMIT (1000/FPS)
 
 Component *components[MAX_COMPONENTS];
+Wire *wires[MAX_WIRES];
 
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
@@ -22,7 +24,6 @@ Graphics::Graphics(){
     renderer = SDL_CreateRenderer(window,-1, SDL_RENDERER_ACCELERATED);
     if (!renderer){
         std::cout<<"Error creating renderer"<<SDL_GetError()<<std::endl;
-        
     }    
     isRunning = true;
 }
@@ -96,8 +97,8 @@ void Graphics::loadSpriteAndGrid()
     textureOfGrid=SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
-void Graphics::drawComponents()
-{
+
+void Graphics::drawComponents(){
     int i;
     for(i=0; i<Component::componentNo;i++){
         if (components[i]->getType() != _NOTHING)
