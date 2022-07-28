@@ -140,13 +140,6 @@ void Component::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
 }
 
 
-bool Component::mouseHover(vec2 &mousePos){
-    if ((mousePos.x > compPos.x) && (mousePos.x < (compPos.x + compPos.w)) && (mousePos.y > compPos.y) && (mousePos.y < (compPos.y + compPos.h))){
-        return(true);
-    }
-    return(false);
-}
-
 
 // returns true if mouse is hovering over a component and also sets the value of pinHover to true if the mouse is hovering over a pin
 bool Component::mouseHover(vec2 &mousePos, int & pinHover){
@@ -203,4 +196,16 @@ void Component::removeComponent(){
 
 c_type Component::getType(){
     return(type);
+}
+
+int Component::getInputNo(){
+    return(inputNo);
+}
+
+Pin * Component::getInPinAddress(int i){
+    return(&inPin[i]);
+}
+
+Pin* Component::getOutPinAddress(){
+    return(&outPin);
 }

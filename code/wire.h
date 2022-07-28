@@ -1,6 +1,7 @@
 #pragma once
 
 #include "utils.h"
+#include "component.h"
 #include "SDL.h"
 
 #define MAX_WIRES 50
@@ -20,11 +21,13 @@ public:
     static int selectedWireNo;
 
     Wire();
+    Wire(int def);
     ~Wire();
     void addWire(Pin *startPin, vec2 *endPoint, int availableIndex);
     void draw(SDL_Renderer *renderer);
     void completeWire(Pin * endPin);
     void removeWire();
+    void removeWiresToComponent(Component & c);
     bool validWire(Pin * endPin);
     wire_Condtion getStatus();
 };

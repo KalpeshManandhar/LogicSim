@@ -5,7 +5,7 @@ struct vec2{        // 2d vector for coordinates
 };
 
 enum Pin_type{
-    _IN, _OUT
+    _IN, _OUT, _BLANKE
 };
 
 struct Pin{

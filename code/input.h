@@ -25,5 +25,6 @@ public:
     void addComponent(c_type type);
     void addWire();
     
+    
 
 };

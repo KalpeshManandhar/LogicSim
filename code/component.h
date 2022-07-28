@@ -50,11 +50,14 @@ public:
     void setInputNo();
     void setPinPos();
     bool mouseHover(vec2 &mousePos, int & pinHover);
-    bool mouseHover(vec2 &mousePos);
     void selectComponent();
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     void removeComponent();
+
     c_type getType();
+    int getInputNo();
+    Pin* getInPinAddress(int i);
+    Pin* getOutPinAddress();
 };
 
 

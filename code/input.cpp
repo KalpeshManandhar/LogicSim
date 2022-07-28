@@ -104,6 +104,7 @@ void Input::handleMouseInput(){
             else
                 std::cout<<"output";
 
+            // adds wire
             if (Wire::selectedWireNo == -1)
                 addWire();
             else{
@@ -113,6 +114,14 @@ void Input::handleMouseInput(){
                     wires[Wire::selectedWireNo].removeWire();
             }
         }
+        // unselects/ removes wire when clicked outside component
+        // else{
+        //     if (Wire::selectedWireNo != -1)
+        //         Wire::selectedWireNo == -1;
+        //     else{
+        //         wires[Wire::selectedWireNo].removeWire();
+        //     }
+        // }
 
 
 
@@ -138,6 +147,10 @@ void Input::handleMouseInput(){
     case RELEASED:{
         std::cout<<"RELEASED"<<std::endl;
         if ((mousePos.x > X_BOUND || mousePos.y > Y_BOUND) && Component::selectedCompNo != -1){
+            int i;
+            // to remove the wires associated with the component
+            for (i = 0; i < Wire::totalWires; i++)
+                wires[i].removeWiresToComponent(components[Component::selectedCompNo]);
             components[Component::selectedCompNo].removeComponent();
         }
         break;
@@ -195,4 +208,10 @@ void Input::addWire(){
         wires[availableIndex].addWire(Component::selectedPin, &mousePos, availableIndex);
     }
 }
+
+
+
+
+
+
 
