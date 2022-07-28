@@ -23,6 +23,8 @@ Component::~Component(){
     spriteSrc.x = 0;
     compPos.x = -200;
     compPos.y = -200;
+    int i;
+        delete[] components;
 }
 
 void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
@@ -173,6 +175,7 @@ void Component::selectComponent(){
 void Component::updateSelectedComp(vec2 &mousePos, vec2 &prev){
     compPos.x += (mousePos.x - prev.x);
     compPos.y += (mousePos.y - prev.y);
+
     // updates position of the pins
     int i;
     for (i = 0; i<inputNo; i++){

@@ -1,7 +1,8 @@
 #pragma once
 #include "utils.h"
-#include <SDL.h>
 #include "component.h"
+#include "wire.h"
+#include <SDL.h>
 
 
 enum b_States{

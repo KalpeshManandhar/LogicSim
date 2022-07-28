@@ -10,8 +10,8 @@
 #define FPS 32
 #define FRAME_LIMIT (1000/FPS)
 
-Component *components[MAX_COMPONENTS];
-Wire *wires[MAX_WIRES];
+Component *components;
+Wire *wires;
 
 Graphics::Graphics(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
@@ -43,9 +43,13 @@ int Graphics::mainLoop(){
     Uint32 frameStart;    
     int frameTime;    
     int i;
-    for (i = 0; i < MAX_COMPONENTS; i++){
-        components[i] = new Component;
-    }
+
+    components = new Component[MAX_COMPONENTS];
+    wires = new Wire[MAX_WIRES];
+        
+
+
+    std::cout<<sizeof(Component)<<","<<sizeof(Wire);
     
     loadSpriteAndGrid();
     while(isRunning){
@@ -63,6 +67,7 @@ int Graphics::mainLoop(){
         clearScreen(68,75,110, false);
         componentLoad();
         drawComponents();
+        drawWires();
         display();
         
         frameTime = getTime() - frameStart;
@@ -101,8 +106,8 @@ void Graphics::loadSpriteAndGrid()
 void Graphics::drawComponents(){
     int i;
     for(i=0; i<Component::componentNo;i++){
-        if (components[i]->getType() != _NOTHING)
-            components[i]->draw(renderer, textureOfGates);
+        if (components[i].getType() != _NOTHING)
+            components[i].draw(renderer, textureOfGates);
     }
 }
 
@@ -124,5 +129,13 @@ void Graphics::componentLoad()
         source.x = i*146;
         destination.x = shift + i*146;
         SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    }
+}
+
+void Graphics::drawWires(){
+    int i;
+    for(i=0; i<Wire::totalWires;i++){
+        if (wires[i].getStatus() != _ISBLANK)
+            wires[i].draw(renderer);
     }
 }

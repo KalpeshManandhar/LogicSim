@@ -1,6 +1,5 @@
 #include "input.h"
 #include "component.h"
-#include "wire.h"
 #include <iostream>
 
 
@@ -91,8 +90,8 @@ void Input::handleMouseInput(){
         
 
         for(i=0;i<Component::componentNo; i++){
-            if (components[i]->mouseHover(mousePos, pinHoverFlag) == true){
-                components[i]->selectComponent();
+            if (components[i].mouseHover(mousePos, pinHoverFlag) == true){
+                components[i].selectComponent();
                 mouseHoverFlag = true;
                 break;
             }
@@ -125,14 +124,14 @@ void Input::handleMouseInput(){
     case HELD:{
         std::cout<<"HELD"<<std::endl;
         if (Component::selectedCompNo != -1){
-            components[Component::selectedCompNo]->updateSelectedComp(mousePos, prevMousePos);
+            components[Component::selectedCompNo].updateSelectedComp(mousePos, prevMousePos);
         }
         break;
     }
     case RELEASED:{
         std::cout<<"RELEASED"<<std::endl;
         if ((mousePos.x > X_BOUND || mousePos.y > Y_BOUND) && Component::selectedCompNo != -1){
-            components[Component::selectedCompNo]->removeComponent();
+            components[Component::selectedCompNo].removeComponent();
         }
         break;
     }
@@ -160,16 +159,16 @@ void Input::addComponent(c_type type){
     int availableIndex = -1,i;
     // checks if any previous index is free due to deleted components
     for (i=0;i<Component::componentNo;i++){
-        if (components[i]->getType() == _NOTHING){
+        if (components[i].getType() == _NOTHING){
             availableIndex = i;
             break;
         }
     }
     if (availableIndex == -1){
-        components[Component::componentNo]->setValues(type, mousePos,-1);
+        components[Component::componentNo].setValues(type, mousePos,-1);
     }
     else{
-        components[availableIndex]->setValues(type, mousePos, availableIndex);
+        components[availableIndex].setValues(type, mousePos, availableIndex);
     }
 }
 
@@ -177,16 +176,16 @@ void Input::addWire(){
     int availableIndex = -1,i;
     // checks if any previous index is free due to deleted wires
     for (i=0;i<Wire::totalWires;i++){
-        if (wires[i]->getStatus() == _ISBLANK){
+        if (wires[i].getStatus() == _ISBLANK){
             availableIndex = i;
             break;
         }
     }
     if (availableIndex == -1){
-        wires[Wire::totalWires]->addWire(Component::selectedPin->pos, &mousePos, -1);
+        wires[Wire::totalWires].addWire(&Component::selectedPin->pos, &mousePos, -1);
     }
     else{
-        wires[availableIndex]->addWire(Component::selectedPin->pos, &mousePos, availableIndex);
+        wires[availableIndex].addWire(&Component::selectedPin->pos, &mousePos, availableIndex);
     }
 }
 

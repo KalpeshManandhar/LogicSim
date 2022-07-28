@@ -26,6 +26,7 @@ public:
 	void loadSpriteAndGrid();
 	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
 	void drawComponents();
+	void drawWires();
 	SDL_Renderer* getRenderer();
 	SDL_Texture* getTexture();
 	void componentLoad();

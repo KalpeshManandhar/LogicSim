@@ -11,9 +11,9 @@ enum wire_Condtion{
 
 
 class Wire{
-    vec2 start, *end;
+    vec2 *start, *end;
     int logic;                      // logic in the wire
-    wire_Condtion completeFlag;     //   if the wire is connected fully or not
+    wire_Condtion completeFlag;     // if the wire is connected fully or not
     int index;
 public:
     static int totalWires;
@@ -21,7 +21,7 @@ public:
 
     Wire();
     ~Wire();
-    void addWire(vec2 startPoint, vec2 *endPoint, int availableIndex);
+    void addWire(vec2 *startPoint, vec2 *endPoint, int availableIndex);
     void draw(SDL_Renderer *renderer);
     void completeWire();
     void removeWire();
@@ -29,4 +29,4 @@ public:
 };
 
 
-extern Wire *wires[MAX_WIRES];
+extern Wire *wires;

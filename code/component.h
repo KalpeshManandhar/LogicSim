@@ -74,6 +74,6 @@ public:
 };
 
 
-extern Component *components[MAX_COMPONENTS];
+extern Component *components;
 
 
