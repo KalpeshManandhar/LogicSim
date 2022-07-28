@@ -47,6 +47,7 @@ void Input::printMousePos(){
 
 void Input::handleMouseInput(){
     bool mouseHoverFlag = false;
+    int pinHoverFlag = -1;
     switch (isPressed(SDL_BUTTON_LEFT))
     {
     case CLICKED:{
@@ -61,40 +62,44 @@ void Input::handleMouseInput(){
         if (mousePos.y>620 && mousePos.y<670 && Component::componentNo != MAX_COMPONENTS)
         {
             if (mousePos.x>50+0*146 && mousePos.x<50+(0+1)*100){
-            addComponent(_AND);
-            
-            break;
-        }
-        if (mousePos.x>50+1*146 && mousePos.x<150+1*146){
-            addComponent(_OR);
-            
-            break;
-        }
-        if (mousePos.x>50+2*146 && mousePos.x<150+2*146){
-            addComponent(_NOT);
-            
-            break;
-        }
-        if (mousePos.x>50+3*146 && mousePos.x<150+3*146){
-            addComponent(_NAND);
-            
-            break;
-        }
-        if (mousePos.x>50+4*146 && mousePos.x<150+4*146){
-            addComponent(_NOR);
-            
-            break;
-        }
-
+                addComponent(_AND);
+                
+                break;
+            }
+            if (mousePos.x>50+1*146 && mousePos.x<150+1*146){
+                addComponent(_OR);
+                
+                break;
+            }
+            if (mousePos.x>50+2*146 && mousePos.x<150+2*146){
+                addComponent(_NOT);
+                
+                break;
+            }
+            if (mousePos.x>50+3*146 && mousePos.x<150+3*146){
+                addComponent(_NAND);
+                
+                break;
+            }
+            if (mousePos.x>50+4*146 && mousePos.x<150+4*146){
+                addComponent(_NOR);
+                
+                break;
+            }
         }
         
 
         for(i=0;i<Component::componentNo; i++){
-            if (components[i]->mouseHover(mousePos) == true){
+            if (components[i]->mouseHover(mousePos, pinHoverFlag) == true){
                 components[i]->selectComponent();
                 mouseHoverFlag = true;
                 break;
             }
+        }
+
+        if (pinHoverFlag == 1){
+            std::cout<<"Pin clicked";
+            std::cout<<Component::selectedPin->pos.x<<","<<Component::selectedPin->pos.y<<std::endl;
         }
         // unselects component if clicked outside components
         if (mouseHoverFlag == false){

@@ -15,6 +15,15 @@ enum c_type{
     _AND, _OR, _NOT, _NAND, _NOR, _XOR, _XNOR, _INPUT, _OUTPUT, _NOTHING
 };
 
+enum Pin_type{
+    _IN, _OUT
+};
+
+struct Pin{
+    vec2 pos;
+    Pin_type type;
+};
+
 class Button{
     bool pressedFlag;
     SDL_Rect buttonData;
@@ -33,11 +42,12 @@ protected:
     bool output, input[MAX_INPUTS];
     Component *next[MAX_OUTPUTS];
     short index;                                    // index in the array
-    vec2 inPinPos[MAX_INPUTS], outPinPos;           // only one output + different number of inputs for different components
+    Pin inPin[MAX_INPUTS], outPin;                  // only one output + different number of inputs for different components
 
 public:
     static short componentNo;                       // total no of components added init 0
     static short selectedCompNo;                    // currently selected component index init -1
+    static Pin* selectedPin;
 
     Component();
     ~Component();
@@ -46,6 +56,7 @@ public:
     void setSprites();
     void setInputNo();
     void setPinPos();
+    bool mouseHover(vec2 &mousePos, int & pinHover);
     bool mouseHover(vec2 &mousePos);
     void selectComponent();
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
