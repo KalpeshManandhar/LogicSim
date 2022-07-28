@@ -22,10 +22,11 @@ Wire::~Wire(){
 }
 
 
-
 void Wire::addWire(vec2 startPoint, vec2 *endPoint, int availableIndex){
     if (availableIndex == -1){
-        wires[totalWires] = new Wire;
+        std::cout<<"oo";
+        wires[Wire::totalWires] = new Wire;
+        std::cout<<"oo";
         index = totalWires;
         totalWires++;
     }

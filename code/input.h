@@ -22,6 +22,7 @@ public:
     void printMousePos();
     void handleMouseInput();
     void addComponent(c_type type);
+    void addWire();
     
 
 };

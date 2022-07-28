@@ -1,5 +1,6 @@
 #include "input.h"
 #include "component.h"
+#include "wire.h"
 #include <iostream>
 
 
@@ -100,7 +101,15 @@ void Input::handleMouseInput(){
         if (pinHoverFlag == 1){
             std::cout<<"Pin clicked";
             std::cout<<Component::selectedPin->pos.x<<","<<Component::selectedPin->pos.y<<std::endl;
+            if (Component::selectedPin->type == _IN)
+                std::cout<<"Input";
+            else
+                std::cout<<"output";
+            addWire();
         }
+
+
+
         // unselects component if clicked outside components
         if (mouseHoverFlag == false){
             Component::selectedCompNo = -1;     
@@ -161,6 +170,23 @@ void Input::addComponent(c_type type){
     }
     else{
         components[availableIndex]->setValues(type, mousePos, availableIndex);
+    }
+}
+
+void Input::addWire(){
+    int availableIndex = -1,i;
+    // checks if any previous index is free due to deleted wires
+    for (i=0;i<Wire::totalWires;i++){
+        if (wires[i]->getStatus() == _ISBLANK){
+            availableIndex = i;
+            break;
+        }
+    }
+    if (availableIndex == -1){
+        wires[Wire::totalWires]->addWire(Component::selectedPin->pos, &mousePos, -1);
+    }
+    else{
+        wires[availableIndex]->addWire(Component::selectedPin->pos, &mousePos, availableIndex);
     }
 }
 
