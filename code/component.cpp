@@ -7,6 +7,7 @@ short Component::componentNo = 0;
 short Component::selectedCompNo = -1;
 Pin* Component::selectedPin = NULL;
 
+
 Component::Component(){
     spriteSrc.h = 72;
     spriteSrc.w = 146;
@@ -16,6 +17,10 @@ Component::Component(){
     spriteSrc.x = 0;
     compPos.x = -200;
     compPos.y = -200;
+    int i;
+    for (i = 0; i<MAX_INPUTS; i++)
+        inPin[i].pos = new vec2;
+    outPin.pos = new vec2;
 }
 
 Component::~Component(){
@@ -23,8 +28,7 @@ Component::~Component(){
     spriteSrc.x = 0;
     compPos.x = -200;
     compPos.y = -200;
-    int i;
-        delete[] components;
+    delete[] components;
 }
 
 void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
@@ -52,12 +56,12 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     // sets the spawn position of the pins
     int  i;
     for (i = 0; i<inputNo; i++){
-        inPin[i].pos.x  += compPos.x;
-        inPin[i].pos.y  += compPos.y;
+        inPin[i].pos->x  += compPos.x;
+        inPin[i].pos->y  += compPos.y;
         inPin[i].type = _IN;
     }
-    outPin.pos.x  += compPos.x;
-    outPin.pos.y  += compPos.y;
+    outPin.pos->x  += compPos.x;
+    outPin.pos->y  += compPos.y;
     outPin.type = _OUT;
 
     std::cout<<"COmp added"<<index<<std::endl;
@@ -101,31 +105,31 @@ void Component::setInputNo(){
 void Component::setPinPos(){
     // zero output pins
     if (type == _OUTPUT){               
-        outPin.pos.x = -200;
-        outPin.pos.y = -400;       
+        outPin.pos->x = -200;
+        outPin.pos->y = -400;       
     }
     // one output pin
     else{
-        outPin.pos.x = 141;
-        outPin.pos.y = 35;
+        outPin.pos->x = 141;
+        outPin.pos->y = 35;
     }
     
     // only one input pin
     if (type == _NOT || type == _OUTPUT){           
-        inPin[0].pos.x = 4;
-        inPin[0].pos.y = 36;
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 36;
     }
     // zero input pins
     else if (type == _INPUT){                       
-        inPin[0].pos.x = -200;
-        inPin[0].pos.y = -400;
+        inPin[0].pos->x = -200;
+        inPin[0].pos->y = -400;
     }
     // two input pins
     else{                                           
-        inPin[0].pos.x = 4;
-        inPin[0].pos.y = 18;
-        inPin[1].pos.x = 4;
-        inPin[1].pos.y = 52;
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 18;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 52;
     }
 
 }
@@ -151,14 +155,14 @@ bool Component::mouseHover(vec2 &mousePos, int & pinHover){
 
         // hovering over an input pin?
         for (i = 0; i<inputNo; i++){
-            if ((mousePos.x > inPin[i].pos.x - 10) && (mousePos.x < inPin[i].pos.x +10) && (mousePos.y > inPin[i].pos.y - 10) && (mousePos.y < inPin[i].pos.y +10)){
+            if ((mousePos.x > inPin[i].pos->x - 10) && (mousePos.x < inPin[i].pos->x +10) && (mousePos.y > inPin[i].pos->y - 10) && (mousePos.y < inPin[i].pos->y +10)){
                 pinHover = 1;
                 selectedPin = &inPin[i];
                 return(true);
             }
         }
         // hovering over an output pin?
-        if ((mousePos.x > outPin.pos.x - 10) && (mousePos.x < outPin.pos.x +10) && (mousePos.y > outPin.pos.y - 10) && (mousePos.y < outPin.pos.y +10)){
+        if ((mousePos.x > outPin.pos->x - 10) && (mousePos.x < outPin.pos->x +10) && (mousePos.y > outPin.pos->y - 10) && (mousePos.y < outPin.pos->y +10)){
             pinHover = 1;
             selectedPin = &outPin;
         }
@@ -179,11 +183,11 @@ void Component::updateSelectedComp(vec2 &mousePos, vec2 &prev){
     // updates position of the pins
     int i;
     for (i = 0; i<inputNo; i++){
-        inPin[i].pos.x  += (mousePos.x - prev.x);
-        inPin[i].pos.y  += (mousePos.y - prev.y);
+        inPin[i].pos->x  += (mousePos.x - prev.x);
+        inPin[i].pos->y  += (mousePos.y - prev.y);
     }
-    outPin.pos.x  += (mousePos.x - prev.x);
-    outPin.pos.y  += (mousePos.y - prev.y);
+    outPin.pos->x  += (mousePos.x - prev.x);
+    outPin.pos->y  += (mousePos.y - prev.y);
 }
 
 void Component::removeComponent(){

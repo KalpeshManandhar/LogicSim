@@ -23,9 +23,9 @@ public:
     ~Wire();
     void addWire(Pin *startPin, vec2 *endPoint, int availableIndex);
     void draw(SDL_Renderer *renderer);
-    void completeWire(Pin* endPin);
+    void completeWire(Pin * endPin);
     void removeWire();
-    bool validWire(Pin* end);
+    bool validWire(Pin * endPin);
     wire_Condtion getStatus();
 };
 

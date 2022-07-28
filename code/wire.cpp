@@ -1,4 +1,5 @@
 #include "wire.h"
+#include "component.h"
 #include <iostream>
 
 
@@ -10,10 +11,10 @@ int Wire::selectedWireNo = -1;
 Wire::Wire(){
     start = new Pin;
     end = new Pin;
-    start->pos.x = -100;
-    start->pos.y = -100;
-    end->pos.x = -200;
-    end->pos.y = -200;
+    start->pos = new vec2;
+    end->pos = new vec2;
+    start->pos = NULL;
+    end->pos = NULL;
     completeFlag = _ISBLANK;
     logic = -1;
 }
@@ -23,7 +24,9 @@ Wire::~Wire(){
 }
 
 
-void Wire::addWire(Pin *startPin, Pin *endPin, int availableIndex){
+void Wire::addWire(Pin *startPin, vec2 *endPoint, int availableIndex){
+    std::cout<<"Added wisdsdre "<<index<<std::endl;
+
     if (availableIndex == -1){
         index = totalWires;
         totalWires++;
@@ -32,11 +35,14 @@ void Wire::addWire(Pin *startPin, Pin *endPin, int availableIndex){
         index = availableIndex;
     }
     selectedWireNo = index;
+    std::cout<<"Added wisdsdre "<<index<<std::endl;
+
+
     start = startPin;
-    end = endPin;
+    end->pos = endPoint;
     completeFlag = _INCOMPLETE;
     std::cout<<"Added wire "<<index<<std::endl;
-    std::cout<<start->pos.x<<","<<start->pos.y<<std::endl;
+    std::cout<<start->pos->x<<","<<start->pos->y<<std::endl;
 }
 
 
@@ -47,15 +53,16 @@ void Wire::draw(SDL_Renderer * renderer){
     else
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     // if (completeFlag == _INCOMPLETE)
-    //     SDL_RenderDrawLine(renderer, start->pos.x, start->pos.y, end.x, end.y);
+    //     SDL_RenderDrawLine(renderer, start->x, start->y, end.x, end.y);
     // else
-    SDL_RenderDrawLine(renderer, start->pos.x, start->pos.y, end->pos.x, end->pos.y);
+    SDL_RenderDrawLine(renderer, start->pos->x, start->pos->y, end->pos->x, end->pos->y);
 }
 
 
 void Wire::completeWire(Pin * endPin){
     end = endPin;
     completeFlag = _COMPLETE;
+    selectedWireNo = -1;
 }
 
 wire_Condtion Wire::getStatus(){
@@ -64,20 +71,15 @@ wire_Condtion Wire::getStatus(){
 
 
 void Wire::removeWire(){
-    start->pos.x = -100;
-    start->pos.y = -100;
-    end->pos.x = -200;
-    end->pos.x = -200;
-    start->type = _BLANKE;
-    end->type = _BLANKE;
+    start->pos = NULL;
+    end->pos = NULL;
     completeFlag = _ISBLANK;
     logic = -1;
     selectedWireNo = -1;
 }
 
-
-bool Wire::validWire(Pin * end){
-    if (start->type == end->type)
+bool Wire::validWire(Pin * endPin){
+    if (start->type == endPin->type)
         return(false);
     return(true);
 }

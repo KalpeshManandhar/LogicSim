@@ -97,7 +97,7 @@ void Input::handleMouseInput(){
             }
         }
 
-        if (pinHoverFlag == 1 || Wire::selectedWireNo != -1){
+        if (pinHoverFlag == 1){
             std::cout<<"Pin clicked";
             if (Component::selectedPin->type == _IN)
                 std::cout<<"Input";
@@ -111,13 +111,7 @@ void Input::handleMouseInput(){
                     wires[Wire::selectedWireNo].completeWire(Component::selectedPin);
                 else
                     wires[Wire::selectedWireNo].removeWire();
-            } 
-
-        }
-        else{
-            if (Wire::selectedWireNo != -1){
             }
-                
         }
 
 
@@ -136,7 +130,7 @@ void Input::handleMouseInput(){
     // updates the position of component if selected
     case HELD:{
         std::cout<<"HELD"<<std::endl;
-        if (Component::selectedCompNo != -1 /*&& Wire::selectedWireNo == -1*/){
+        if (Component::selectedCompNo != -1){
             components[Component::selectedCompNo].updateSelectedComp(mousePos, prevMousePos);
         }
         break;
@@ -195,13 +189,10 @@ void Input::addWire(){
         }
     }
     if (availableIndex == -1){
-        wires[Wire::totalWires].addWire(Component::selectedPin, (Pin *)&mousePos, -1);
+        wires[Wire::totalWires].addWire(Component::selectedPin, &mousePos, -1);
     }
     else{
-        wires[availableIndex].addWire(Component::selectedPin, (Pin *)&mousePos, availableIndex);
+        wires[availableIndex].addWire(Component::selectedPin, &mousePos, availableIndex);
     }
 }
-
-
-
 

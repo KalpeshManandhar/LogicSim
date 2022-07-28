@@ -5,10 +5,10 @@ struct vec2{        // 2d vector for coordinates
 };
 
 enum Pin_type{
-    _IN, _OUT, _BLANKE
+    _IN, _OUT
 };
 
 struct Pin{
-    vec2 pos;
+    vec2 *pos;
     Pin_type type;
 };
