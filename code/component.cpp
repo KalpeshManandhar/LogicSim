@@ -26,7 +26,6 @@ Component::~Component(){
 }
 
 void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
-    
     // sets the type of component
     this->type = type;
 
@@ -47,6 +46,17 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     // sets the spawn position of the component
     compPos.x = mousePos.x - compPos.w * 0.5;
     compPos.y = mousePos.y - compPos.h * 0.3;
+
+    // sets the spawn position of the pins
+    int  i;
+    for (i = 0; i<inputNo; i++){
+        inPin[i].pos.x  += compPos.x;
+        inPin[i].pos.y  += compPos.y;
+        inPin[i].type = _IN;
+    }
+    outPin.pos.x  += compPos.x;
+    outPin.pos.y  += compPos.y;
+    outPin.type = _OUT;
 
     std::cout<<"COmp added"<<index<<std::endl;
 }
@@ -163,6 +173,14 @@ void Component::selectComponent(){
 void Component::updateSelectedComp(vec2 &mousePos, vec2 &prev){
     compPos.x += (mousePos.x - prev.x);
     compPos.y += (mousePos.y - prev.y);
+    // updates position of the pins
+    int i;
+    for (i = 0; i<inputNo; i++){
+        inPin[i].pos.x  += (mousePos.x - prev.x);
+        inPin[i].pos.y  += (mousePos.y - prev.y);
+    }
+    outPin.pos.x  += (mousePos.x - prev.x);
+    outPin.pos.y  += (mousePos.y - prev.y);
 }
 
 void Component::removeComponent(){
