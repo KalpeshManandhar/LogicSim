@@ -14,6 +14,9 @@ Component *components;
 Wire *wires;
 
 Graphics::Graphics(){
+    components = new Component[MAX_COMPONENTS];
+    wires = new Wire[MAX_WIRES];
+
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
     }
@@ -42,16 +45,10 @@ int Graphics::mainLoop(){
     Input input;
     Uint32 frameStart;    
     int frameTime;    
-    int i;
-
-    components = new Component[MAX_COMPONENTS];
-    wires = new Wire[MAX_WIRES];
-        
-
-
-    std::cout<<sizeof(Component)<<","<<sizeof(Wire);
+    int i;        
     
     loadSpriteAndGrid();
+
     while(isRunning){
         frameStart = getTime();
         switch (input.pollEvents())
@@ -121,13 +118,14 @@ SDL_Texture* Graphics::getTexture(){
 
 void Graphics::componentLoad()
 {
-    int shift=50;
+    int shift=30;
     SDL_Rect source = {0,0,146,72}, destination = {0,620,(int)(146*0.7),(int)(72*0.7)};
     c_type type;
-    for(short i=0;i<5;i++)
+    for(short i=0;i<9;i++)
     {
-        source.x = i*146;
-        destination.x = shift + i*146;
+        source.x = (i%5)*146;
+        source.y = (i/5)*72;
+        destination.x = shift + (shift + destination.w)* i ;
         SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
     }
 }

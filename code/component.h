@@ -17,13 +17,9 @@ enum c_type{
 
 
 
-class Button{
+struct Button{
+    SDL_Rect button;
     bool pressedFlag;
-    SDL_Rect buttonData;
-public:
-    virtual void onPressed();
-    void draw(SDL_Renderer* renderer);
-
 };
 
 
@@ -62,9 +58,14 @@ public:
 
 
 class InputComponent:public Component{
-    Button inputChange;
+    Button inputButton;
 public:
     InputComponent();
+    void setButtonPos();
+    void setValues(vec2 &mousePos, int availableIndex );
+    void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
+    void updateSelectedComp(vec2 &mousePos, vec2 &prev);
+    void onPressed();
 
 
 };

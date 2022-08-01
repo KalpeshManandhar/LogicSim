@@ -61,29 +61,40 @@ void Input::handleMouseInput(){
         // }
         if (mousePos.y>620 && mousePos.y<670 && Component::componentNo != MAX_COMPONENTS)
         {
-            if (mousePos.x>50+0*146 && mousePos.x<50+(0+1)*100){
+            if (mousePos.x>30+0*(130) && mousePos.x<1*130){
                 addComponent(_AND);
-                
                 break;
             }
-            if (mousePos.x>50+1*146 && mousePos.x<150+1*146){
+            if (mousePos.x>30+1*130 && mousePos.x<2*130){
                 addComponent(_OR);
-                
                 break;
             }
-            if (mousePos.x>50+2*146 && mousePos.x<150+2*146){
+            if (mousePos.x>30+2*130 && mousePos.x<3*130){
                 addComponent(_NOT);
-                
                 break;
             }
-            if (mousePos.x>50+3*146 && mousePos.x<150+3*146){
+            if (mousePos.x>30+3*130 && mousePos.x<4*130){
                 addComponent(_NAND);
-                
                 break;
             }
-            if (mousePos.x>50+4*146 && mousePos.x<150+4*146){
+            if (mousePos.x>30+4*130 && mousePos.x<5*130){
                 addComponent(_NOR);
-                
+                break;
+            }
+            if (mousePos.x>30+5*130 && mousePos.x<6*130){
+                addComponent(_XOR);
+                break;
+            }
+            if (mousePos.x>30+6*130 && mousePos.x<7*130){
+                addComponent(_XNOR);
+                break;
+            }
+            if (mousePos.x>30+7*130 && mousePos.x<8*130){
+                addComponent(_INPUT);
+                break;
+            }
+            if (mousePos.x>30+8*130 && mousePos.x<9*130){
+                addComponent(_OUTPUT);
                 break;
             }
         }

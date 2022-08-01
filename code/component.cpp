@@ -209,3 +209,27 @@ Pin * Component::getInPinAddress(int i){
 Pin* Component::getOutPinAddress(){
     return(&outPin);
 }
+
+
+void InputComponent::setButtonPos(){
+    inputButton.button.x = 80;
+    inputButton.button.y = 15;
+    inputButton.button.w = 40;
+    inputButton.button.h = 40;
+}
+
+void InputComponent::onPressed(){
+    output = (output == 1)?0:1;
+}
+
+void InputComponent::updateSelectedComp(vec2 &mousePos, vec2 &prev){
+    Component::updateSelectedComp(mousePos, prev);
+    inputButton.button.x += (mousePos.x - prev.x);
+    inputButton.button.y += (mousePos.y - prev.y);
+}
+
+void InputComponent::setValues(vec2 &mousePos, int availableIndex){
+    Component::setValues(_INPUT, mousePos, availableIndex);
+    inputButton.button.x += compPos.x;
+    inputButton.button.y += compPos.y;
+}
