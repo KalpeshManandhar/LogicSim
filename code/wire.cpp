@@ -108,14 +108,14 @@ bool Wire::validWire(Pin * endPin){
     return(true);
 }
 
-void Wire::removeWiresToComponent(Component & c){
+void Wire::removeWiresToComponent(Component * c){
     int i;
-    for (i = 0; i < c.getInputNo(); i++)
-        if (start == c.getInPinAddress(i) || end == c.getInPinAddress(i)){
+    for (i = 0; i < c->getInputNo(); i++)
+        if (start == c->getInPinAddress(i) || end == c->getInPinAddress(i)){
             removeWire();
             return;
         }
-    if (start == c.getOutPinAddress() || end == c.getOutPinAddress())
+    if (start == c->getOutPinAddress() || end == c->getOutPinAddress())
         removeWire();
     return;
 }

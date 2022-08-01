@@ -90,7 +90,7 @@ void Input::handleMouseInput(){
                 break;
             }
             if (mousePos.x>30+7*130 && mousePos.x<8*130){
-                addIprobe();
+                addComponent(_INPUT);
                 break;
             }
             if (mousePos.x>30+8*130 && mousePos.x<9*130){
@@ -101,8 +101,8 @@ void Input::handleMouseInput(){
         
 
         for(i=0;i<Component::componentNo; i++){
-            if (components[i].mouseHover(mousePos, pinHoverFlag) == true){
-                components[i].selectComponent();
+            if (components[i]->mouseHover(mousePos, pinHoverFlag) == true){
+                components[i]->selectComponent();
                 mouseHoverFlag = true;
                 break;
             }
@@ -151,7 +151,7 @@ void Input::handleMouseInput(){
     case HELD:{
         std::cout<<"HELD"<<std::endl;
         if (Component::selectedCompNo != -1){
-            components[Component::selectedCompNo].updateSelectedComp(mousePos, prevMousePos);
+            components[Component::selectedCompNo]->updateSelectedComp(mousePos, prevMousePos);
         }
         break;
     }
@@ -162,7 +162,7 @@ void Input::handleMouseInput(){
             // to remove the wires associated with the component
             for (i = 0; i < Wire::totalWires; i++)
                 wires[i].removeWiresToComponent(components[Component::selectedCompNo]);
-            components[Component::selectedCompNo].removeComponent();
+            components[Component::selectedCompNo]->removeComponent();
         }
         break;
     }
@@ -190,16 +190,33 @@ void Input::addComponent(c_type type){
     int availableIndex = -1,i;
     // checks if any previous index is free due to deleted components
     for (i=0;i<Component::componentNo;i++){
-        if (components[i].getType() == _NOTHING){
+        if (components[i]->getType() == _NOTHING){
             availableIndex = i;
             break;
         }
     }
-    if (availableIndex == -1){
-        components[Component::componentNo].setValues(type, mousePos,-1);
+    if (type == _INPUT){
+        std::cout<<"Added input comp";
+        if (availableIndex == -1){
+            components[Component::componentNo] = new InputComponent;
+            components[Component::componentNo]->setValues(type, mousePos,-1);
+        }
+        else{
+            delete components[availableIndex];
+            components[availableIndex] = new InputComponent;
+            components[availableIndex]->setValues(type, mousePos, availableIndex);
+        }
     }
     else{
-        components[availableIndex].setValues(type, mousePos, availableIndex);
+        if (availableIndex == -1){
+            components[Component::componentNo] = new Component;
+            components[Component::componentNo]->setValues(type, mousePos,-1);
+        }
+        else{
+            delete components[availableIndex];
+            components[availableIndex] = new Component;
+            components[availableIndex]->setValues(type, mousePos, availableIndex);
+        }
     }
 }
 

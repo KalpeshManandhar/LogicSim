@@ -27,7 +27,7 @@ public:
     void draw(SDL_Renderer *renderer);
     void completeWire(Pin * endPin);
     void removeWire();
-    void removeWiresToComponent(Component & c);
+    void removeWiresToComponent(Component * c);
     bool validWire(Pin * endPin);
     wire_Condtion getStatus();
 };

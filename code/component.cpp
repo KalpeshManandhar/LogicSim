@@ -7,8 +7,8 @@ short Component::componentNo = 0;
 short Component::selectedCompNo = -1;
 Pin* Component::selectedPin = NULL;
 
-int InputComponent::totaliProbes = 0;
-int InputComponent::selectedIprobe = -1;
+// int InputComponent::totaliProbes = 0;
+// int InputComponent::selectedIprobe = -1;
 
 
 Component::Component(){
@@ -27,11 +27,7 @@ Component::Component(){
 }
 
 Component::~Component(){
-    spriteSrc.y = 216;
-    spriteSrc.x = 0;
-    compPos.x = -200;
-    compPos.y = -200;
-    delete[] components;
+
 }
 
 void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
@@ -66,6 +62,8 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     outPin.pos->x  += compPos.x;
     outPin.pos->y  += compPos.y;
     outPin.type = _OUT;
+
+    output = 1;
 
     std::cout<<"COmp added"<<index<<std::endl;
 }
@@ -213,6 +211,9 @@ Pin* Component::getOutPinAddress(){
     return(&outPin);
 }
 
+InputComponent::InputComponent(){
+
+}
 
 void InputComponent::setButtonPos(){
     inputButton.button.x = 80;
@@ -231,18 +232,21 @@ void InputComponent::updateSelectedComp(vec2 &mousePos, vec2 &prev){
     inputButton.button.y += (mousePos.y - prev.y);
 }
 
-void InputComponent::setValues(vec2 &mousePos, int availableIndex){
-    Component::setValues(_INPUT, mousePos, availableIndex);
+void InputComponent::setValues(c_type type, vec2 &mousePos, int availableIndex){
+    std::cout<<"Set value";
+    Component::setValues(type, mousePos, availableIndex);
+    setButtonPos();
     inputButton.button.x += compPos.x;
     inputButton.button.y += compPos.y;
 }
 
 void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
+    SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
+    // std::cout<<"DRAW";
     if (output == 1)
-        SDL_SetRenderDrawColor(renderer, 0, 0, 200,255);
+        SDL_SetRenderDrawColor(renderer, 0, 200, 0,255);
     else 
         SDL_SetRenderDrawColor(renderer, 200, 0, 0, 255);
-    SDL_RenderDrawRect(renderer, &inputButton.button);
-    SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
+    SDL_RenderFillRect(renderer, &inputButton.button);
 
 }

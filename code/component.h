@@ -41,14 +41,14 @@ public:
 
     Component();
     ~Component();
-    void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
-    void setValues(c_type type, vec2 &mousePos, int availableIndex );
+    virtual void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
+    virtual void setValues(c_type type, vec2 &mousePos, int availableIndex );
     void setSprites();
     void setInputNo();
     void setPinPos();
     bool mouseHover(vec2 &mousePos, int & pinHover);
+    virtual void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     void selectComponent();
-    void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     void removeComponent();
 
     c_type getType();
@@ -61,12 +61,10 @@ public:
 class InputComponent:public Component{
     Button inputButton;
 public:
-    static int totaliProbes;
-    static int selectedIprobe;
 
     InputComponent();
     void setButtonPos();
-    void setValues(vec2 &mousePos, int availableIndex );
+    void setValues(c_type type,vec2 &mousePos, int availableIndex );
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     void onPressed();
@@ -75,7 +73,6 @@ public:
 };
 
 
-extern Component *components;
-extern InputComponent *iProbes; 
+extern Component *components[MAX_COMPONENTS];
 
 

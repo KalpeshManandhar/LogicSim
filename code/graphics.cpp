@@ -10,14 +10,13 @@
 #define FPS 32
 #define FRAME_LIMIT (1000/FPS)
 
-Component *components;
+Component *components[MAX_COMPONENTS];
 Wire *wires;
-InputComponent * iProbes;
+
 
 Graphics::Graphics(){
-    components = new Component[MAX_COMPONENTS];
     wires = new Wire[MAX_WIRES];
-    iProbes = new InputComponent[MAX_PROBES]; 
+    // iProbes = new InputComponent[MAX_PROBES]; 
 
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
@@ -105,8 +104,8 @@ void Graphics::loadSpriteAndGrid()
 void Graphics::drawComponents(){
     int i;
     for(i=0; i<Component::componentNo;i++){
-        if (components[i].getType() != _NOTHING)
-            components[i].draw(renderer, textureOfGates);
+        if (components[i]->getType() != _NOTHING)
+            components[i]->draw(renderer, textureOfGates);
     }
 }
 
