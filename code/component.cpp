@@ -7,6 +7,9 @@ short Component::componentNo = 0;
 short Component::selectedCompNo = -1;
 Pin* Component::selectedPin = NULL;
 
+int InputComponent::totaliProbes = 0;
+int InputComponent::selectedIprobe = -1;
+
 
 Component::Component(){
     spriteSrc.h = 72;
@@ -232,4 +235,14 @@ void InputComponent::setValues(vec2 &mousePos, int availableIndex){
     Component::setValues(_INPUT, mousePos, availableIndex);
     inputButton.button.x += compPos.x;
     inputButton.button.y += compPos.y;
+}
+
+void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
+    if (output == 1)
+        SDL_SetRenderDrawColor(renderer, 0, 0, 200,255);
+    else 
+        SDL_SetRenderDrawColor(renderer, 200, 0, 0, 255);
+    SDL_RenderDrawRect(renderer, &inputButton.button);
+    SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
+
 }

@@ -90,7 +90,7 @@ void Input::handleMouseInput(){
                 break;
             }
             if (mousePos.x>30+7*130 && mousePos.x<8*130){
-                addComponent(_INPUT);
+                addIprobe();
                 break;
             }
             if (mousePos.x>30+8*130 && mousePos.x<9*130){
@@ -220,6 +220,10 @@ void Input::addWire(){
     }
 }
 
+
+void Input::addIprobe(){
+
+}
 
 
 

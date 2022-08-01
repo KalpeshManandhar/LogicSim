@@ -6,6 +6,7 @@
 #define MAX_INPUTS 2
 #define MAX_OUTPUTS 5
 #define MAX_COMPONENTS 25
+#define MAX_PROBES 5
 
 #define Y_BOUND 680
 #define X_BOUND 1200
@@ -60,6 +61,9 @@ public:
 class InputComponent:public Component{
     Button inputButton;
 public:
+    static int totaliProbes;
+    static int selectedIprobe;
+
     InputComponent();
     void setButtonPos();
     void setValues(vec2 &mousePos, int availableIndex );
@@ -72,5 +76,6 @@ public:
 
 
 extern Component *components;
+extern InputComponent *iProbes; 
 
 

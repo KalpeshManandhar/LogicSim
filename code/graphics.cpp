@@ -12,10 +12,12 @@
 
 Component *components;
 Wire *wires;
+InputComponent * iProbes;
 
 Graphics::Graphics(){
     components = new Component[MAX_COMPONENTS];
     wires = new Wire[MAX_WIRES];
+    iProbes = new InputComponent[MAX_PROBES]; 
 
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
@@ -121,8 +123,7 @@ void Graphics::componentLoad()
     int shift=30;
     SDL_Rect source = {0,0,146,72}, destination = {0,620,(int)(146*0.7),(int)(72*0.7)};
     c_type type;
-    for(short i=0;i<9;i++)
-    {
+    for(short i=0;i<9;i++){
         source.x = (i%5)*146;
         source.y = (i/5)*72;
         destination.x = shift + (shift + destination.w)* i ;
