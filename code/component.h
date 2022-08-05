@@ -41,13 +41,15 @@ public:
 
     Component();
     ~Component();
-    virtual void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
-    virtual void setValues(c_type type, vec2 &mousePos, int availableIndex );
     void setSprites();
     void setInputNo();
     void setPinPos();
-    bool mouseHover(vec2 &mousePos, int & pinHover);
+
+    virtual void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
+    virtual void setValues(c_type type, vec2 &mousePos, int availableIndex);
+    virtual bool mouseHover(vec2 &mousePos, int & pinHover);
     virtual void updateSelectedComp(vec2 &mousePos, vec2 &prev);
+
     void selectComponent();
     void removeComponent();
 
@@ -55,6 +57,7 @@ public:
     int getInputNo();
     Pin* getInPinAddress(int i);
     Pin* getOutPinAddress();
+    bool * getOutput();
 };
 
 
@@ -68,7 +71,8 @@ public:
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     void onPressed();
-
+    bool mouseHover(vec2 &mousePos, int & pinHover);
+    
 
 };
 

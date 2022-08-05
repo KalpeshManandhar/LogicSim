@@ -119,8 +119,10 @@ void Input::handleMouseInput(){
             if (Wire::selectedWireNo == -1)
                 addWire();
             else{
-                if (wires[Wire::selectedWireNo].validWire(Component::selectedPin))
+                if (wires[Wire::selectedWireNo].validWire(Component::selectedPin)){
+                    // wires[Wire::selectedWireNo].
                     wires[Wire::selectedWireNo].completeWire(Component::selectedPin);
+                }
                 else
                     wires[Wire::selectedWireNo].removeWire();
             }

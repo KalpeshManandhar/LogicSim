@@ -244,9 +244,21 @@ void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
     SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
     // std::cout<<"DRAW";
     if (output == 1)
-        SDL_SetRenderDrawColor(renderer, 0, 200, 0,255);
+        SDL_SetRenderDrawColor(renderer, 200, 0, 0,255);
     else 
-        SDL_SetRenderDrawColor(renderer, 200, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
     SDL_RenderFillRect(renderer, &inputButton.button);
+}
 
+bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
+    if ((mousePos.x > compPos.x) && (mousePos.x < (compPos.x + compPos.w)) && (mousePos.y > compPos.y) && (mousePos.y < (compPos.y + compPos.h))){
+        if ((mousePos.x > inputButton.button.x) && (mousePos.x < (inputButton.button.x + inputButton.button.w)) && (mousePos.y > inputButton.button.y) && (mousePos.y < inputButton.button.y + inputButton.button.h)){
+            onPressed();
+        }
+    } 
+    return(Component::mouseHover(mousePos, pinHover));
+}
+
+bool * Component::getOutput(){
+    return(&output);
 }

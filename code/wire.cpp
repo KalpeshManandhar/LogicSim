@@ -17,7 +17,6 @@ Wire::Wire(){
     // start->pos = NULL;
     // end->pos = NULL;
     completeFlag = _ISBLANK;
-    logic = -1;
 }
 
 Wire::Wire(int def){
@@ -31,7 +30,6 @@ Wire::Wire(int def){
     end->pos->y = -200;
 
     completeFlag = _ISBLANK;
-    logic = -1;
 }
 
 Wire::~Wire(){
@@ -40,7 +38,6 @@ Wire::~Wire(){
 
 
 void Wire::addWire(Pin *startPin, vec2 *endPoint, int availableIndex){
-    std::cout<<"Added wisdsdre "<<index<<std::endl;
 
     if (availableIndex == -1){
         index = totalWires;
@@ -50,7 +47,6 @@ void Wire::addWire(Pin *startPin, vec2 *endPoint, int availableIndex){
         index = availableIndex;
     }
     selectedWireNo = index;
-    std::cout<<"Added wisdsdre "<<index<<std::endl;
 
 
     start = startPin;
@@ -63,7 +59,7 @@ void Wire::addWire(Pin *startPin, vec2 *endPoint, int availableIndex){
 
 
 void Wire::draw(SDL_Renderer * renderer){
-    if (logic == 1)
+    if (*logic == 1)
         SDL_SetRenderDrawColor(renderer, 200, 0 , 0, 255);
     else
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -103,7 +99,6 @@ bool Wire::validWire(Pin * endPin){
             return(false);
         if ((endPin == wires[i].start || endPin == wires[i].end) && endPin->type == _IN)
             return(false);
-        
     }
     return(true);
 }
@@ -118,4 +113,8 @@ void Wire::removeWiresToComponent(Component * c){
     if (start == c->getOutPinAddress() || end == c->getOutPinAddress())
         removeWire();
     return;
+}
+
+void Wire::setLogic(){
+
 }
