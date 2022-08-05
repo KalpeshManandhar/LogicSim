@@ -10,5 +10,6 @@ enum Pin_type{
 
 struct Pin{
     vec2 *pos;
+    int *logic;
     Pin_type type;
 };

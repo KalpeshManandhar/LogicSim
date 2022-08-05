@@ -14,6 +14,9 @@ Wire::Wire(){
     end = new Pin;
     start->pos = new vec2;
     end->pos = new vec2;
+    start->logic = new int;
+    end->logic =  new int;
+    
     // start->pos = NULL;
     // end->pos = NULL;
     completeFlag = _ISBLANK;
@@ -24,6 +27,8 @@ Wire::Wire(int def){
     end = new Pin;
     start->pos = new vec2;
     end->pos = new vec2;
+    start->logic = new int;
+    end->logic =  new int;
     start->pos->x = -200;
     start->pos->y = -200;
     end->pos->x = -200;
@@ -59,13 +64,14 @@ void Wire::addWire(Pin *startPin, vec2 *endPoint, int availableIndex){
 
 
 void Wire::draw(SDL_Renderer * renderer){
-    if (*logic == 1)
-        SDL_SetRenderDrawColor(renderer, 200, 0 , 0, 255);
+    if (completeFlag == _COMPLETE){
+        if (*logic == 1)
+            SDL_SetRenderDrawColor(renderer, 200, 0 , 0, 255);
+        else
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    }
     else
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    // if (completeFlag == _INCOMPLETE)
-    //     SDL_RenderDrawLine(renderer, start->x, start->y, end.x, end.y);
-    // else
     SDL_RenderDrawLine(renderer, start->pos->x, start->pos->y, end->pos->x, end->pos->y);
 }
 
@@ -73,7 +79,12 @@ void Wire::draw(SDL_Renderer * renderer){
 void Wire::completeWire(Pin * endPin){
     end = endPin;
     completeFlag = _COMPLETE;
+    if (end->type == _OUT)
+        logic = end->logic;
+    else
+        logic = start->logic;
     selectedWireNo = -1;
+
 }
 
 wire_Condtion Wire::getStatus(){
@@ -95,11 +106,18 @@ bool Wire::validWire(Pin * endPin){
     if (start->type == endPin->type)
         return(false);
     for (i = 0; i< totalWires; i++){
-        if ((start == wires[i].start || start == wires[i].end) && start->type == _IN)
+        if (i == index)
+            continue;
+        if ((start == wires[i].start || start == wires[i].end) && start->type == _IN){
+            std::cout<<"TWO INPUTS ON ONE INPUTR"<<std::endl;
             return(false);
-        if ((endPin == wires[i].start || endPin == wires[i].end) && endPin->type == _IN)
+        }
+        if ((endPin == wires[i].start || endPin == wires[i].end) && endPin->type == _IN){
+            std::cout<<"TWO INPUTS ON ONE INPUTR 222"<<std::endl;
             return(false);
+        }
     }
+    std::cout<<"TRUE";
     return(true);
 }
 

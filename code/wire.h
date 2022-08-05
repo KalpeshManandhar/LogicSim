@@ -13,7 +13,7 @@ enum wire_Condtion{
 
 class Wire{
     Pin *start, *end;
-    bool *logic;                      // logic in the wire
+    int *logic;                      // logic in the wire
     wire_Condtion completeFlag;     // if the wire is connected fully or not
     int index;
 public:

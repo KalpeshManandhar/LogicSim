@@ -58,10 +58,14 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
         inPin[i].pos->x  += compPos.x;
         inPin[i].pos->y  += compPos.y;
         inPin[i].type = _IN;
+        input[i] = -1;
+        inPin[i].logic = &input[i];
     }
     outPin.pos->x  += compPos.x;
     outPin.pos->y  += compPos.y;
     outPin.type = _OUT;
+    output = -1;
+    outPin.logic = &output;
 
     output = 1;
 
@@ -259,6 +263,6 @@ bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
     return(Component::mouseHover(mousePos, pinHover));
 }
 
-bool * Component::getOutput(){
+int * Component::getOutput(){
     return(&output);
 }

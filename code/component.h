@@ -29,7 +29,7 @@ protected:
     SDL_Rect spriteSrc, compPos;
     c_type type;
     int inputNo;                                    // no of inputs for each component
-    bool output, input[MAX_INPUTS];
+    int output, input[MAX_INPUTS];
     Component *next[MAX_OUTPUTS];
     short index;                                    // index in the array
     Pin inPin[MAX_INPUTS], outPin;                  // only one output + different number of inputs for different components
@@ -57,7 +57,7 @@ public:
     int getInputNo();
     Pin* getInPinAddress(int i);
     Pin* getOutPinAddress();
-    bool * getOutput();
+    int * getOutput();
 };
 
 
