@@ -45,7 +45,21 @@ int Logic::handleLogic(c_type type, int * input){
     case _AND:
         output = ANDLogic(input[0], input[1]);
         break;
-    
+    case _OR:
+        output = ORLogic(input[0], input[1]);
+        break;
+    case _NOT:
+        output = NOTLogic(input[0]);
+        break;
+    case _NAND:
+        output = NANDLogic(input[0], input[1]);
+        break;
+    case _NOR:
+        output = NORLogic(input[0], input[1]);
+        break;
+    case _XNOR:
+        output = XNORLogic(input[0], input[1]);
+        break;
     default:
         break;
     }
