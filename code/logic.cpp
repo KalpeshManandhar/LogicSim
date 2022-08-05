@@ -27,15 +27,11 @@ inline int Logic::NORLogic(int i1, int i2){
 }
 
 inline int Logic::XORLogic(int i1, int i2){
-    if (i1 == i2)
-        return(0);
-    return(1);
+    return(i1 ^ i2);
 }
 
 inline int Logic::XNORLogic(int i1, int i2){
-    if (i1 == i2)
-        return(1);
-    return(0);
+    return(NOTLogic(i1 ^ i2));
 }
 
 int Logic::handleLogic(c_type type, int * input){
@@ -56,6 +52,9 @@ int Logic::handleLogic(c_type type, int * input){
         break;
     case _NOR:
         output = NORLogic(input[0], input[1]);
+        break;
+    case _XOR:
+        output = XORLogic(input[0], input[1]);
         break;
     case _XNOR:
         output = XNORLogic(input[0], input[1]);
