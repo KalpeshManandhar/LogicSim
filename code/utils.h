@@ -13,3 +13,7 @@ struct Pin{
     int *logic;
     Pin_type type;
 };
+
+enum c_type{
+    _AND, _OR, _NOT, _NAND, _NOR, _XOR, _XNOR, _INPUT, _OUTPUT, _NOTHING
+};

@@ -79,12 +79,12 @@ void Wire::draw(SDL_Renderer * renderer){
 void Wire::completeWire(Pin * endPin){
     end = endPin;
     completeFlag = _COMPLETE;
-    if (end->type == _OUT)
+    if (end->type == _OUT){
         logic = end->logic;
+    }
     else
         logic = start->logic;
     selectedWireNo = -1;
-
 }
 
 wire_Condtion Wire::getStatus(){
@@ -109,15 +109,12 @@ bool Wire::validWire(Pin * endPin){
         if (i == index)
             continue;
         if ((start == wires[i].start || start == wires[i].end) && start->type == _IN){
-            std::cout<<"TWO INPUTS ON ONE INPUTR"<<std::endl;
             return(false);
         }
         if ((endPin == wires[i].start || endPin == wires[i].end) && endPin->type == _IN){
-            std::cout<<"TWO INPUTS ON ONE INPUTR 222"<<std::endl;
             return(false);
         }
     }
-    std::cout<<"TRUE";
     return(true);
 }
 
@@ -133,6 +130,9 @@ void Wire::removeWiresToComponent(Component * c){
     return;
 }
 
-void Wire::setLogic(){
-
+void Wire::sendLogic(){
+    if (start->type == _IN)
+        *(start->logic) = *(logic);
+    else
+        *(end->logic) = *(logic);
 }

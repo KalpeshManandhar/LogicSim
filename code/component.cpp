@@ -52,7 +52,7 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     compPos.x = mousePos.x - compPos.w * 0.5;
     compPos.y = mousePos.y - compPos.h * 0.3;
 
-    // sets the spawn position of the pins
+    // sets the spawn positions and data of the pins
     int  i;
     for (i = 0; i<inputNo; i++){
         inPin[i].pos->x  += compPos.x;
@@ -263,6 +263,10 @@ bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
     return(Component::mouseHover(mousePos, pinHover));
 }
 
-int * Component::getOutput(){
-    return(&output);
+int * Component::getInputs(){
+    return(input);
+}
+
+void Component::setOutput(int op){
+    output = op;
 }

@@ -2,6 +2,7 @@
 #include "input.h"
 #include "component.h"
 #include "wire.h"
+#include "logic.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
@@ -44,6 +45,7 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
+    Logic logicHandler;
     Uint32 frameStart;    
     int frameTime;    
     int i;        
@@ -62,7 +64,15 @@ int Graphics::mainLoop(){
         }
         input.getMouseState();
         input.handleMouseInput();
+        for (i = 0; i<Component::componentNo; i++)
+            if (components[i]->getType() != _INPUT)
+                components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
+        for (i = 0; i<Wire::totalWires; i++)
+            if (wires[i].getStatus() == _COMPLETE)
+                wires[i].sendLogic();
+
         clearScreen(68,75,110, false);
+        
         componentLoad();
         drawComponents();
         drawWires();
@@ -94,10 +104,10 @@ void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
 void Graphics::loadSpriteAndGrid()
 {    
     loadingSurface = IMG_Load("assets/spritesheet.png");
-    textureOfGates=SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    textureOfGates = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
-    loadingSurface=IMG_Load("assets/grid_new.png");
-    textureOfGrid=SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    loadingSurface = IMG_Load("assets/grid_new.png");
+    textureOfGrid = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
 

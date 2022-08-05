@@ -1,7 +1,8 @@
 #pragma once
 
 #include "utils.h"
-#include "graphics.h"
+#include "SDL.h"
+#include "logic.h"
 
 #define MAX_INPUTS 2
 #define MAX_OUTPUTS 5
@@ -10,11 +11,6 @@
 
 #define Y_BOUND 680
 #define X_BOUND 1200
-
-
-enum c_type{
-    _AND, _OR, _NOT, _NAND, _NOR, _XOR, _XNOR, _INPUT, _OUTPUT, _NOTHING
-};
 
 
 
@@ -52,12 +48,15 @@ public:
 
     void selectComponent();
     void removeComponent();
+    void setOutput(int op);
 
     c_type getType();
     int getInputNo();
     Pin* getInPinAddress(int i);
     Pin* getOutPinAddress();
-    int * getOutput();
+    int * getInputs();
+
+    friend class Logic;
 };
 
 

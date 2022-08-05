@@ -29,7 +29,7 @@ public:
     void removeWire();
     void removeWiresToComponent(Component * c);
     bool validWire(Pin * endPin);
-    void setLogic();
+    void sendLogic();
 
     wire_Condtion getStatus();
 };
