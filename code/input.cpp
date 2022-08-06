@@ -54,11 +54,6 @@ void Input::handleMouseInput(){
         std::cout<<"CLick";
         int i;
         // adds a new component
-        // if (mousePos.y>Y_BOUND){
-        //     addComponent();
-            
-        //     break;
-        // }
         if (mousePos.y>620 && mousePos.y<670 && Component::componentNo != MAX_COMPONENTS)
         {
             if (mousePos.x>30+0*(130) && mousePos.x<1*130){
@@ -99,7 +94,7 @@ void Input::handleMouseInput(){
             }
         }
         
-
+        // selecting a component
         for(i=0;i<Component::componentNo; i++){
             if (components[i]->mouseHover(mousePos, pinHoverFlag) == true){
                 components[i]->selectComponent();
@@ -108,6 +103,7 @@ void Input::handleMouseInput(){
             }
         }
 
+        // pin clicked?
         if (pinHoverFlag == 1){
             std::cout<<"Pin clicked";
             if (Component::selectedPin->type == _IN)
@@ -115,37 +111,29 @@ void Input::handleMouseInput(){
             else
                 std::cout<<"output";
 
-            // adds wire
+            // adds wire if new wire is being added
             if (Wire::selectedWireNo == -1)
                 addWire();
+            // checks if the wire is valid
             else{
-                if (wires[Wire::selectedWireNo].validWire(Component::selectedPin)){
-                    // wires[Wire::selectedWireNo].
+                if (wires[Wire::selectedWireNo].validWire(Component::selectedPin))
                     wires[Wire::selectedWireNo].completeWire(Component::selectedPin);
-                }
                 else
                     wires[Wire::selectedWireNo].removeWire();
             }
         }
         // unselects/ removes wire when clicked outside component
-        // else{
-        //     if (Wire::selectedWireNo != -1)
-        //         Wire::selectedWireNo == -1;
-        //     else{
-        //         wires[Wire::selectedWireNo].removeWire();
-        //     }
-        // }
-
-
+        else{
+            if (Wire::selectedWireNo != -1){
+                wires[Wire::selectedWireNo].removeWire();
+                Wire::selectedWireNo == -1;
+            }
+        }
 
         // unselects component if clicked outside components
         if (mouseHoverFlag == false){
             Component::selectedCompNo = -1;     
         }
-        break;
-    }
-    case PRESSED:{
-
         break;
     }
 
@@ -157,6 +145,7 @@ void Input::handleMouseInput(){
         }
         break;
     }
+
     case RELEASED:{
         std::cout<<"RELEASED"<<std::endl;
         if ((mousePos.x > X_BOUND || mousePos.y > Y_BOUND) && Component::selectedCompNo != -1){
@@ -168,23 +157,12 @@ void Input::handleMouseInput(){
         }
         break;
     }
-    case IDLE:{
 
-        break;
-    }
+    case PRESSED:
+    case IDLE:
     default:
         break;
     }
-    // if (isPressed(SDL_BUTTON_LEFT)==CLICKED){
-    //     int i;
-    //     for(i=0;i<Component::componentNo;i++){
-    //         if (components[i]->mouseHover(mousePos) == true){
-    //             components[i]->selectComponent();
-    //         }
-    //     }
-    // }
-
-
 }
 
 
@@ -239,10 +217,6 @@ void Input::addWire(){
     }
 }
 
-
-void Input::addIprobe(){
-
-}
 
 
 

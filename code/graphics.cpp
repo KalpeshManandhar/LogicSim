@@ -17,8 +17,6 @@ Wire *wires;
 
 Graphics::Graphics(){
     wires = new Wire[MAX_WIRES];
-    // iProbes = new InputComponent[MAX_PROBES]; 
-
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
     }
@@ -61,15 +59,20 @@ int Graphics::mainLoop(){
         default:
             break;
         }
+        // handle mouse inputs
         input.getMouseState();
         input.handleMouseInput();
-        callLogic();
-        clearScreen(68,75,110, false);
 
-        
+        // logic computation
+        callLogic();
+
+        // clear screen and draw the components/ wires
+        clearScreen(68,75,110, false);        
         componentLoad();
         drawComponents();
         drawWires();
+
+        // display to screen
         display();
         
         frameTime = getTime() - frameStart;
@@ -87,6 +90,7 @@ void Graphics::display(){
     SDL_RenderPresent(renderer);
 }
 
+
 void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){       
     SDL_SetRenderDrawColor(renderer, r,g,b,255);
     SDL_RenderClear(renderer); 
@@ -95,6 +99,8 @@ void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
         SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
     
 }
+
+// initial textures loading
 void Graphics::loadSpriteAndGrid()
 {    
     loadingSurface = IMG_Load("assets\\spritesheet.png");
@@ -121,6 +127,7 @@ SDL_Texture* Graphics::getTexture(){
     return(textureOfGates);
 }
 
+// spawn area components
 void Graphics::componentLoad()
 {
     int shift=30;
@@ -136,6 +143,7 @@ void Graphics::componentLoad()
 void Graphics::drawWires(){
     int i;
     for(i=0; i<Wire::totalWires;i++){
+        // draws wire if not blank
         if (wires[i].getStatus() != _ISBLANK)
             wires[i].draw(renderer);
     }
@@ -144,13 +152,17 @@ void Graphics::drawWires(){
 void Graphics::callLogic(){
     static Logic logicHandler;
     int i,j,k;
+    // loops twice as components aren't stored in order of connection 
+    // that caused the logic to be wrong on some frames when input changed
     for (k = 0; k<2; k++){
         for (i = 0; i<Component::componentNo; i++){
             if (components[i]->getType() != _INPUT){
+                // updates the corresponding inputs from outputs
                 for (j = 0; j<Wire::totalWires; j++){
                     if (wires[j].getStatus() == _COMPLETE)
                         wires[j].sendLogic();
                 }
+                // computes the logic for the component
                 components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
             }
         }   

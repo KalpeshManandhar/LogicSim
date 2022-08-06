@@ -55,8 +55,6 @@ public:
     Pin* getInPinAddress(int i);
     Pin* getOutPinAddress();
     int * getInputs();
-
-    friend class Logic;
 };
 
 

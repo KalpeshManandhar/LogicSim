@@ -7,9 +7,6 @@ short Component::componentNo = 0;
 short Component::selectedCompNo = -1;
 Pin* Component::selectedPin = NULL;
 
-// int InputComponent::totaliProbes = 0;
-// int InputComponent::selectedIprobe = -1;
-
 
 Component::Component(){
     spriteSrc.h = 72;
@@ -72,7 +69,7 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     std::cout<<"COmp added"<<index<<std::endl;
 }
 
-
+// sets the sprite source positions
 void Component::setSprites(){
     if (type < 5){
         spriteSrc.y = 0;
@@ -83,6 +80,7 @@ void Component::setSprites(){
     spriteSrc.x = (type%5) * 146; 
 }
 
+// sets the number of input pins
 void Component::setInputNo(){
     switch (type)
     {
@@ -175,6 +173,7 @@ void Component::selectComponent(){
 }
 
 void Component::updateSelectedComp(vec2 &mousePos, vec2 &prev){
+    // updates the position of the component
     compPos.x += (mousePos.x - prev.x);
     compPos.y += (mousePos.y - prev.y);
 
@@ -219,6 +218,7 @@ InputComponent::InputComponent(){
 
 }
 
+// position of the input button
 void InputComponent::setButtonPos(){
     inputButton.button.x = 80;
     inputButton.button.y = 15;
@@ -226,18 +226,19 @@ void InputComponent::setButtonPos(){
     inputButton.button.h = 40;
 }
 
+// what happens when the button is pressed?
 void InputComponent::onPressed(){
     output = (output == 1)?0:1;
 }
 
 void InputComponent::updateSelectedComp(vec2 &mousePos, vec2 &prev){
     Component::updateSelectedComp(mousePos, prev);
+    // updates the button position
     inputButton.button.x += (mousePos.x - prev.x);
     inputButton.button.y += (mousePos.y - prev.y);
 }
 
 void InputComponent::setValues(c_type type, vec2 &mousePos, int availableIndex){
-    std::cout<<"Set value";
     Component::setValues(type, mousePos, availableIndex);
     setButtonPos();
     inputButton.button.x += compPos.x;
@@ -246,15 +247,19 @@ void InputComponent::setValues(c_type type, vec2 &mousePos, int availableIndex){
 
 void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
     SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
-    // std::cout<<"DRAW";
+    
+    //  1 = RED button
     if (output == 1)
         SDL_SetRenderDrawColor(renderer, 200, 0, 0,255);
+    //  0 = BLUE button
     else 
         SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
     SDL_RenderFillRect(renderer, &inputButton.button);
 }
 
+
 bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
+    // if button is pressed, isPressed() is called
     if ((mousePos.x > compPos.x) && (mousePos.x < (compPos.x + compPos.w)) && (mousePos.y > compPos.y) && (mousePos.y < (compPos.y + compPos.h))){
         if ((mousePos.x > inputButton.button.x) && (mousePos.x < (inputButton.button.x + inputButton.button.w)) && (mousePos.y > inputButton.button.y) && (mousePos.y < inputButton.button.y + inputButton.button.h)){
             onPressed();

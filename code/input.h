@@ -24,8 +24,4 @@ public:
     void handleMouseInput();
     void addComponent(c_type type);
     void addWire();
-    void addIprobe();
-    
-    
-
 };

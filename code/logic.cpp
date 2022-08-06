@@ -32,6 +32,10 @@ inline int Logic::XNORLogic(int i1, int i2){
 
 int Logic::handleLogic(c_type type, int * input){
     int output = 0;
+    // blank inputs result in 0 output
+    if (input[0] == -1 || input[1] == -1)
+        return(output);
+    
     switch (type)
     {
     case _AND:
