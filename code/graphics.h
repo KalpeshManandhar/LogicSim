@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL.h"
 #include "SDL_image.h"
+#include <iostream>
 
 enum{
 	CLOSED, 
@@ -27,6 +28,7 @@ public:
 	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
 	void drawComponents();
 	void drawWires();
+	void callLogic();
 	SDL_Renderer* getRenderer();
 	SDL_Texture* getTexture();
 	void componentLoad();

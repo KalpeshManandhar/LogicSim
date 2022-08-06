@@ -1,10 +1,6 @@
 #include "logic.h"
 
 inline int Logic::ANDLogic(int i1, int i2){
-    // if (i1 == 0 || i2 == 0)
-    //     return(0);
-    // return(1);
-
     return(i1 & i2);
 }
 

@@ -45,10 +45,9 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
-    Logic logicHandler;
     Uint32 frameStart;    
     int frameTime;    
-    int i;        
+    int i,j;        
     
     loadSpriteAndGrid();
 
@@ -64,14 +63,9 @@ int Graphics::mainLoop(){
         }
         input.getMouseState();
         input.handleMouseInput();
-        for (i = 0; i<Component::componentNo; i++)
-            if (components[i]->getType() != _INPUT)
-                components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
-        for (i = 0; i<Wire::totalWires; i++)
-            if (wires[i].getStatus() == _COMPLETE)
-                wires[i].sendLogic();
-
+        callLogic();
         clearScreen(68,75,110, false);
+
         
         componentLoad();
         drawComponents();
@@ -103,10 +97,10 @@ void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
 }
 void Graphics::loadSpriteAndGrid()
 {    
-    loadingSurface = IMG_Load("assets/spritesheet.png");
+    loadingSurface = IMG_Load("assets\\spritesheet.png");
     textureOfGates = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
-    loadingSurface = IMG_Load("assets/grid_new.png");
+    loadingSurface = IMG_Load("grid_new.png");
     textureOfGrid = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
@@ -131,7 +125,6 @@ void Graphics::componentLoad()
 {
     int shift=30;
     SDL_Rect source = {0,0,146,72}, destination = {0,620,(int)(146*0.7),(int)(72*0.7)};
-    c_type type;
     for(short i=0;i<9;i++){
         source.x = (i%5)*146;
         source.y = (i/5)*72;
@@ -145,5 +138,21 @@ void Graphics::drawWires(){
     for(i=0; i<Wire::totalWires;i++){
         if (wires[i].getStatus() != _ISBLANK)
             wires[i].draw(renderer);
+    }
+}
+
+void Graphics::callLogic(){
+    static Logic logicHandler;
+    int i,j,k;
+    for (k = 0; k<2; k++){
+        for (i = 0; i<Component::componentNo; i++){
+            if (components[i]->getType() != _INPUT){
+                for (j = 0; j<Wire::totalWires; j++){
+                    if (wires[j].getStatus() == _COMPLETE)
+                        wires[j].sendLogic();
+                }
+                components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
+            }
+        }   
     }
 }
