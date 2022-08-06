@@ -44,9 +44,8 @@ Uint32 Graphics::getTime(){
 int Graphics::mainLoop(){
     Input input;
     Uint32 frameStart;    
-    int frameTime;    
-    int i,j;        
-    
+    int frameTime;       
+
     loadSpriteAndGrid();
 
     while(isRunning){
@@ -59,6 +58,7 @@ int Graphics::mainLoop(){
         default:
             break;
         }
+
         // handle mouse inputs
         input.getMouseState();
         input.handleMouseInput();
@@ -103,10 +103,10 @@ void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
 // initial textures loading
 void Graphics::loadSpriteAndGrid()
 {    
-    loadingSurface = IMG_Load("assets\\spritesheet.png");
+    loadingSurface = IMG_Load("assets/spritesheet.png");
     textureOfGates = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
-    loadingSurface = IMG_Load("grid_new.png");
+    loadingSurface = IMG_Load("assets/grid_new.png");
     textureOfGrid = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
