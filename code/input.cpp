@@ -193,6 +193,18 @@ void Input::addComponent(c_type type){
             components[availableIndex]->setValues(type, mousePos, availableIndex);
         }
     }
+    else if (type == _OUTPUT){
+        std::cout<<"Added output comp";
+        if (availableIndex == -1){
+            components[Component::componentNo] = new OutputComponent;
+            components[Component::componentNo]->setValues(type, mousePos,-1);
+        }
+        else{
+            delete components[availableIndex];
+            components[availableIndex] = new OutputComponent;
+            components[availableIndex]->setValues(type, mousePos, availableIndex);
+        }
+    }
     else{
         if (availableIndex == -1){
             components[Component::componentNo] = new Component;

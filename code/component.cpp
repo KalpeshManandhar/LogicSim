@@ -214,9 +214,17 @@ Pin* Component::getOutPinAddress(){
     return(&outPin);
 }
 
-InputComponent::InputComponent(){
-
+int * Component::getInputs(){
+    return(input);
 }
+
+void Component::setOutput(int op){
+    output = op;
+}
+
+
+
+//  INPUT COMPONENT FUNCTIONS
 
 // position of the input button
 void InputComponent::setButtonPos(){
@@ -268,10 +276,38 @@ bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
     return(Component::mouseHover(mousePos, pinHover));
 }
 
-int * Component::getInputs(){
-    return(input);
+
+// OUTPUT COMPONENT FUNCTIONS
+
+void OutputComponent::setDisplayPos(){
+    display.x = 15;
+    display.y = 18;
+    display.w = 30;
+    display.h = 30;
 }
 
-void Component::setOutput(int op){
-    output = op;
+void OutputComponent::setValues(c_type type, vec2 &mousePos, int availableIndex){
+    Component::setValues(type, mousePos, availableIndex);
+    setDisplayPos();
+    display.x += compPos.x;
+    display.y += compPos.y;
+}
+
+void OutputComponent::updateSelectedComp(vec2 &mousePos, vec2 &prev){
+    Component::updateSelectedComp(mousePos, prev);
+    // updates the display position
+    display.x += (mousePos.x - prev.x);
+    display.y += (mousePos.y - prev.y);
+}
+
+void OutputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
+    SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
+    
+    //  1 = RED 
+    if (input[0] == 1)
+        SDL_SetRenderDrawColor(renderer, 200, 0, 0,255);
+    //  0 = BLUE
+    else 
+        SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
+    SDL_RenderFillRect(renderer, &display);
 }

@@ -61,16 +61,22 @@ public:
 class InputComponent:public Component{
     Button inputButton;
 public:
-
-    InputComponent();
     void setButtonPos();
+    void onPressed();
+
     void setValues(c_type type,vec2 &mousePos, int availableIndex );
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
-    void onPressed();
     bool mouseHover(vec2 &mousePos, int & pinHover);
-    
+};
 
+class OutputComponent:public Component{
+    SDL_Rect display;
+public:
+    void setDisplayPos();
+    void setValues(c_type type,vec2 &mousePos, int availableIndex );
+    void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
+    void updateSelectedComp(vec2 &mousePos, vec2 &prev);
 };
 
 
