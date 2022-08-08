@@ -4,6 +4,7 @@
 
 
 
+
 // gets state of mouse buttons and position of cursor
 void Input::getMouseState(){
     prevMousePos = mousePos;
@@ -12,20 +13,20 @@ void Input::getMouseState(){
 
 // checks if a given mouse button is pressed or not
 b_States Input::isPressed(int buttonKey){  
-    static short clickedFrameNo = 0;
-    if (mouseButtons && SDL_BUTTON(buttonKey)!=0){
-        clickedFrameNo++;
-        if (clickedFrameNo > 1){
+    int i = (buttonKey == 1)?0:1;
+    static short clickedFrameNo[2] = {0,0};
+    if ((mouseButtons & SDL_BUTTON(buttonKey))!=0){
+        clickedFrameNo[i]++;
+        if (clickedFrameNo[i] > 1){
             held = true;
             return(HELD);
         }
-        if (clickedFrameNo == 1)
+        if (clickedFrameNo[i] == 1)
             return(CLICKED);
-        return(PRESSED);
     }
     
-    if (clickedFrameNo>0){
-        clickedFrameNo = 0;
+    if (clickedFrameNo[i]>0){
+        clickedFrameNo[i] = 0;
         held = false;
         return(RELEASED);
     }
@@ -57,7 +58,7 @@ void Input::handleMouseInput(vec2 windowSize){
     switch (isPressed(SDL_BUTTON_LEFT))
     {
     case CLICKED:{
-        std::cout<<"CLick";
+        std::cout<<"leftCLick";
         int i;
         // adds a new component
         if (mousePos.y>(bounds.y-50) && mousePos.y<(bounds.y - 10) && Component::componentNo != MAX_COMPONENTS)
@@ -148,7 +149,7 @@ void Input::handleMouseInput(vec2 windowSize){
 
     // updates the position of component if selected
     case HELD:{
-        std::cout<<"HELD"<<std::endl;
+        std::cout<<"leftHELD"<<std::endl;
         if (Component::selectedCompNo != -1){
             components[Component::selectedCompNo]->updateSelectedComp(mousePos, prevMousePos);
         }
@@ -156,7 +157,7 @@ void Input::handleMouseInput(vec2 windowSize){
     }
 
     case RELEASED:{
-        std::cout<<"RELEASED"<<std::endl;
+        std::cout<<"leftRELEASED"<<std::endl;
         if ((mousePos.x > X_BOUND(windowSize.x) || mousePos.y > Y_BOUND(windowSize.y)) && Component::selectedCompNo != -1){
             int i;
             // to remove the wires associated with the component
@@ -171,6 +172,10 @@ void Input::handleMouseInput(vec2 windowSize){
     case IDLE:
     default:
         break;
+    }
+    
+    if (isPressed(SDL_BUTTON_RIGHT) == CLICKED && Wire::selectedWireNo != -1){
+        wires[Wire::selectedWireNo].removeWire();
     }
 }
 
