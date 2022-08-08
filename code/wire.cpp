@@ -18,6 +18,7 @@ Wire::Wire(){
     start->logic = new int;
     end->logic =  new int;
     completeFlag = _ISBLANK;
+    verticesNo = 0;
 }
 
 // constructor for dead wire
@@ -32,7 +33,7 @@ Wire::Wire(int def){
     start->pos->y = -200;
     end->pos->x = -200;
     end->pos->y = -200;
-
+    verticesNo = 0;
     completeFlag = _ISBLANK;
 }
 
@@ -59,6 +60,13 @@ void Wire::addWire(Pin *startPin, vec2 *endPoint, int availableIndex){
     std::cout<<start->pos->x<<","<<start->pos->y<<std::endl;
 }
 
+void Wire::addVertex(vec2  vertex){
+    if (verticesNo < 6)
+        vertices[verticesNo++] = vertex;
+    else 
+        removeWire();
+}
+
 
 
 void Wire::draw(SDL_Renderer * renderer){
@@ -72,7 +80,17 @@ void Wire::draw(SDL_Renderer * renderer){
     }
     else
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderDrawLine(renderer, start->pos->x, start->pos->y, end->pos->x, end->pos->y);
+    if (verticesNo == 0)
+        SDL_RenderDrawLine(renderer, start->pos->x, start->pos->y, end->pos->x, end->pos->y);
+    else{
+        SDL_RenderDrawLine(renderer, start->pos->x, start->pos->y, vertices[0].x, vertices[0].y);
+        int i;
+        for (i=0; i<verticesNo-1; i++){
+            SDL_RenderDrawLine(renderer, vertices[i].x, vertices[i].y, vertices[i+1].x, vertices[i+1].y);
+        }
+        SDL_RenderDrawLine(renderer, vertices[i].x, vertices[i].y, end->pos->x, end->pos->y);
+
+    }
 }
 
 // set the values of wire to complete it

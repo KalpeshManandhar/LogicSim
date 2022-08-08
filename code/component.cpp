@@ -134,14 +134,12 @@ void Component::setPinPos(){
         inPin[1].pos->x = 4;
         inPin[1].pos->y = 52;
     }
-
 }
 
 
 void Component::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
     SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
 }
-
 
 
 // returns true if mouse is hovering over a component and also sets the value of pinHover to true if the mouse is hovering over a pin

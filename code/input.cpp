@@ -130,9 +130,12 @@ void Input::handleMouseInput(vec2 windowSize){
         }
         // unselects/ removes wire when clicked outside component
         else{
+            // if (Wire::selectedWireNo != -1){
+            //     wires[Wire::selectedWireNo].removeWire();
+            //     Wire::selectedWireNo == -1;
+            // }
             if (Wire::selectedWireNo != -1){
-                wires[Wire::selectedWireNo].removeWire();
-                Wire::selectedWireNo == -1;
+                wires[Wire::selectedWireNo].addVertex(mousePos);
             }
         }
 

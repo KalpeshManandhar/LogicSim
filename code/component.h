@@ -70,6 +70,7 @@ public:
     bool mouseHover(vec2 &mousePos, int & pinHover);
 };
 
+
 class OutputComponent:public Component{
     SDL_Rect display;
 public:
