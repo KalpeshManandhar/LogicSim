@@ -9,8 +9,8 @@
 #define MAX_COMPONENTS 25
 #define MAX_PROBES 5
 
-#define Y_BOUND 680
-#define X_BOUND 1200
+#define Y_BOUND(Y) (Y - 60)
+#define X_BOUND(X) (X - 80)
 
 
 

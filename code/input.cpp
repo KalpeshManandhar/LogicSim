@@ -45,16 +45,22 @@ void Input::printMousePos(){
     std::cout<<mousePos.x<<" , "<<mousePos.y<<std::endl;
 }
 
-void Input::handleMouseInput(){
+
+
+
+void Input::handleMouseInput(vec2 windowSize){
     bool mouseHoverFlag = false;
     int pinHoverFlag = -1;
+    static vec2 bounds;
+    bounds.x = X_BOUND(windowSize.x);
+    bounds.y = Y_BOUND(windowSize.y);
     switch (isPressed(SDL_BUTTON_LEFT))
     {
     case CLICKED:{
         std::cout<<"CLick";
         int i;
         // adds a new component
-        if (mousePos.y>620 && mousePos.y<670 && Component::componentNo != MAX_COMPONENTS)
+        if (mousePos.y>(bounds.y-50) && mousePos.y<(bounds.y - 10) && Component::componentNo != MAX_COMPONENTS)
         {
             if (mousePos.x>30+0*(130) && mousePos.x<1*130){
                 addComponent(_AND);
@@ -148,7 +154,7 @@ void Input::handleMouseInput(){
 
     case RELEASED:{
         std::cout<<"RELEASED"<<std::endl;
-        if ((mousePos.x > X_BOUND || mousePos.y > Y_BOUND) && Component::selectedCompNo != -1){
+        if ((mousePos.x > X_BOUND(windowSize.x) || mousePos.y > Y_BOUND(windowSize.y)) && Component::selectedCompNo != -1){
             int i;
             // to remove the wires associated with the component
             for (i = 0; i < Wire::totalWires; i++)

@@ -29,6 +29,8 @@ Graphics::Graphics(){
         std::cout<<"Error creating renderer"<<SDL_GetError()<<std::endl;
     }    
     isRunning = true;
+    windowSize.x = WIN_WIDTH;
+    windowSize.y = WIN_HEIGHT;
 }
 
 Graphics::~Graphics(){
@@ -55,13 +57,16 @@ int Graphics::mainLoop(){
         case SDL_QUIT:
             isRunning = false;
             return(CLOSED);
+        case SDL_WINDOWEVENT:{
+            getWindowSize();
+        }
         default:
             break;
         }
 
         // handle mouse inputs
         input.getMouseState();
-        input.handleMouseInput();
+        input.handleMouseInput(windowSize);
 
         // logic computation
         callLogic();
@@ -131,7 +136,7 @@ SDL_Texture* Graphics::getTexture(){
 void Graphics::componentLoad()
 {
     int shift=30;
-    SDL_Rect source = {0,0,146,72}, destination = {0,620,(int)(146*0.7),(int)(72*0.7)};
+    SDL_Rect source = {0,0,146,72}, destination = {0,Y_BOUND(windowSize.y)-60,(int)(146*0.7),(int)(72*0.7)};
     for(short i=0;i<9;i++){
         source.x = (i%5)*146;
         source.y = (i/5)*72;
@@ -167,4 +172,16 @@ void Graphics::callLogic(){
             }
         }   
     }
+}
+
+
+void Graphics::getWindowSize(){
+    SDL_GetWindowSize(window, &windowSize.x, &windowSize.y);
+}
+
+// 0 for width 1 for height
+int Graphics::windowDim(int a){
+    if (a == 0)
+        return(windowSize.x);
+    return(windowSize.y);
 }
