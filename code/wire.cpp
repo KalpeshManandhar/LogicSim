@@ -149,9 +149,11 @@ void Wire::removeWiresToComponent(Component * c){
             removeWire();
             return;
         }
-    if (start == c->getOutPinAddress() || end == c->getOutPinAddress())
-        removeWire();
-    return;
+    for (i = 0; i < c->getOutputNo(); i++)
+        if (start == c->getOutPinAddress(i) || end == c->getOutPinAddress(i)){
+            removeWire();
+            return;
+        }
 }
 
 // updates the inputs of next component with output of present component

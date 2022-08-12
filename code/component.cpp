@@ -20,11 +20,16 @@ Component::Component(){
     int i;
     for (i = 0; i<MAX_INPUTS; i++)
         inPin[i].pos = new vec2;
-    outPin.pos = new vec2;
+    for (i = 0; i<MAX_OUTPUTS; i++)
+        outPin[i].pos = new vec2;
 }
 
 Component::~Component(){
-
+    // int i;
+    // for (i = 0; i<MAX_INPUTS; i++)
+    //     delete inPin[i].pos;
+    // for (i = 0; i<MAX_OUTPUTS; i++)
+    //     delete outPin[i].pos;
 }
 
 void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
@@ -32,7 +37,7 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
     this->type = type;
 
     setSprites();
-    setInputNo();
+    setPinNo();
     setPinPos();
 
     // sets the index of the array where the component is to be stored
@@ -58,38 +63,51 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
         input[i] = -1;
         inPin[i].logic = &input[i];
     }
-    outPin.pos->x  += compPos.x;
-    outPin.pos->y  += compPos.y;
-    outPin.type = _OUT;
-    output = -1;
-    outPin.logic = &output;
-
-    output = 1;
-
+    for (i = 0; i<outputNo; i++){
+        outPin[i].pos->x  += compPos.x;
+        outPin[i].pos->y  += compPos.y;
+        outPin[i].type = _OUT;
+        output[i] = -1;
+        outPin[i].logic = &output[i];
+    }
     std::cout<<"COmp added"<<index<<std::endl;
 }
 
 // sets the sprite source positions
 void Component::setSprites(){
     if (type < 5){
+        compPos.h = 72;
         spriteSrc.y = 0;
+        spriteSrc.h = 72;
     }
-    else{
+    else if (type < 10){
+        compPos.h = 72;
         spriteSrc.y = 72;
+        spriteSrc.h = 72;
+    }
+    else {
+        compPos.h = 108;
+        spriteSrc.y = 216;
+        spriteSrc.h = 108;
     }
     spriteSrc.x = (type%5) * 146; 
 }
 
 // sets the number of input pins
-void Component::setInputNo(){
+void Component::setPinNo(){
     switch (type)
     {
     case _NOT:
+        inputNo = 1;
+        outputNo = 1;
+        break;
     case _OUTPUT:
+        outputNo = 0;
         inputNo = 1;
         break;
     case _INPUT:
         inputNo = 0;
+        outputNo = 1;
         break;
     case _AND:
     case _OR:
@@ -98,7 +116,22 @@ void Component::setInputNo(){
     case _XOR:
     case _XNOR:
         inputNo = 2;
+        outputNo = 1;
         break;
+    case _ADDER:
+    case _SUBTRACTOR:
+        inputNo = 3;
+        outputNo = 2;
+        break;
+    case _4x2ENCODER:
+        inputNo = 4;
+        outputNo = 2;
+        break;
+    case _2x4DECODER:
+        inputNo = 2;
+        outputNo = 4;
+        break;
+
     default:
         break;
     }
@@ -108,13 +141,20 @@ void Component::setInputNo(){
 void Component::setPinPos(){
     // zero output pins
     if (type == _OUTPUT){               
-        outPin.pos->x = -200;
-        outPin.pos->y = -400;       
+        outPin[0].pos->x = -200;
+        outPin[0].pos->y = -400;       
+    }
+    // two output pins
+    else if (type == _ADDER || type == _SUBTRACTOR || type == _4x2ENCODER){
+        outPin[0].pos->x = 141;
+        outPin[0].pos->y = 38;
+        outPin[1].pos->x = 141;
+        outPin[1].pos->y = 70;
     }
     // one output pin
     else{
-        outPin.pos->x = 141;
-        outPin.pos->y = 35;
+        outPin[0].pos->x = 141;
+        outPin[0].pos->y = 35;
     }
     
     // only one input pin
@@ -126,6 +166,26 @@ void Component::setPinPos(){
     else if (type == _INPUT){                       
         inPin[0].pos->x = -200;
         inPin[0].pos->y = -400;
+    }
+    // three input pins
+    else if (type == _ADDER || type == _SUBTRACTOR){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 30;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 52;
+        inPin[2].pos->x = 4;
+        inPin[2].pos->y = 80;
+    }
+    // four input pins
+    else if (type ==  _4x2ENCODER){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 18;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 40;
+        inPin[2].pos->x = 4;
+        inPin[2].pos->y = 64;
+        inPin[3].pos->x = 4;
+        inPin[3].pos->y = 86;
     }
     // two input pins
     else{                                           
@@ -156,9 +216,12 @@ bool Component::mouseHover(vec2 &mousePos, int & pinHover){
             }
         }
         // hovering over an output pin?
-        if ((mousePos.x > outPin.pos->x - 10) && (mousePos.x < outPin.pos->x +10) && (mousePos.y > outPin.pos->y - 10) && (mousePos.y < outPin.pos->y +10)){
-            pinHover = 1;
-            selectedPin = &outPin;
+        for (i = 0; i<outputNo; i++){
+            if ((mousePos.x > outPin[i].pos->x - 10) && (mousePos.x < outPin[i].pos->x +10) && (mousePos.y > outPin[i].pos->y - 10) && (mousePos.y < outPin[i].pos->y +10)){
+                pinHover = 1;
+                selectedPin = &outPin[i];
+                return(true);
+            }
         }
         return(true);
     }
@@ -181,8 +244,10 @@ void Component::updateSelectedComp(vec2 &mousePos, vec2 &prev){
         inPin[i].pos->x  += (mousePos.x - prev.x);
         inPin[i].pos->y  += (mousePos.y - prev.y);
     }
-    outPin.pos->x  += (mousePos.x - prev.x);
-    outPin.pos->y  += (mousePos.y - prev.y);
+    for (i = 0; i<outputNo; i++){
+        outPin[i].pos->x  += (mousePos.x - prev.x);
+        outPin[i].pos->y  += (mousePos.y - prev.y);
+    }
 }
 
 void Component::removeComponent(){
@@ -204,12 +269,16 @@ int Component::getInputNo(){
     return(inputNo);
 }
 
+int Component::getOutputNo(){
+    return(outputNo);
+}
+
 Pin * Component::getInPinAddress(int i){
     return(&inPin[i]);
 }
 
-Pin* Component::getOutPinAddress(){
-    return(&outPin);
+Pin* Component::getOutPinAddress(int i){
+    return(&outPin[i]);
 }
 
 int * Component::getInputs(){
@@ -217,7 +286,13 @@ int * Component::getInputs(){
 }
 
 void Component::setOutput(int op){
-    output = op;
+    if (outputNo == 1)
+        output[0] = op;
+    else if (type == _ADDER || type == _SUBTRACTOR){
+        if (op == -1)op = 3;
+        output[0] = (op&2)>>1;
+        output[1] = op&1;
+    }
 }
 
 
@@ -234,7 +309,7 @@ void InputComponent::setButtonPos(){
 
 // what happens when the button is pressed?
 void InputComponent::onPressed(){
-    output = (output == 1)?0:1;
+    output[0] = (output[0] == 1)?0:1;
 }
 
 void InputComponent::updateSelectedComp(vec2 &mousePos, vec2 &prev){
@@ -249,13 +324,14 @@ void InputComponent::setValues(c_type type, vec2 &mousePos, int availableIndex){
     setButtonPos();
     inputButton.button.x += compPos.x;
     inputButton.button.y += compPos.y;
+    output[0] = 0;
 }
 
 void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
     SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
     
     //  1 = RED button
-    if (output == 1)
+    if (output[0] == 1)
         SDL_SetRenderDrawColor(renderer, 200, 0, 0,255);
     //  0 = BLUE button
     else 

@@ -61,43 +61,83 @@ void Input::handleMouseInput(vec2 windowSize){
         std::cout<<"leftCLick";
         int i;
         // adds a new component
-        if (mousePos.y>(bounds.y-50) && mousePos.y<(bounds.y - 10) && Component::componentNo != MAX_COMPONENTS)
+        if (mousePos.y>(bounds.y-50) && mousePos.y<(windowSize.y) && Component::componentNo != MAX_COMPONENTS)
         {
-            if (mousePos.x>30+0*(130) && mousePos.x<1*130){
-                addComponent(_AND);
-                break;
+            if(mousePos.y < bounds.y - 10){
+                if (mousePos.x>30+0*(130) && mousePos.x<1*130){
+                    addComponent(_AND);
+                    break;
+                }
+                if (mousePos.x>30+1*130 && mousePos.x<2*130){
+                    addComponent(_OR);
+                    break;
+                }
+                if (mousePos.x>30+2*130 && mousePos.x<3*130){
+                    addComponent(_NOT);
+                    break;
+                }
+                if (mousePos.x>30+3*130 && mousePos.x<4*130){
+                    addComponent(_NAND);
+                    break;
+                }
+                if (mousePos.x>30+4*130 && mousePos.x<5*130){
+                    addComponent(_NOR);
+                    break;
+                }
+                if (mousePos.x>30+5*130 && mousePos.x<6*130){
+                    addComponent(_XOR);
+                    break;
+                }
+                if (mousePos.x>30+6*130 && mousePos.x<7*130){
+                    addComponent(_XNOR);
+                    break;
+                }
+                if (mousePos.x>30+7*130 && mousePos.x<8*130){
+                    addComponent(_INPUT);
+                    break;
+                }
+                if (mousePos.x>30+8*130 && mousePos.x<9*130){
+                    addComponent(_OUTPUT);
+                    break;
+                }
             }
-            if (mousePos.x>30+1*130 && mousePos.x<2*130){
-                addComponent(_OR);
-                break;
-            }
-            if (mousePos.x>30+2*130 && mousePos.x<3*130){
-                addComponent(_NOT);
-                break;
-            }
-            if (mousePos.x>30+3*130 && mousePos.x<4*130){
-                addComponent(_NAND);
-                break;
-            }
-            if (mousePos.x>30+4*130 && mousePos.x<5*130){
-                addComponent(_NOR);
-                break;
-            }
-            if (mousePos.x>30+5*130 && mousePos.x<6*130){
-                addComponent(_XOR);
-                break;
-            }
-            if (mousePos.x>30+6*130 && mousePos.x<7*130){
-                addComponent(_XNOR);
-                break;
-            }
-            if (mousePos.x>30+7*130 && mousePos.x<8*130){
-                addComponent(_INPUT);
-                break;
-            }
-            if (mousePos.x>30+8*130 && mousePos.x<9*130){
-                addComponent(_OUTPUT);
-                break;
+            else{
+                if (mousePos.x>30+0*130 && mousePos.x<1*130){
+                    addComponent(_ADDER);
+                    break;
+                }
+                if (mousePos.x>30+1*130 && mousePos.x<2*130){
+                    addComponent(_SUBTRACTOR);
+                    break;
+                }
+                if (mousePos.x>30+2*130 && mousePos.x<3*130){
+                    addComponent(_NOT);
+                    break;
+                }
+                if (mousePos.x>30+3*130 && mousePos.x<4*130){
+                    addComponent(_NAND);
+                    break;
+                }
+                if (mousePos.x>30+4*130 && mousePos.x<5*130){
+                    addComponent(_NOR);
+                    break;
+                }
+                if (mousePos.x>30+5*130 && mousePos.x<6*130){
+                    addComponent(_XOR);
+                    break;
+                }
+                if (mousePos.x>30+6*130 && mousePos.x<7*130){
+                    addComponent(_XNOR);
+                    break;
+                }
+                if (mousePos.x>30+7*130 && mousePos.x<8*130){
+                    addComponent(_INPUT);
+                    break;
+                }
+                if (mousePos.x>30+8*130 && mousePos.x<9*130){
+                    addComponent(_OUTPUT);
+                    break;
+                }
             }
         }
         

@@ -12,4 +12,8 @@ public:
     int NORLogic(int i1, int i2);
     int XORLogic(int i1, int i2);
     int XNORLogic(int i1, int i2);
+    int ADDERLogic(int i1, int i2, int i3);
+    int SUBTRACTLogic(int i1, int i2, int i3);
+    template <int in_num>
+    int ENCODERLogic(int * inputs);   
 };

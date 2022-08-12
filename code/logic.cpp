@@ -30,6 +30,24 @@ inline int Logic::XNORLogic(int i1, int i2){
     return(NOTLogic(i1 ^ i2));
 }
 
+inline int Logic::ADDERLogic(int i1, int i2, int i3){
+    return(i1+i2+i3);
+}
+
+inline int Logic::SUBTRACTLogic(int i1, int i2, int i3){
+    return(i1-i2-i3);
+}
+
+template <int in_num>
+inline int Logic::ENCODERLogic(int * inputs){
+    int i, j=0;
+    for (i=0; i<in_num; i++){
+        if (input[i] == 1)
+            j=j|i;
+    }
+    return(j);
+}
+
 int Logic::handleLogic(c_type type, int * input){
     int output = 0;
     // blank inputs result in 0 output
@@ -58,6 +76,12 @@ int Logic::handleLogic(c_type type, int * input){
         break;
     case _XNOR:
         output = XNORLogic(input[0], input[1]);
+        break;
+    case _ADDER:
+        output = ADDERLogic(input[0], input[1], input[2]);
+        break;
+    case _SUBTRACTOR:
+        output = SUBTRACTLogic(input[0], input[1], input[2]);
         break;
     default:
         break;

@@ -137,10 +137,13 @@ void Graphics::componentLoad()
 {
     int shift=30;
     SDL_Rect source = {0,0,146,72}, destination = {0,Y_BOUND(windowSize.y)-60,(int)(146*0.7),(int)(72*0.7)};
-    for(short i=0;i<9;i++){
+    for(short i=0;i<13;i++){
+        if (i == 9)
+            continue;
         source.x = (i%5)*146;
         source.y = (i/5)*72;
-        destination.x = shift + (shift + destination.w)* i ;
+        destination.x = shift + (shift + destination.w)* (i%10);
+        destination.y = Y_BOUND(windowSize.y)-60 + (i/10) * (destination.h + 20);
         SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
     }
 }

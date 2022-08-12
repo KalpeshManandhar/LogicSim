@@ -4,7 +4,7 @@
 #include "SDL.h"
 #include "logic.h"
 
-#define MAX_INPUTS 2
+#define MAX_INPUTS 5
 #define MAX_OUTPUTS 5
 #define MAX_COMPONENTS 25
 #define MAX_PROBES 5
@@ -24,11 +24,11 @@ class Component{
 protected:
     SDL_Rect spriteSrc, compPos;
     c_type type;
-    int inputNo;                                    // no of inputs for each component
-    int output, input[MAX_INPUTS];
-    Component *next[MAX_OUTPUTS];
+    int inputNo, outputNo;                          // no of inputs/ outputs for each component
+    int output[MAX_OUTPUTS], input[MAX_INPUTS];
+    // Component *next[MAX_OUTPUTS];
     short index;                                    // index in the array
-    Pin inPin[MAX_INPUTS], outPin;                  // only one output + different number of inputs for different components
+    Pin inPin[MAX_INPUTS], outPin[MAX_OUTPUTS];                  // only one output + different number of inputs for different components
 
 public:
     static short componentNo;                       // total no of components added init 0
@@ -36,9 +36,9 @@ public:
     static Pin* selectedPin;
 
     Component();
-    ~Component();
+    virtual ~Component();
     void setSprites();
-    void setInputNo();
+    void setPinNo();
     void setPinPos();
 
     virtual void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
@@ -52,8 +52,9 @@ public:
 
     c_type getType();
     int getInputNo();
+    int getOutputNo();
     Pin* getInPinAddress(int i);
-    Pin* getOutPinAddress();
+    Pin* getOutPinAddress(int i);
     int * getInputs();
 };
 
@@ -79,6 +80,9 @@ public:
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
     void updateSelectedComp(vec2 &mousePos, vec2 &prev);
 };
+
+
+
 
 
 extern Component *components[MAX_COMPONENTS];
