@@ -83,8 +83,6 @@ public:
 
 
 
-
-
 extern Component *components[MAX_COMPONENTS];
 
 

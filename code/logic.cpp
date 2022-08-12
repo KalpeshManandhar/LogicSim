@@ -42,8 +42,17 @@ template <int in_num>
 inline int Logic::ENCODERLogic(int * inputs){
     int i, j=0;
     for (i=0; i<in_num; i++){
-        if (input[i] == 1)
+        if (inputs[i] == 1)
             j=j|i;
+    }
+    return(j);
+}
+
+template <int in_num>
+inline int Logic::DECODERLogic(int * inputs){
+    int i,j=0;
+    for (i=0; i<in_num; i++){
+        j = (j<<1)|inputs[i];
     }
     return(j);
 }
@@ -82,6 +91,12 @@ int Logic::handleLogic(c_type type, int * input){
         break;
     case _SUBTRACTOR:
         output = SUBTRACTLogic(input[0], input[1], input[2]);
+        break;
+    case _4x2ENCODER:
+        output = ENCODERLogic<4>(input);
+        break;
+    case _2x4DECODER:
+        output = DECODERLogic<2>(input);
         break;
     default:
         break;

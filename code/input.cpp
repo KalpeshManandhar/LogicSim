@@ -111,11 +111,11 @@ void Input::handleMouseInput(vec2 windowSize){
                     break;
                 }
                 if (mousePos.x>30+2*130 && mousePos.x<3*130){
-                    addComponent(_NOT);
+                    addComponent(_4x2ENCODER);
                     break;
                 }
                 if (mousePos.x>30+3*130 && mousePos.x<4*130){
-                    addComponent(_NAND);
+                    addComponent(_2x4DECODER);
                     break;
                 }
                 if (mousePos.x>30+4*130 && mousePos.x<5*130){

@@ -151,6 +151,17 @@ void Component::setPinPos(){
         outPin[1].pos->x = 141;
         outPin[1].pos->y = 70;
     }
+    // four output pins
+    else if (type == _2x4DECODER){
+        outPin[0].pos->x = 141;
+        outPin[0].pos->y = 18;
+        outPin[1].pos->x = 141;
+        outPin[1].pos->y = 40;
+        outPin[2].pos->x = 141;
+        outPin[2].pos->y = 64;
+        outPin[3].pos->x = 141;
+        outPin[3].pos->y = 86;
+    }
     // one output pin
     else{
         outPin[0].pos->x = 141;
@@ -186,6 +197,13 @@ void Component::setPinPos(){
         inPin[2].pos->y = 64;
         inPin[3].pos->x = 4;
         inPin[3].pos->y = 86;
+    }
+    // two input pins but larger
+    else if (type == _2x4DECODER){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 38;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 70;
     }
     // two input pins
     else{                                           
@@ -286,13 +304,27 @@ int * Component::getInputs(){
 }
 
 void Component::setOutput(int op){
-    if (outputNo == 1)
-        output[0] = op;
-    else if (type == _ADDER || type == _SUBTRACTOR){
-        if (op == -1)op = 3;
-        output[0] = (op&2)>>1;
-        output[1] = op&1;
+    int i;
+    
+    if (type == _2x4DECODER){
+        for (i=0; i< outputNo; i++){
+            output[i] = 0;
+        }
+        output[op] = 1;
+        return;
     }
+
+    if (op == -1) op = 3;
+    for (i=0; i< outputNo; i++){
+        output[outputNo - 1 -i] = (op>>i)&1;
+    }
+    // if (outputNo == 1)
+    //     output[0] = op;
+    // else if (type == _ADDER || type == _SUBTRACTOR){
+    //     if (op == -1)op = 3;
+    //     output[0] = (op&2)>>1;
+    //     output[1] = op&1;
+    // }
 }
 
 
