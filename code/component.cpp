@@ -306,13 +306,13 @@ int * Component::getInputs(){
 void Component::setOutput(int op){
     int i;
     
-    if (type == _2x4DECODER){
-        for (i=0; i< outputNo; i++){
-            output[i] = 0;
-        }
-        output[op] = 1;
-        return;
-    }
+    // if (type == _2x4DECODER){
+    //     for (i=0; i< outputNo; i++){
+    //         output[i] = 0;
+    //     }
+    //     output[op] = 1;
+    //     return;
+    // }
 
     if (op == -1) op = 3;
     for (i=0; i< outputNo; i++){

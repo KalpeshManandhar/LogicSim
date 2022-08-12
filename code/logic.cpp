@@ -50,11 +50,14 @@ inline int Logic::ENCODERLogic(int * inputs){
 
 template <int in_num>
 inline int Logic::DECODERLogic(int * inputs){
-    int i,j=0;
+    int i,j=0,k=0x00000008;
     for (i=0; i<in_num; i++){
         j = (j<<1)|inputs[i];
     }
-    return(j);
+    for (i =0; i<j;i++){
+        k>>=1;
+    }
+    return(k);
 }
 
 int Logic::handleLogic(c_type type, int * input){
