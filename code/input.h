@@ -1,5 +1,7 @@
 #pragma once
 #include "utils.h"
+#include "component.h"
+#include "wire.h"
 #include <SDL.h>
 
 
@@ -19,8 +21,7 @@ public:
     void getMouseState();
     int pollEvents();
     void printMousePos();
-    void handleMouseInput();
-    void addComponent();
-    
-
+    void handleMouseInput(vec2 windowSize);
+    void addComponent(c_type type);
+    void addWire();
 };

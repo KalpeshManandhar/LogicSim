@@ -1,6 +1,8 @@
 #include "graphics.h"
 #include "input.h"
 #include "component.h"
+#include "wire.h"
+#include "logic.h"
 #include <iostream>
 
 #define WIN_HEIGHT 720
@@ -9,9 +11,12 @@
 #define FPS 32
 #define FRAME_LIMIT (1000/FPS)
 
-Component components[MAX_COMPONENTS];
+Component *components[MAX_COMPONENTS];
+Wire *wires;
+
 
 Graphics::Graphics(){
+    wires = new Wire[MAX_WIRES];
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
     }
@@ -22,9 +27,10 @@ Graphics::Graphics(){
     renderer = SDL_CreateRenderer(window,-1, SDL_RENDERER_ACCELERATED);
     if (!renderer){
         std::cout<<"Error creating renderer"<<SDL_GetError()<<std::endl;
-        
     }    
     isRunning = true;
+    windowSize.x = WIN_WIDTH;
+    windowSize.y = WIN_HEIGHT;
 }
 
 Graphics::~Graphics(){
@@ -39,10 +45,11 @@ Uint32 Graphics::getTime(){
 
 int Graphics::mainLoop(){
     Input input;
-    // source={0,0,215,108};destination={input.mousePos.x, input.mousePos.y,600,300};
     Uint32 frameStart;    
-    int frameTime;    
+    int frameTime;       
+
     loadSpriteAndGrid();
+
     while(isRunning){
         frameStart = getTime();
         switch (input.pollEvents())
@@ -50,15 +57,27 @@ int Graphics::mainLoop(){
         case SDL_QUIT:
             isRunning = false;
             return(CLOSED);
+        case SDL_WINDOWEVENT:{
+            getWindowSize();
+        }
         default:
             break;
         }
+
+        // handle mouse inputs
         input.getMouseState();
-        // destination={input.mousePos.x-215/2,input.mousePos.y-108/2,215,108};
-        input.handleMouseInput();
-        clearScreen(68,75,110, false);
-        
+        input.handleMouseInput(windowSize);
+
+        // logic computation
+        callLogic();
+
+        // clear screen and draw the components/ wires
+        clearScreen(68,75,110, false);        
+        componentLoad();
         drawComponents();
+        drawWires();
+
+        // display to screen
         display();
         
         frameTime = getTime() - frameStart;
@@ -76,28 +95,32 @@ void Graphics::display(){
     SDL_RenderPresent(renderer);
 }
 
-void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, r,g,b,255);    
+
+void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){       
+    SDL_SetRenderDrawColor(renderer, r,g,b,255);
+    SDL_RenderClear(renderer); 
+     
     if(grid)
         SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
     
 }
+
+// initial textures loading
 void Graphics::loadSpriteAndGrid()
 {    
     loadingSurface = IMG_Load("assets/spritesheet.png");
-    textureOfGates=SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    textureOfGates = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
-    loadingSurface=IMG_Load("assets/grid_new.png");
-    textureOfGrid=SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    loadingSurface = IMG_Load("assets/grid_new.png");
+    textureOfGrid = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);    
 }
-void Graphics::drawComponents()
-{
+
+void Graphics::drawComponents(){
     int i;
     for(i=0; i<Component::componentNo;i++){
-        if (components[i].getType() != _NOTHING)
-            components[i].draw(renderer, textureOfGates);
+        if (components[i]->getType() != _NOTHING)
+            components[i]->draw(renderer, textureOfGates);
     }
 }
 
@@ -107,4 +130,61 @@ SDL_Renderer* Graphics::getRenderer(){
 
 SDL_Texture* Graphics::getTexture(){
     return(textureOfGates);
+}
+
+// spawn area components
+void Graphics::componentLoad()
+{
+    int shift=30;
+    SDL_Rect source = {0,0,146,72}, destination = {0,Y_BOUND(windowSize.y)-60,(int)(146*0.7),(int)(72*0.7)};
+    for(short i=0;i<13;i++){
+        if (i == 9)
+            continue;
+        source.x = (i%5)*146;
+        source.y = (i/5)*72;
+        destination.x = shift + (shift + destination.w)* (i%10);
+        destination.y = Y_BOUND(windowSize.y)-60 + (i/10) * (destination.h + 20);
+        SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    }
+}
+
+void Graphics::drawWires(){
+    int i;
+    for(i=0; i<Wire::totalWires;i++){
+        // draws wire if not blank
+        if (wires[i].getStatus() != _ISBLANK)
+            wires[i].draw(renderer);
+    }
+}
+
+void Graphics::callLogic(){
+    static Logic logicHandler;
+    int i,j,k;
+    // loops twice as components aren't stored in order of connection 
+    // that caused the logic to be wrong on some frames when input changed
+    for (k = 0; k<2; k++){
+        for (i = 0; i<Component::componentNo; i++){
+            if (components[i]->getType() != _INPUT){
+                // updates the corresponding inputs from outputs
+                for (j = 0; j<Wire::totalWires; j++){
+                    if (wires[j].getStatus() == _COMPLETE)
+                        wires[j].sendLogic();
+                }
+                // computes the logic for the component
+                components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
+            }
+        }   
+    }
+}
+
+
+void Graphics::getWindowSize(){
+    SDL_GetWindowSize(window, &windowSize.x, &windowSize.y);
+}
+
+// 0 for width 1 for height
+int Graphics::windowDim(int a){
+    if (a == 0)
+        return(windowSize.x);
+    return(windowSize.y);
 }

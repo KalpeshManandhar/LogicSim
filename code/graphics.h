@@ -1,6 +1,8 @@
 #pragma once
+#include "utils.h"
 #include "SDL.h"
 #include "SDL_image.h"
+#include <iostream>
 
 enum{
 	CLOSED, 
@@ -11,8 +13,8 @@ class Graphics {
 	SDL_Window *window;
 	SDL_Surface *loadingSurface;
 	SDL_Texture *textureOfGates, *textureOfGrid;
-	// SDL_Rect source, destination;
 	bool isRunning;
+	vec2 windowSize;
 public:
 	SDL_Renderer *renderer;
 
@@ -25,9 +27,16 @@ public:
 	void display();
 	void loadSpriteAndGrid();
 	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
+
 	void drawComponents();
+	void drawWires();
+	void callLogic();
+
 	SDL_Renderer* getRenderer();
 	SDL_Texture* getTexture();
+	void componentLoad();
+	void getWindowSize();
+	int windowDim(int a);
 	
 };
 

@@ -1,51 +1,86 @@
 #pragma once
 
 #include "utils.h"
-#include "graphics.h"
+#include "SDL.h"
 
-#define MAX_INPUTS 2
+#define MAX_INPUTS 5
 #define MAX_OUTPUTS 5
 #define MAX_COMPONENTS 25
+#define MAX_PROBES 5
 
-#define Y_BOUND 680
-#define X_BOUND 1200
+#define Y_BOUND(Y) (Y - 60)
+#define X_BOUND(X) (X - 80)
 
-enum c_type{
-    _AND, _OR, _NOT, _NAND, _NOR, _XOR, _XNOR, _INPUT, _OUTPUT, _NOTHING
-};
 
-class Button{
-    char text[10];
+
+struct Button{
+    SDL_Rect button;
     bool pressedFlag;
-    SDL_Rect buttonData;
-public:
-    void onPressed();
-    void draw(SDL_Renderer* renderer);
-
 };
+
 
 class Component{
+protected:
     SDL_Rect spriteSrc, compPos;
     c_type type;
-    bool output[MAX_OUTPUTS], input[MAX_INPUTS];
-    Component *next[MAX_OUTPUTS];
-    short index;
+    int inputNo, outputNo;                          // no of inputs/ outputs for each component
+    int output[MAX_OUTPUTS], input[MAX_INPUTS];
+    short index;                                    // index in the array
+    Pin inPin[MAX_INPUTS], outPin[MAX_OUTPUTS];                  // only one output + different number of inputs for different components
+
 public:
-    static short componentNo;           // total no of components added init 0
-    static short selectedCompNo;        // currently selected component index init -1
+    static short componentNo;                       // total no of components added init 0
+    static short selectedCompNo;                    // currently selected component index init -1
+    static Pin* selectedPin;
 
     Component();
-    ~Component();
-    void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
-    void setValues(c_type type, vec2 &mousePos, int availableIndex );
-    bool mouseHover(vec2 &mousePos);
+    virtual ~Component();
+    void setSprites();
+    void setPinNo();
+    void setPinPos();
+
+    virtual void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
+    virtual void setValues(c_type type, vec2 &mousePos, int availableIndex);
+    virtual bool mouseHover(vec2 &mousePos, int & pinHover);
+    virtual void updateSelectedComp(vec2 &mousePos, vec2 &prev);
+
     void selectComponent();
-    void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     void removeComponent();
+    void setOutput(int op);
+
     c_type getType();
-    
-
-
+    int getInputNo();
+    int getOutputNo();
+    Pin* getInPinAddress(int i);
+    Pin* getOutPinAddress(int i);
+    int * getInputs();
 };
 
-extern Component components[MAX_COMPONENTS];
+
+class InputComponent:public Component{
+    Button inputButton;
+public:
+    void setButtonPos();
+    void onPressed();
+
+    void setValues(c_type type,vec2 &mousePos, int availableIndex );
+    void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
+    void updateSelectedComp(vec2 &mousePos, vec2 &prev);
+    bool mouseHover(vec2 &mousePos, int & pinHover);
+};
+
+
+class OutputComponent:public Component{
+    SDL_Rect display;
+public:
+    void setDisplayPos();
+    void setValues(c_type type,vec2 &mousePos, int availableIndex );
+    void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
+    void updateSelectedComp(vec2 &mousePos, vec2 &prev);
+};
+
+
+
+extern Component *components[MAX_COMPONENTS];
+
+
