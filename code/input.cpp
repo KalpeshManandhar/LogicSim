@@ -15,6 +15,9 @@ void Input::getMouseState(){
 b_States Input::isPressed(int buttonKey){  
     int i = (buttonKey == 1)?0:1;
     static short clickedFrameNo[2] = {0,0};
+    // clickedFrameNo[0] for left clicks
+    // clickedFrameNo[1] for right clicks
+
     if ((mouseButtons & SDL_BUTTON(buttonKey))!=0){
         clickedFrameNo[i]++;
         if (clickedFrameNo[i] > 1){
@@ -30,8 +33,6 @@ b_States Input::isPressed(int buttonKey){
         held = false;
         return(RELEASED);
     }
-    // clickedFrameNo[0] = 0;              // for left
-    // clickedFrameNo[1] = 0;              // for right
     return(IDLE);
 }
 
@@ -158,10 +159,11 @@ void Input::handleMouseInput(vec2 windowSize){
             else
                 std::cout<<"output";
 
-            // adds wire if new wire is being added
+            // adds wire if no wire is currently selected (start pin)
             if (Wire::selectedWireNo == -1)
                 addWire();
-            // checks if the wire is valid
+
+            // checks if the wire is valid (end pin)
             else{
                 if (wires[Wire::selectedWireNo].validWire(Component::selectedPin))
                     wires[Wire::selectedWireNo].completeWire(Component::selectedPin);
@@ -169,12 +171,8 @@ void Input::handleMouseInput(vec2 windowSize){
                     wires[Wire::selectedWireNo].removeWire();
             }
         }
-        // unselects/ removes wire when clicked outside component
+        // adds anchor points for wire if clicked on empty space
         else{
-            // if (Wire::selectedWireNo != -1){
-            //     wires[Wire::selectedWireNo].removeWire();
-            //     Wire::selectedWireNo == -1;
-            // }
             if (Wire::selectedWireNo != -1){
                 wires[Wire::selectedWireNo].addVertex(mousePos);
             }
@@ -200,9 +198,10 @@ void Input::handleMouseInput(vec2 windowSize){
         std::cout<<"leftRELEASED"<<std::endl;
         if ((mousePos.x > X_BOUND(windowSize.x) || mousePos.y > Y_BOUND(windowSize.y)) && Component::selectedCompNo != -1){
             int i;
-            // to remove the wires associated with the component
+            // removes the wires associated with the component
             for (i = 0; i < Wire::totalWires; i++)
                 wires[i].removeWiresToComponent(components[Component::selectedCompNo]);
+            // removes the component
             components[Component::selectedCompNo]->removeComponent();
         }
         break;
@@ -214,6 +213,7 @@ void Input::handleMouseInput(vec2 windowSize){
         break;
     }
     
+    // removes wire on right mouse click
     if (isPressed(SDL_BUTTON_RIGHT) == CLICKED && Wire::selectedWireNo != -1){
         wires[Wire::selectedWireNo].removeWire();
     }

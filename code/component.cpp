@@ -25,11 +25,11 @@ Component::Component(){
 }
 
 Component::~Component(){
-    // int i;
-    // for (i = 0; i<MAX_INPUTS; i++)
-    //     delete inPin[i].pos;
-    // for (i = 0; i<MAX_OUTPUTS; i++)
-    //     delete outPin[i].pos;
+    int i;
+    for (i = 0; i<MAX_INPUTS; i++)
+        delete inPin[i].pos;
+    for (i = 0; i<MAX_OUTPUTS; i++)
+        delete outPin[i].pos;
 }
 
 void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
@@ -315,16 +315,16 @@ void Component::setOutput(int op){
     // }
 
     if (op == -1) op = 3;
+
+    // assigns the bits of the bitmask to the outputs eg 1000
+    // output[3] = 0
+    // output[2] = 0
+    // output[1] = 0
+    // output[0] = 1
+    // 0123 pins go from top to bottom
     for (i=0; i< outputNo; i++){
         output[outputNo - 1 -i] = (op>>i)&1;
     }
-    // if (outputNo == 1)
-    //     output[0] = op;
-    // else if (type == _ADDER || type == _SUBTRACTOR){
-    //     if (op == -1)op = 3;
-    //     output[0] = (op&2)>>1;
-    //     output[1] = op&1;
-    // }
 }
 
 
@@ -384,7 +384,7 @@ bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
 
 
 // OUTPUT COMPONENT FUNCTIONS
-
+// sets the initial position of the display box
 void OutputComponent::setDisplayPos(){
     display.x = 15;
     display.y = 18;

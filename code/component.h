@@ -2,7 +2,6 @@
 
 #include "utils.h"
 #include "SDL.h"
-#include "logic.h"
 
 #define MAX_INPUTS 5
 #define MAX_OUTPUTS 5
@@ -26,7 +25,6 @@ protected:
     c_type type;
     int inputNo, outputNo;                          // no of inputs/ outputs for each component
     int output[MAX_OUTPUTS], input[MAX_INPUTS];
-    // Component *next[MAX_OUTPUTS];
     short index;                                    // index in the array
     Pin inPin[MAX_INPUTS], outPin[MAX_OUTPUTS];                  // only one output + different number of inputs for different components
 

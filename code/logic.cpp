@@ -30,6 +30,7 @@ inline int Logic::XNORLogic(int i1, int i2){
     return(NOTLogic(i1 ^ i2));
 }
 
+// these functions create a bit mask of the outputs 
 inline int Logic::ADDERLogic(int i1, int i2, int i3){
     return(i1+i2+i3);
 }
@@ -50,7 +51,7 @@ inline int Logic::ENCODERLogic(int * inputs){
 
 template <int in_num>
 inline int Logic::DECODERLogic(int * inputs){
-    int i,j=0,k=1; // k = 1000 which then right shifts for decoded output number
+    int i,j=0,k=1;
     for (i=0; i<in_num; i++){
         j = (j<<1)|inputs[i];
         k<<=2;
@@ -64,7 +65,7 @@ inline int Logic::DECODERLogic(int * inputs){
 
 int Logic::handleLogic(c_type type, int * input){
     int output = 0;
-    // blank inputs result in 0 output
+    // blank (-1) inputs result in 0 output
     if (input[0] == -1 || input[1] == -1)
         return(output);
     
