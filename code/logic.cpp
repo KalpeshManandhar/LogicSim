@@ -50,10 +50,12 @@ inline int Logic::ENCODERLogic(int * inputs){
 
 template <int in_num>
 inline int Logic::DECODERLogic(int * inputs){
-    int i,j=0,k=0x00000008;
+    int i,j=0,k=1; // k = 1000 which then right shifts for decoded output number
     for (i=0; i<in_num; i++){
         j = (j<<1)|inputs[i];
+        k<<=2;
     }
+    k>>=1;
     for (i =0; i<j;i++){
         k>>=1;
     }
@@ -99,7 +101,7 @@ int Logic::handleLogic(c_type type, int * input){
         output = ENCODERLogic<4>(input);
         break;
     case _2x4DECODER:
-        output = DECODERLogic<2>(input);
+        output = DECODERLogic<2>(input); 
         break;
     default:
         break;
