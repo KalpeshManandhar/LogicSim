@@ -18,6 +18,7 @@ Component::Component(){
     compPos.x = -200;
     compPos.y = -200;
     int i;
+    sendOp = true;
     for (i = 0; i<MAX_INPUTS; i++)
         inPin[i].pos = new vec2;
     for (i = 0; i<MAX_OUTPUTS; i++)
@@ -93,7 +94,7 @@ void Component::setSprites(){
     spriteSrc.x = (type%5) * 146; 
 }
 
-// sets the number of input pins
+// sets the number of input and output pins
 void Component::setPinNo(){
     switch (type)
     {
@@ -303,17 +304,12 @@ int * Component::getInputs(){
     return(input);
 }
 
+bool Component::sendOutput(){
+    return(sendOp);
+}
+
 void Component::setOutput(int op){
     int i;
-    
-    // if (type == _2x4DECODER){
-    //     for (i=0; i< outputNo; i++){
-    //         output[i] = 0;
-    //     }
-    //     output[op] = 1;
-    //     return;
-    // }
-
     if (op == -1) op = 3;
 
     // assigns the bits of the bitmask to the outputs eg 1000
@@ -374,11 +370,11 @@ void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
 
 bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
     // if button is pressed, isPressed() is called
-    if ((mousePos.x > compPos.x) && (mousePos.x < (compPos.x + compPos.w)) && (mousePos.y > compPos.y) && (mousePos.y < (compPos.y + compPos.h))){
-        if ((mousePos.x > inputButton.button.x) && (mousePos.x < (inputButton.button.x + inputButton.button.w)) && (mousePos.y > inputButton.button.y) && (mousePos.y < inputButton.button.y + inputButton.button.h)){
-            onPressed();
-        }
-    } 
+    if (inputButton.mouseHover(mousePos))
+        onPressed();
+    // if ((mousePos.x > inputButton.button.x) && (mousePos.x < (inputButton.button.x + inputButton.button.w)) && (mousePos.y > inputButton.button.y) && (mousePos.y < inputButton.button.y + inputButton.button.h)){
+    //     onPressed();
+    // }
     return(Component::mouseHover(mousePos, pinHover));
 }
 
@@ -416,4 +412,21 @@ void OutputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
     else 
         SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
     SDL_RenderFillRect(renderer, &display);
+}
+
+// default frequency of clock 1HZ
+Clock::Clock(float timePeriod = 1000){
+    T = timePeriod;
+    lastPulse = 0;
+    sendOp = true;
+}
+
+void Clock::setOutput(int frameTime){
+    lastPulse += frameTime;
+    if (lastPulse >= (T * 0.5)){
+        sendOp = (output[0] == 0)?true:false;
+        output[0] = (output[0] == 1)? 0:1;
+        lastPulse = 0;
+    }
+        
 }

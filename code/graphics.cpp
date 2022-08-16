@@ -5,10 +5,10 @@
 #include "logic.h"
 #include <iostream>
 
-#define WIN_HEIGHT 720
-#define WIN_WIDTH 1280
+#define WIN_HEIGHT 760
+#define WIN_WIDTH 1440
 
-#define FPS 32
+#define FPS 120
 #define FRAME_LIMIT (1000/FPS)
 
 Component *components[MAX_COMPONENTS];
@@ -17,9 +17,11 @@ Wire *wires;
 
 Graphics::Graphics(){
     wires = new Wire[MAX_WIRES];
+
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
     }
+
     window = SDL_CreateWindow("Logic Sim", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_RESIZABLE);
     if(!window){
         std::cout<<"Error creating window"<<std::endl;
@@ -27,7 +29,8 @@ Graphics::Graphics(){
     renderer = SDL_CreateRenderer(window,-1, SDL_RENDERER_ACCELERATED);
     if (!renderer){
         std::cout<<"Error creating renderer"<<SDL_GetError()<<std::endl;
-    }    
+    }
+    
     isRunning = true;
     windowSize.x = WIN_WIDTH;
     windowSize.y = WIN_HEIGHT;
@@ -159,19 +162,30 @@ void Graphics::drawWires(){
 
 void Graphics::callLogic(){
     static Logic logicHandler;
+    bool clockPulse;
     int i,j,k;
     // loops twice as components aren't stored in order of connection 
     // that caused the logic to be wrong on some frames when input changed
     for (k = 0; k<2; k++){
         for (i = 0; i<Component::componentNo; i++){
-            if (components[i]->getType() != _INPUT){
-                // updates the corresponding inputs from outputs
-                for (j = 0; j<Wire::totalWires; j++){
+            // updates the corresponding inputs from outputs
+            for (j = 0; j<Wire::totalWires; j++){
+                if (components[i]->sendOutput())
                     if (wires[j].getStatus() == _COMPLETE)
                         wires[j].sendLogic();
-                }
+            }
+
+            switch(components[i]->getType()){
+                case _INPUT:
+                    break;
+                // updates the clock
+                case _CLOCK:
+                    components[i]->setOutput(FRAME_LIMIT);
+                    break;
                 // computes the logic for the component
-                components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
+                default:
+                    components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
+                    break;
             }
         }   
     }

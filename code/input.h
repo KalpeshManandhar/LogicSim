@@ -14,7 +14,6 @@ enum b_States{
 class Input{
     SDL_Event event;    
     Uint32 mouseButtons;
-    bool held;
 public:
     vec2 mousePos, prevMousePos;
     b_States isPressed(int buttonKey);

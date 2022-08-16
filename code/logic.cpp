@@ -30,7 +30,7 @@ inline int Logic::XNORLogic(int i1, int i2){
     return(NOTLogic(i1 ^ i2));
 }
 
-// these functions create a bit mask of the outputs 
+// these functions create a bit mask of the outputs because why not
 inline int Logic::ADDERLogic(int i1, int i2, int i3){
     return(i1+i2+i3);
 }

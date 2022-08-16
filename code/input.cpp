@@ -21,7 +21,6 @@ b_States Input::isPressed(int buttonKey){
     if ((mouseButtons & SDL_BUTTON(buttonKey))!=0){
         clickedFrameNo[i]++;
         if (clickedFrameNo[i] > 1){
-            held = true;
             return(HELD);
         }
         if (clickedFrameNo[i] == 1)
@@ -30,10 +29,8 @@ b_States Input::isPressed(int buttonKey){
     
     if (clickedFrameNo[i]>0){
         clickedFrameNo[i] = 0;
-        held = false;
         return(RELEASED);
     }
-    return(IDLE);
 }
 
 
@@ -56,6 +53,7 @@ void Input::handleMouseInput(vec2 windowSize){
     static vec2 bounds;
     bounds.x = X_BOUND(windowSize.x);
     bounds.y = Y_BOUND(windowSize.y);
+
     switch (isPressed(SDL_BUTTON_LEFT))
     {
     case CLICKED:{
@@ -206,9 +204,6 @@ void Input::handleMouseInput(vec2 windowSize){
         }
         break;
     }
-
-    case PRESSED:
-    case IDLE:
     default:
         break;
     }
