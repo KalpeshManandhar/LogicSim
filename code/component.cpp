@@ -91,7 +91,10 @@ void Component::setSprites(){
         spriteSrc.y = 216;
         spriteSrc.h = 108;
     }
-    spriteSrc.x = (type%5) * 146; 
+    if (type == 9)
+        spriteSrc.x = 2 * 146; 
+    else
+        spriteSrc.x = (type%5) * 146; 
 }
 
 // sets the number of input and output pins
@@ -106,6 +109,7 @@ void Component::setPinNo(){
         outputNo = 0;
         inputNo = 1;
         break;
+    case _CLOCK:
     case _INPUT:
         inputNo = 0;
         outputNo = 1;
@@ -125,11 +129,11 @@ void Component::setPinNo(){
         outputNo = 2;
         break;
     case _4x2ENCODER:
-        inputNo = 4;
+        inputNo = 5;
         outputNo = 2;
         break;
     case _2x4DECODER:
-        inputNo = 2;
+        inputNo = 3;
         outputNo = 4;
         break;
 
@@ -175,7 +179,7 @@ void Component::setPinPos(){
         inPin[0].pos->y = 36;
     }
     // zero input pins
-    else if (type == _INPUT){                       
+    else if (type == _INPUT || type == _CLOCK){                       
         inPin[0].pos->x = -200;
         inPin[0].pos->y = -400;
     }
@@ -205,6 +209,8 @@ void Component::setPinPos(){
         inPin[0].pos->y = 38;
         inPin[1].pos->x = 4;
         inPin[1].pos->y = 70;
+        inPin[2].pos->x = 73;
+        inPin[2].pos->y = 105;
     }
     // two input pins
     else{                                           
@@ -415,18 +421,27 @@ void OutputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
 }
 
 // default frequency of clock 1HZ
-Clock::Clock(float timePeriod = 1000){
+Clock::Clock(float timePeriod){
     T = timePeriod;
-    lastPulse = 0;
+    duration = 0;
     sendOp = true;
 }
 
-void Clock::setOutput(int frameTime){
-    lastPulse += frameTime;
-    if (lastPulse >= (T * 0.5)){
-        sendOp = (output[0] == 0)?true:false;
-        output[0] = (output[0] == 1)? 0:1;
-        lastPulse = 0;
+void Clock::setOutput(int FPS){
+    static float Tseconds = T/1000;
+    // sendOp sends HIGH only on first frame for transition activation
+    sendOp = false;
+    // half cycle 
+    if (duration == ((FPS * Tseconds/2 ))){
+        std::cout<<"half";
+        sendOp = true;
+        output[0] = 1;
     }
-        
+    // full cycle
+    else if (duration == FPS * Tseconds){
+        std::cout<<"full";
+        output[0] = 0;
+        duration = 0;
+    }
+    duration ++;
 }

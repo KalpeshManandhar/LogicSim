@@ -87,8 +87,9 @@ public:
 };
 
 class Clock:public InputComponent{
-    uint32_t lastPulse;
+    float duration;
     float T;
+    bool logicToSend;
 public:
     Clock(float timePeriod);
     void setOutput(int frameTime);

@@ -60,8 +60,7 @@ void Input::handleMouseInput(vec2 windowSize){
         std::cout<<"leftCLick";
         int i;
         // adds a new component
-        if (mousePos.y>(bounds.y-50) && mousePos.y<(windowSize.y) && Component::componentNo != MAX_COMPONENTS)
-        {
+        if (mousePos.y>(bounds.y-50) && mousePos.y<(windowSize.y) && Component::componentNo != MAX_COMPONENTS){
             if(mousePos.y < bounds.y - 10){
                 if (mousePos.x>30+0*(130) && mousePos.x<1*130){
                     addComponent(_AND);
@@ -97,6 +96,10 @@ void Input::handleMouseInput(vec2 windowSize){
                 }
                 if (mousePos.x>30+8*130 && mousePos.x<9*130){
                     addComponent(_OUTPUT);
+                    break;
+                }
+                if (mousePos.x>30+9*130 && mousePos.x<10*130){
+                    addComponent(_CLOCK);
                     break;
                 }
             }
@@ -233,6 +236,18 @@ void Input::addComponent(c_type type){
         else{
             delete components[availableIndex];
             components[availableIndex] = new InputComponent;
+            components[availableIndex]->setValues(type, mousePos, availableIndex);
+        }
+    }
+    else if (type == _CLOCK){
+        std::cout<<"Added clock comp";
+        if (availableIndex == -1){
+            components[Component::componentNo] = new Clock(1000);
+            components[Component::componentNo]->setValues(type, mousePos,-1);
+        }
+        else{
+            delete components[availableIndex];
+            components[availableIndex] = new Clock(1000);
             components[availableIndex]->setValues(type, mousePos, availableIndex);
         }
     }

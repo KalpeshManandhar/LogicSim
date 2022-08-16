@@ -8,7 +8,7 @@
 #define WIN_HEIGHT 760
 #define WIN_WIDTH 1440
 
-#define FPS 120
+#define FPS 32
 #define FRAME_LIMIT (1000/FPS)
 
 Component *components[MAX_COMPONENTS];
@@ -163,29 +163,36 @@ void Graphics::drawWires(){
 void Graphics::callLogic(){
     static Logic logicHandler;
     bool clockPulse;
-    int i,j,k;
+    int i,j,k,l;
     // loops twice as components aren't stored in order of connection 
     // that caused the logic to be wrong on some frames when input changed
-    for (k = 0; k<2; k++){
+    for (k = 0; k<1; k++){
         for (i = 0; i<Component::componentNo; i++){
-            // updates the corresponding inputs from outputs
-            for (j = 0; j<Wire::totalWires; j++){
-                if (components[i]->sendOutput())
-                    if (wires[j].getStatus() == _COMPLETE)
-                        wires[j].sendLogic();
-            }
-
             switch(components[i]->getType()){
                 case _INPUT:
                     break;
                 // updates the clock
                 case _CLOCK:
-                    components[i]->setOutput(FRAME_LIMIT);
+                    components[i]->setOutput(FPS);
                     break;
                 // computes the logic for the component
                 default:
                     components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
                     break;
+            }
+
+            // updates the corresponding inputs from outputs
+            for (j = 0; j<Wire::totalWires; j++){
+                for (l=0; l< components[i]->getOutputNo(); l++){
+                    if (components[i]->sendOutput()){
+                        if (wires[j].getStatus() == _COMPLETE)
+                            wires[j].sendLogic(components[i]->getOutPinAddress(l), -1);
+                    }
+                    else{
+                        if (wires[j].getStatus() == _COMPLETE)
+                            wires[j].sendLogic(components[i]->getOutPinAddress(l), 0);
+                    }
+                }
             }
         }   
     }

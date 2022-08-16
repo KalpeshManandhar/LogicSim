@@ -1,5 +1,7 @@
 #pragma once
 
+#define ABS(X) ((X<0)?(-X):(X))
+
 struct vec2{        // 2d vector for coordinates 
     int x,y;
 };

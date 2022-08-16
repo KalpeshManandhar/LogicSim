@@ -157,9 +157,14 @@ void Wire::removeWiresToComponent(Component * c){
 }
 
 // updates the inputs of next component with output of present component
-void Wire::sendLogic(){
-    if (start->type == _IN)
-        *(start->logic) = *(logic);
-    else
-        *(end->logic) = *(logic);
+// op to send specific logic
+void Wire::sendLogic(Pin* opPin, int op){
+    int output = (op == -1)?(*(logic)):op;
+    if (start == opPin || end ==opPin){
+        if (start->type == _IN)
+            *(start->logic) = output;
+        else
+            *(end->logic) = output;
+    }
+    
 }

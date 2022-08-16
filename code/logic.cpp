@@ -51,6 +51,8 @@ inline int Logic::ENCODERLogic(int * inputs){
 
 template <int in_num>
 inline int Logic::DECODERLogic(int * inputs){
+    if (inputs[in_num] == 0)
+        return(0);
     int i,j=0,k=1;
     for (i=0; i<in_num; i++){
         j = (j<<1)|inputs[i];
