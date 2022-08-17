@@ -34,7 +34,7 @@ public:
 
 	SDL_Renderer* getRenderer();
 	SDL_Texture* getTexture();
-	void componentLoad();
+	void componentLoad(load_type);
 	void getWindowSize();
 	int windowDim(int a);
 	

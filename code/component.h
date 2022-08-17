@@ -82,5 +82,7 @@ public:
 
 
 extern Component *components[MAX_COMPONENTS];
+extern int comp_spawn[13][4];
+
 
 

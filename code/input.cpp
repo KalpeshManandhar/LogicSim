@@ -1,7 +1,7 @@
 #include "input.h"
 #include "component.h"
 #include <iostream>
-
+//int comp_spawn[13][4];
 
 
 
@@ -60,87 +60,92 @@ void Input::handleMouseInput(vec2 windowSize){
     {
     case CLICKED:{
         std::cout<<"leftCLick";
+        std::cout<<mousePos.x<<"\t"<<mousePos.y<<std::endl;
+        std::cout<<comp_spawn[_AND][0]<<'\t'<<mousePos.x<<'\t'<<comp_spawn[_AND][2]<<'\t'<<comp_spawn[_AND][1]<<'\t'<<mousePos.y<<'\t'<<comp_spawn[_AND][3]<<std::endl;
         int i;
         // adds a new component
-        if (mousePos.y>(bounds.y-50) && mousePos.y<(windowSize.y) && Component::componentNo != MAX_COMPONENTS)
+        if ( Component::componentNo != MAX_COMPONENTS)
         {
-            if(mousePos.y < bounds.y - 10){
-                if (mousePos.x>30+0*(130) && mousePos.x<1*130){
+            if(mousePos.y>comp_spawn[_AND][1] && mousePos.y<comp_spawn[_AND][1]+comp_spawn[_AND][3]){
+                if (mousePos.x>comp_spawn[_AND][0] && mousePos.x<comp_spawn[_AND][0]+comp_spawn[_AND][2] ){
+                    std::cout<<comp_spawn[_AND][0]<<'\t'<<mousePos.x<<'\t'<<comp_spawn[_AND][2]<<'\t'<<comp_spawn[_AND][1]<<'\t'<<mousePos.y<<'\t'<<comp_spawn[_AND][3]<<std::endl;
                     addComponent(_AND);
                     break;
                 }
-                if (mousePos.x>30+1*130 && mousePos.x<2*130){
+                if (mousePos.x>=comp_spawn[_OR][0] && mousePos.x<=comp_spawn[_OR][2]+comp_spawn[_OR][0] ){
                     addComponent(_OR);
                     break;
                 }
-                if (mousePos.x>30+2*130 && mousePos.x<3*130){
+                if (mousePos.x>comp_spawn[_NOT][0] && mousePos.x<comp_spawn[_NOT][2]+comp_spawn[_NOT][0] ){
                     addComponent(_NOT);
                     break;
                 }
-                if (mousePos.x>30+3*130 && mousePos.x<4*130){
+                if (mousePos.x>comp_spawn[_NAND][0] && mousePos.x<comp_spawn[_NAND][2]+comp_spawn[_NAND][0]){
                     addComponent(_NAND);
                     break;
                 }
-                if (mousePos.x>30+4*130 && mousePos.x<5*130){
+                if (mousePos.x>comp_spawn[_NOR][0] && mousePos.x<comp_spawn[_NOR][2] +comp_spawn[_NOR][0]){
                     addComponent(_NOR);
                     break;
                 }
-                if (mousePos.x>30+5*130 && mousePos.x<6*130){
+                if (mousePos.x>comp_spawn[_XOR][0] && mousePos.x<comp_spawn[_XOR][2] +comp_spawn[_XOR][0]){
                     addComponent(_XOR);
                     break;
                 }
-                if (mousePos.x>30+6*130 && mousePos.x<7*130){
+                if (mousePos.x>comp_spawn[_XNOR][0] && mousePos.x<comp_spawn[_XNOR][2]+comp_spawn[_XNOR][0] ){
                     addComponent(_XNOR);
                     break;
                 }
-                if (mousePos.x>30+7*130 && mousePos.x<8*130){
+                
+            }
+            if (mousePos.x>comp_spawn[_INPUT][0] && mousePos.x<comp_spawn[_INPUT][2]+comp_spawn[_INPUT][0] &&mousePos.y>comp_spawn[_INPUT][1]&&mousePos.y<comp_spawn[_INPUT][3]+comp_spawn[_INPUT][1]){
                     addComponent(_INPUT);
                     break;
                 }
-                if (mousePos.x>30+8*130 && mousePos.x<9*130){
+                if (mousePos.x>comp_spawn[_OUTPUT][0] && mousePos.x<comp_spawn[_OUTPUT][2]+comp_spawn[_OUTPUT][0]&&mousePos.y>comp_spawn[_OUTPUT][1]&&mousePos.y<comp_spawn[_OUTPUT][3]+comp_spawn[_OUTPUT][1]){
                     addComponent(_OUTPUT);
                     break;
                 }
             }
-            else{
-                if (mousePos.x>30+0*130 && mousePos.x<1*130){
-                    addComponent(_ADDER);
-                    break;
-                }
-                if (mousePos.x>30+1*130 && mousePos.x<2*130){
-                    addComponent(_SUBTRACTOR);
-                    break;
-                }
-                if (mousePos.x>30+2*130 && mousePos.x<3*130){
-                    addComponent(_4x2ENCODER);
-                    break;
-                }
-                if (mousePos.x>30+3*130 && mousePos.x<4*130){
-                    addComponent(_2x4DECODER);
-                    break;
-                }
-                if (mousePos.x>30+4*130 && mousePos.x<5*130){
-                    addComponent(_NOR);
-                    break;
-                }
-                if (mousePos.x>30+5*130 && mousePos.x<6*130){
-                    addComponent(_XOR);
-                    break;
-                }
-                if (mousePos.x>30+6*130 && mousePos.x<7*130){
-                    addComponent(_XNOR);
-                    break;
-                }
-                if (mousePos.x>30+7*130 && mousePos.x<8*130){
-                    addComponent(_INPUT);
-                    break;
-                }
-                if (mousePos.x>30+8*130 && mousePos.x<9*130){
-                    addComponent(_OUTPUT);
-                    break;
-                }
-            }
-        }
+            // else{
+            //     if (mousePos.x>30+0*130 && mousePos.x<1*130){
+            //         addComponent(_ADDER);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+1*130 && mousePos.x<2*130){
+            //         addComponent(_SUBTRACTOR);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+2*130 && mousePos.x<3*130){
+            //         addComponent(_4x2ENCODER);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+3*130 && mousePos.x<4*130){
+            //         addComponent(_2x4DECODER);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+4*130 && mousePos.x<5*130){
+            //         addComponent(_NOR);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+5*130 && mousePos.x<6*130){
+            //         addComponent(_XOR);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+6*130 && mousePos.x<7*130){
+            //         addComponent(_XNOR);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+7*130 && mousePos.x<8*130){
+            //         addComponent(_INPUT);
+            //         break;
+            //     }
+            //     if (mousePos.x>30+8*130 && mousePos.x<9*130){
+            //         addComponent(_OUTPUT);
+            //         break;
+            //     }
+            //}
+        //}
         
         // selecting a component
         for(i=0;i<Component::componentNo; i++){

@@ -13,7 +13,7 @@
 
 Component *components[MAX_COMPONENTS];
 Wire *wires;
-
+int comp_spawn[13][4];
 
 Graphics::Graphics(){
     wires = new Wire[MAX_WIRES];
@@ -73,7 +73,7 @@ int Graphics::mainLoop(){
 
         // clear screen and draw the components/ wires
         clearScreen(68,75,110, false);        
-        componentLoad();
+        componentLoad(_GATES);
         drawComponents();
         drawWires();
 
@@ -133,19 +133,36 @@ SDL_Texture* Graphics::getTexture(){
 }
 
 // spawn area components
-void Graphics::componentLoad()
+void Graphics::componentLoad(load_type type)
 {
+    short i=0;
     int shift=30;
     SDL_Rect source = {0,0,146,72}, destination = {0,Y_BOUND(windowSize.y)-60,(int)(146*0.7),(int)(72*0.7)};
-    for(short i=0;i<13;i++){
-        if (i == 9)
-            continue;
-        source.x = (i%5)*146;
-        source.y = (i/5)*72;
-        destination.x = shift + (shift + destination.w)* (i%10);
-        destination.y = Y_BOUND(windowSize.y)-60 + (i/10) * (destination.h + 20);
-        SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    if(type==_GATES)
+    {
+        for(short i=_AND;i<_INPUT;i++)
+        {        
+            source.x = (i%5)*146;
+            source.y = (i/5)*72;
+            destination.x = shift + (shift + destination.w)* (i%10);
+            destination.y = Y_BOUND(windowSize.y)-80 + (i/10) * (destination.h + 20);
+            comp_spawn[i][0]=destination.x;comp_spawn[i][1]=destination.y;comp_spawn[i][2]=destination.w;comp_spawn[i][3]=destination.h;
+            SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+        }       
     }
+    //IN and Out pin load
+    source.x=2*146;
+    source.y=1*72;
+    destination.x = shift + (shift + destination.w)* 8;
+    destination.y = Y_BOUND(windowSize.y)-80 + 0 * (destination.h + 20);
+    comp_spawn[_INPUT][0]=destination.x;comp_spawn[_INPUT][1]=destination.y;comp_spawn[_INPUT][2]=destination.w;comp_spawn[_INPUT][3]=destination.h;
+    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    source.x=3*146;
+    source.y=1*72;
+    destination.x = shift + (shift + destination.w)* 8;
+    destination.y = Y_BOUND(windowSize.y)-80 + 1 * (destination.h + 20);
+    comp_spawn[_OUTPUT][0]=destination.x;comp_spawn[_OUTPUT][1]=destination.y;comp_spawn[_OUTPUT][2]=destination.w;comp_spawn[_OUTPUT][3]=destination.h;
+    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
 }
 
 void Graphics::drawWires(){
