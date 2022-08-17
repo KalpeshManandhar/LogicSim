@@ -169,19 +169,6 @@ void Graphics::componentLoad()
         comp_spawn[i%10][3]=destination.h;
         SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
     }
-    //IN and Out pin load
-    source.x=2*146;
-    source.y=1*72;
-    destination.x = shift + (shift + destination.w)* 8;
-    destination.y = Y_BOUND(windowSize.y)-80 + 0 * (destination.h + 20);
-    comp_spawn[_INPUT][0]=destination.x;comp_spawn[_INPUT][1]=destination.y;comp_spawn[_INPUT][2]=destination.w;comp_spawn[_INPUT][3]=destination.h;
-    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
-    source.x=3*146;
-    source.y=1*72;
-    destination.x = shift + (shift + destination.w)* 8;
-    destination.y = Y_BOUND(windowSize.y)-80 + 1 * (destination.h + 20);
-    comp_spawn[_OUTPUT][0]=destination.x;comp_spawn[_OUTPUT][1]=destination.y;comp_spawn[_OUTPUT][2]=destination.w;comp_spawn[_OUTPUT][3]=destination.h;
-    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
 }
 
 void Graphics::drawWires(){
