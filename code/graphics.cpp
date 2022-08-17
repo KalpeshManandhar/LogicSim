@@ -13,6 +13,9 @@
 
 Component *components[MAX_COMPONENTS];
 Wire *wires;
+Button gate = {0,0,25,15, true};
+Button comb = {0,0,25,15,false};
+Button ff = {0,0,25,15,false};
 
 
 Graphics::Graphics(){
@@ -34,6 +37,7 @@ Graphics::Graphics(){
     isRunning = true;
     windowSize.x = WIN_WIDTH;
     windowSize.y = WIN_HEIGHT;
+    compLoadType = _GATES;
 }
 
 Graphics::~Graphics(){
@@ -69,7 +73,7 @@ int Graphics::mainLoop(){
 
         // handle mouse inputs
         input.getMouseState();
-        input.handleMouseInput(windowSize);
+        input.handleMouseInput(windowSize, compLoadType);
 
         // logic computation
         callLogic();
@@ -77,6 +81,7 @@ int Graphics::mainLoop(){
         // clear screen and draw the components/ wires
         clearScreen(68,75,110, false);        
         componentLoad();
+
         drawComponents();
         drawWires();
 
@@ -138,15 +143,24 @@ SDL_Texture* Graphics::getTexture(){
 // spawn area components
 void Graphics::componentLoad()
 {
+    gate.button.x = X_BOUND(windowSize.x) - 10;
+    gate.button.y = Y_BOUND(windowSize.y) - 55;
+    comb.button.x = X_BOUND(windowSize.x) - 10;
+    comb.button.y = Y_BOUND(windowSize.y) - 30;
+    ff.button.x = X_BOUND(windowSize.x) - 10;
+    ff.button.y = Y_BOUND(windowSize.y) - 5;
+    
+    gate.draw(renderer);
+    comb.draw(renderer);
+    ff.draw(renderer);
+
     int shift=30;
-    SDL_Rect source = {0,0,146,72}, destination = {0,Y_BOUND(windowSize.y)-60,(int)(146*0.7),(int)(72*0.7)};
-    for(short i=0;i<13;i++){
-        if (i == 9)
-            continue;
+    static SDL_Rect source = {0,0,146,72}, destination = {0,Y_BOUND(windowSize.y)-60,(int)(146*0.7),(int)(72*0.7)};
+    for(short i=compLoadType * 10;i< compLoadType *10 + 9;i++){
         source.x = (i%5)*146;
         source.y = (i/5)*72;
         destination.x = shift + (shift + destination.w)* (i%10);
-        destination.y = Y_BOUND(windowSize.y)-60 + (i/10) * (destination.h + 20);
+        destination.y = Y_BOUND(windowSize.y)-60;
         SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
     }
 }

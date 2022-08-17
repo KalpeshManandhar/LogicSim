@@ -15,6 +15,7 @@ class Graphics {
 	SDL_Texture *textureOfGates, *textureOfGrid;
 	bool isRunning;
 	vec2 windowSize;
+	load_type compLoadType;
 public:
 	SDL_Renderer *renderer;
 

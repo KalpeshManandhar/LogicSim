@@ -20,7 +20,7 @@ public:
     void getMouseState();
     int pollEvents();
     void printMousePos();
-    void handleMouseInput(vec2 windowSize);
+    void handleMouseInput(vec2 windowSize, load_type & type);
     void addComponent(c_type type);
     void addWire();
 };

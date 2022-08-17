@@ -17,10 +17,17 @@ struct Button{
     SDL_Rect button;
     bool pressedFlag;
     bool mouseHover(vec2 mousePos){
-        if ((mousePos.x > button.x) && (mousePos.x < (button.x + button.w)) && (mousePos.y > button.y) && (mousePos.y < button.y + button.h)){
+        if ((mousePos.x > button.x) && (mousePos.x < (button.x + button.w)) && (mousePos.y > button.y) && (mousePos.y < button.y + button.h))
             return(true);
-        }   
         return(false);
+    }
+
+    void draw(SDL_Renderer * renderer){
+        if (pressedFlag)
+            SDL_SetRenderDrawColor(renderer, SELECT_GREEN);
+        else    
+            SDL_SetRenderDrawColor(renderer, 182, 196, 162, 255);
+        SDL_RenderFillRect(renderer, &button);
     }
 };
 
@@ -98,5 +105,9 @@ public:
 
 
 extern Component *components[MAX_COMPONENTS];
+
+extern Button gate;
+extern Button comb;
+extern Button ff;
 
 

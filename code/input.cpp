@@ -47,7 +47,7 @@ void Input::printMousePos(){
 
 
 
-void Input::handleMouseInput(vec2 windowSize){
+void Input::handleMouseInput(vec2 windowSize, load_type &type){
     bool mouseHoverFlag = false;
     int pinHoverFlag = -1;
     static vec2 bounds;
@@ -61,7 +61,7 @@ void Input::handleMouseInput(vec2 windowSize){
         int i;
         // adds a new component
         if (mousePos.y>(bounds.y-50) && mousePos.y<(windowSize.y) && Component::componentNo != MAX_COMPONENTS){
-            if(mousePos.y < bounds.y - 10){
+            if(type == _GATES){
                 if (mousePos.x>30+0*(130) && mousePos.x<1*130){
                     addComponent(_AND);
                     break;
@@ -103,7 +103,7 @@ void Input::handleMouseInput(vec2 windowSize){
                     break;
                 }
             }
-            else{
+            else if(type == _COMB){
                 if (mousePos.x>30+0*130 && mousePos.x<1*130){
                     addComponent(_ADDER);
                     break;
@@ -142,6 +142,27 @@ void Input::handleMouseInput(vec2 windowSize){
                 }
             }
         }
+
+        //  spawn components change
+        if (gate.mouseHover(mousePos)){
+            gate.pressedFlag = true;
+            comb.pressedFlag = false;
+            ff.pressedFlag = false;
+            type = _GATES;
+        }
+        else if (comb.mouseHover(mousePos)){
+            comb.pressedFlag = true;
+            gate.pressedFlag = false;
+            ff.pressedFlag = false;
+            type = _COMB;
+        }
+        else if (ff.mouseHover(mousePos)){
+            ff.pressedFlag = true;
+            comb.pressedFlag = false;
+            gate.pressedFlag = false;
+            type = _FF;
+        }
+        
         
         // selecting a component
         for(i=0;i<Component::componentNo; i++){
