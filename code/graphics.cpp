@@ -13,10 +13,12 @@
 
 Component *components[MAX_COMPONENTS];
 Wire *wires;
+
 Button gate = {0,0,25,15, true};
 Button comb = {0,0,25,15,false};
 Button ff = {0,0,25,15,false};
 
+int comp_spawn[13][4];
 
 Graphics::Graphics(){
     wires = new Wire[MAX_WIRES];
@@ -161,8 +163,25 @@ void Graphics::componentLoad()
         source.y = (i/5)*72;
         destination.x = shift + (shift + destination.w)* (i%10);
         destination.y = Y_BOUND(windowSize.y)-60;
+        comp_spawn[i%10][0]=destination.x;
+        comp_spawn[i%10][1]=destination.y;
+        comp_spawn[i%10][2]=destination.w;
+        comp_spawn[i%10][3]=destination.h;
         SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
     }
+    //IN and Out pin load
+    source.x=2*146;
+    source.y=1*72;
+    destination.x = shift + (shift + destination.w)* 8;
+    destination.y = Y_BOUND(windowSize.y)-80 + 0 * (destination.h + 20);
+    comp_spawn[_INPUT][0]=destination.x;comp_spawn[_INPUT][1]=destination.y;comp_spawn[_INPUT][2]=destination.w;comp_spawn[_INPUT][3]=destination.h;
+    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    source.x=3*146;
+    source.y=1*72;
+    destination.x = shift + (shift + destination.w)* 8;
+    destination.y = Y_BOUND(windowSize.y)-80 + 1 * (destination.h + 20);
+    comp_spawn[_OUTPUT][0]=destination.x;comp_spawn[_OUTPUT][1]=destination.y;comp_spawn[_OUTPUT][2]=destination.w;comp_spawn[_OUTPUT][3]=destination.h;
+    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
 }
 
 void Graphics::drawWires(){

@@ -23,5 +23,5 @@ enum c_type{
 };
 
 enum load_type{
-    _GATES, _COMB, _FF
+    _GATES, _COMBINATIONAL, _SEQUENTIAL
 };

@@ -1,7 +1,7 @@
 #include "input.h"
 #include "component.h"
 #include <iostream>
-
+//int comp_spawn[13][4];
 
 
 
@@ -62,83 +62,80 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
         // adds a new component
         if (mousePos.y>(bounds.y-50) && mousePos.y<(windowSize.y) && Component::componentNo != MAX_COMPONENTS){
             if(type == _GATES){
-                if (mousePos.x>30+0*(130) && mousePos.x<1*130){
-                    addComponent(_AND);
-                    break;
-                }
-                if (mousePos.x>30+1*130 && mousePos.x<2*130){
-                    addComponent(_OR);
-                    break;
-                }
-                if (mousePos.x>30+2*130 && mousePos.x<3*130){
-                    addComponent(_NOT);
-                    break;
-                }
-                if (mousePos.x>30+3*130 && mousePos.x<4*130){
-                    addComponent(_NAND);
-                    break;
-                }
-                if (mousePos.x>30+4*130 && mousePos.x<5*130){
-                    addComponent(_NOR);
-                    break;
-                }
-                if (mousePos.x>30+5*130 && mousePos.x<6*130){
-                    addComponent(_XOR);
-                    break;
-                }
-                if (mousePos.x>30+6*130 && mousePos.x<7*130){
-                    addComponent(_XNOR);
-                    break;
-                }
-                if (mousePos.x>30+7*130 && mousePos.x<8*130){
-                    addComponent(_INPUT);
-                    break;
-                }
-                if (mousePos.x>30+8*130 && mousePos.x<9*130){
-                    addComponent(_OUTPUT);
-                    break;
-                }
-                if (mousePos.x>30+9*130 && mousePos.x<10*130){
-                    addComponent(_CLOCK);
-                    break;
+                if(mousePos.y>comp_spawn[0][1] && mousePos.y<(comp_spawn[0][1]+comp_spawn[0][3])){
+                    if (mousePos.x>comp_spawn[0][0] && mousePos.x<(comp_spawn[0][0]+comp_spawn[0][2]) ){
+                        addComponent(_AND);
+                        break;
+                    }
+                    if (mousePos.x>=comp_spawn[1][0] && mousePos.x<=(comp_spawn[1][2]+comp_spawn[1][0]) ){
+                        addComponent(_OR);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[2][0] && mousePos.x<(comp_spawn[2][2]+comp_spawn[2][0]) ){
+                        addComponent(_NOT);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[3][0] && mousePos.x<(comp_spawn[3][2]+comp_spawn[3][0])){
+                        addComponent(_NAND);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[4][0] && mousePos.x<(comp_spawn[4][2] +comp_spawn[4][0])){
+                        addComponent(_NOR);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[5][0] && mousePos.x<(comp_spawn[5][2] +comp_spawn[5][0])){
+                        addComponent(_XOR);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[6][0] && mousePos.x<(comp_spawn[6][2]+comp_spawn[6][0]) ){
+                        addComponent(_XNOR);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[7][0] && mousePos.x<(comp_spawn[7][2]+comp_spawn[7][0])){
+                        addComponent(_INPUT);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[8][0] && mousePos.x<(comp_spawn[8][2]+comp_spawn[8][0])){
+                        addComponent(_OUTPUT);
+                        break;
+                    }
+                    if (mousePos.x>comp_spawn[9][0] && mousePos.x<(comp_spawn[9][2]+comp_spawn[9][0])){
+                        addComponent(_CLOCK);
+                        break;
+                    }
                 }
             }
-            else if(type == _COMB){
-                if (mousePos.x>30+0*130 && mousePos.x<1*130){
+            else if(type == _COMBINATIONAL){
+                if (mousePos.x>comp_spawn[0][0] && mousePos.x<(comp_spawn[0][0]+comp_spawn[0][2]) ){
                     addComponent(_ADDER);
                     break;
                 }
-                if (mousePos.x>30+1*130 && mousePos.x<2*130){
+                if (mousePos.x>comp_spawn[1][0] && mousePos.x<(comp_spawn[1][0]+comp_spawn[1][2]) ){
                     addComponent(_SUBTRACTOR);
                     break;
                 }
-                if (mousePos.x>30+2*130 && mousePos.x<3*130){
+                if (mousePos.x>comp_spawn[2][0] && mousePos.x<(comp_spawn[2][0]+comp_spawn[2][2]) ){
                     addComponent(_4x2ENCODER);
                     break;
                 }
-                if (mousePos.x>30+3*130 && mousePos.x<4*130){
+                if (mousePos.x>comp_spawn[3][0] && mousePos.x<(comp_spawn[3][0]+comp_spawn[3][2]) ){
                     addComponent(_2x4DECODER);
                     break;
                 }
-                if (mousePos.x>30+4*130 && mousePos.x<5*130){
+                if (mousePos.x>comp_spawn[4][0] && mousePos.x<(comp_spawn[4][0]+comp_spawn[4][2]) ){
                     addComponent(_NOR);
                     break;
                 }
-                if (mousePos.x>30+5*130 && mousePos.x<6*130){
+                if (mousePos.x>comp_spawn[5][0] && mousePos.x<(comp_spawn[5][0]+comp_spawn[5][2]) ){
                     addComponent(_XOR);
                     break;
                 }
-                if (mousePos.x>30+6*130 && mousePos.x<7*130){
+                if (mousePos.x>comp_spawn[6][0] && mousePos.x<(comp_spawn[6][0]+comp_spawn[6][2]) ){
                     addComponent(_XNOR);
                     break;
                 }
-                if (mousePos.x>30+7*130 && mousePos.x<8*130){
-                    addComponent(_INPUT);
-                    break;
-                }
-                if (mousePos.x>30+8*130 && mousePos.x<9*130){
-                    addComponent(_OUTPUT);
-                    break;
+                if (mousePos.x>comp_spawn[7][0] && mousePos.x<(comp_spawn[7][0]+comp_spawn[7][2]) ){
+
                 }
             }
         }
@@ -154,16 +151,15 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
             comb.pressedFlag = true;
             gate.pressedFlag = false;
             ff.pressedFlag = false;
-            type = _COMB;
+            type = _COMBINATIONAL;
         }
         else if (ff.mouseHover(mousePos)){
             ff.pressedFlag = true;
             comb.pressedFlag = false;
             gate.pressedFlag = false;
-            type = _FF;
+            type = _SEQUENTIAL;
         }
-        
-        
+            
         // selecting a component
         for(i=0;i<Component::componentNo; i++){
             if (components[i]->mouseHover(mousePos, pinHoverFlag) == true){
@@ -175,12 +171,6 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
 
         // pin clicked?
         if (pinHoverFlag == 1){
-            std::cout<<"Pin clicked";
-            if (Component::selectedPin->type == _IN)
-                std::cout<<"Input";
-            else
-                std::cout<<"output";
-
             // adds wire if no wire is currently selected (start pin)
             if (Wire::selectedWireNo == -1)
                 addWire();
@@ -236,8 +226,8 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
     if (isPressed(SDL_BUTTON_RIGHT) == CLICKED && Wire::selectedWireNo != -1){
         wires[Wire::selectedWireNo].removeWire();
     }
+    
 }
-
 
 void Input::addComponent(c_type type){
     int availableIndex = -1,i;
