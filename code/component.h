@@ -3,8 +3,8 @@
 #include "utils.h"
 #include "SDL.h"
 
-#define MAX_INPUTS 5
-#define MAX_OUTPUTS 5
+#define MAX_INPUTS 11
+#define MAX_OUTPUTS 8
 #define MAX_COMPONENTS 25
 #define MAX_PROBES 5
 
@@ -67,6 +67,7 @@ public:
     Pin* getInPinAddress(int i);
     Pin* getOutPinAddress(int i);
     int * getInputs();
+    int * getOutputs();
     bool sendOutput();
 };
 

@@ -65,43 +65,24 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
                 if(mousePos.y>comp_spawn[0][1] && mousePos.y<(comp_spawn[0][1]+comp_spawn[0][3])){
                     if (mousePos.x>comp_spawn[0][0] && mousePos.x<(comp_spawn[0][0]+comp_spawn[0][2]) ){
                         addComponent(_AND);
-                        break;
                     }
-                    if (mousePos.x>=comp_spawn[1][0] && mousePos.x<=(comp_spawn[1][2]+comp_spawn[1][0]) ){
+                    else if (mousePos.x>=comp_spawn[1][0] && mousePos.x<=(comp_spawn[1][2]+comp_spawn[1][0]) ){
                         addComponent(_OR);
-                        break;
                     }
-                    if (mousePos.x>comp_spawn[2][0] && mousePos.x<(comp_spawn[2][2]+comp_spawn[2][0]) ){
+                    else if (mousePos.x>comp_spawn[2][0] && mousePos.x<(comp_spawn[2][2]+comp_spawn[2][0]) ){
                         addComponent(_NOT);
-                        break;
                     }
-                    if (mousePos.x>comp_spawn[3][0] && mousePos.x<(comp_spawn[3][2]+comp_spawn[3][0])){
+                    else if (mousePos.x>comp_spawn[3][0] && mousePos.x<(comp_spawn[3][2]+comp_spawn[3][0])){
                         addComponent(_NAND);
-                        break;
                     }
-                    if (mousePos.x>comp_spawn[4][0] && mousePos.x<(comp_spawn[4][2] +comp_spawn[4][0])){
+                    else if (mousePos.x>comp_spawn[4][0] && mousePos.x<(comp_spawn[4][2] +comp_spawn[4][0])){
                         addComponent(_NOR);
-                        break;
                     }
-                    if (mousePos.x>comp_spawn[5][0] && mousePos.x<(comp_spawn[5][2] +comp_spawn[5][0])){
+                    else if (mousePos.x>comp_spawn[5][0] && mousePos.x<(comp_spawn[5][2] +comp_spawn[5][0])){
                         addComponent(_XOR);
-                        break;
                     }
-                    if (mousePos.x>comp_spawn[6][0] && mousePos.x<(comp_spawn[6][2]+comp_spawn[6][0]) ){
+                    else if (mousePos.x>comp_spawn[6][0] && mousePos.x<(comp_spawn[6][2]+comp_spawn[6][0]) ){
                         addComponent(_XNOR);
-                        break;
-                    }
-                    if (mousePos.x>comp_spawn[7][0] && mousePos.x<(comp_spawn[7][2]+comp_spawn[7][0])){
-                        addComponent(_INPUT);
-                        break;
-                    }
-                    if (mousePos.x>comp_spawn[8][0] && mousePos.x<(comp_spawn[8][2]+comp_spawn[8][0])){
-                        addComponent(_OUTPUT);
-                        break;
-                    }
-                    if (mousePos.x>comp_spawn[9][0] && mousePos.x<(comp_spawn[9][2]+comp_spawn[9][0])){
-                        addComponent(_CLOCK);
-                        break;
                     }
                 }
             }
@@ -110,33 +91,58 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
                     addComponent(_ADDER);
                     break;
                 }
-                if (mousePos.x>comp_spawn[1][0] && mousePos.x<(comp_spawn[1][0]+comp_spawn[1][2]) ){
+                else if (mousePos.x>comp_spawn[1][0] && mousePos.x<(comp_spawn[1][0]+comp_spawn[1][2]) ){
                     addComponent(_SUBTRACTOR);
                     break;
                 }
-                if (mousePos.x>comp_spawn[2][0] && mousePos.x<(comp_spawn[2][0]+comp_spawn[2][2]) ){
+                else if (mousePos.x>comp_spawn[2][0] && mousePos.x<(comp_spawn[2][0]+comp_spawn[2][2]) ){
                     addComponent(_4x2ENCODER);
                     break;
                 }
-                if (mousePos.x>comp_spawn[3][0] && mousePos.x<(comp_spawn[3][0]+comp_spawn[3][2]) ){
+                else if (mousePos.x>comp_spawn[3][0] && mousePos.x<(comp_spawn[3][0]+comp_spawn[3][2]) ){
                     addComponent(_2x4DECODER);
                     break;
                 }
-                if (mousePos.x>comp_spawn[4][0] && mousePos.x<(comp_spawn[4][0]+comp_spawn[4][2]) ){
-                    addComponent(_NOR);
+                else if (mousePos.x>comp_spawn[4][0] && mousePos.x<(comp_spawn[4][0]+comp_spawn[4][2]) ){
+                    addComponent(_8x1MUX);
                     break;
                 }
-                if (mousePos.x>comp_spawn[5][0] && mousePos.x<(comp_spawn[5][0]+comp_spawn[5][2]) ){
-                    addComponent(_XOR);
+                else if (mousePos.x>comp_spawn[5][0] && mousePos.x<(comp_spawn[5][0]+comp_spawn[5][2]) ){
+                    addComponent(_1x8DEMUX);
                     break;
                 }
-                if (mousePos.x>comp_spawn[6][0] && mousePos.x<(comp_spawn[6][0]+comp_spawn[6][2]) ){
-                    addComponent(_XNOR);
+            }
+            else if(type == _SEQUENTIAL){
+                if (mousePos.x>comp_spawn[0][0] && mousePos.x<(comp_spawn[0][0]+comp_spawn[0][2]) ){
+                    addComponent(_SRLATCH);
                     break;
                 }
-                if (mousePos.x>comp_spawn[7][0] && mousePos.x<(comp_spawn[7][0]+comp_spawn[7][2]) ){
-
+                else if (mousePos.x>comp_spawn[1][0] && mousePos.x<(comp_spawn[1][0]+comp_spawn[1][2]) ){
+                    addComponent(_DFF);
+                    break;
                 }
+                else if (mousePos.x>comp_spawn[2][0] && mousePos.x<(comp_spawn[2][0]+comp_spawn[2][2]) ){
+                    addComponent(_TFF);
+                    break;
+                }
+                else if (mousePos.x>comp_spawn[3][0] && mousePos.x<(comp_spawn[3][0]+comp_spawn[3][2]) ){
+                    addComponent(_JKFF);
+                    break;
+                }
+                else if (mousePos.x>comp_spawn[4][0] && mousePos.x<(comp_spawn[4][0]+comp_spawn[4][2]) ){
+                    addComponent(_SRFF);
+                    break;
+                }
+                else if (mousePos.x>comp_spawn[5][0] && mousePos.x<(comp_spawn[5][0]+comp_spawn[5][2]) ){
+                    addComponent(_CLOCK);
+                    break;
+                }
+            }
+            if (mousePos.x>comp_spawn[7][0] && mousePos.x<(comp_spawn[7][2]+comp_spawn[7][0])){
+                addComponent(_INPUT);
+            }
+            else if (mousePos.x>comp_spawn[8][0] && mousePos.x<(comp_spawn[8][2]+comp_spawn[8][0])){
+                addComponent(_OUTPUT);
             }
         }
 
@@ -199,7 +205,6 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
 
     // updates the position of component if selected
     case HELD:{
-        std::cout<<"leftHELD"<<std::endl;
         if (Component::selectedCompNo != -1){
             components[Component::selectedCompNo]->updateSelectedComp(mousePos, prevMousePos);
         }
@@ -207,7 +212,6 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
     }
 
     case RELEASED:{
-        std::cout<<"leftRELEASED"<<std::endl;
         if ((mousePos.x > X_BOUND(windowSize.x) || mousePos.y > Y_BOUND(windowSize.y)) && Component::selectedCompNo != -1){
             int i;
             // removes the wires associated with the component

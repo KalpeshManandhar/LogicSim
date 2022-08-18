@@ -76,25 +76,28 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
 
 // sets the sprite source positions
 void Component::setSprites(){
-    if (type < 5){
+    if (type < 10){
         compPos.h = 72;
-        spriteSrc.y = 0;
         spriteSrc.h = 72;
+        spriteSrc.y = (type/5)*72;
     }
-    else if (type < 10){
-        compPos.h = 72;
-        spriteSrc.y = 72;
-        spriteSrc.h = 72;
-    }
-    else {
+    else if (type < 20){
         compPos.h = 108;
-        spriteSrc.y = 216;
+        spriteSrc.y = 6*72;
         spriteSrc.h = 108;
     }
-    if (type == 9)
-        spriteSrc.x = 2 * 146; 
-    else
-        spriteSrc.x = (type%5) * 146; 
+    else if (type ==_CLOCK){
+        compPos.h = 72;
+        spriteSrc.h = 72;
+        spriteSrc.y = 5*72;
+    }
+    else{
+        compPos.h = 108;
+        spriteSrc.y = 6*72 + 108;
+        spriteSrc.h = 108;
+    }
+
+    spriteSrc.x = (type%5) * 146; 
 }
 
 // sets the number of input and output pins
@@ -136,7 +139,25 @@ void Component::setPinNo(){
         inputNo = 3;
         outputNo = 4;
         break;
-
+    case _8x1MUX:
+        inputNo = 11;
+        outputNo = 1;
+        break;
+    case _1x8DEMUX:
+        inputNo = 4;
+        outputNo = 8;
+        break;
+    case _DFF:
+    case _TFF:
+    case _SRLATCH:
+        inputNo = 2;
+        outputNo = 2;
+        break;
+    case _JKFF:
+    case _SRFF:
+        inputNo = 3;
+        outputNo = 2;
+        break;
     default:
         break;
     }
@@ -150,9 +171,9 @@ void Component::setPinPos(){
         outPin[0].pos->y = -400;       
     }
     // two output pins
-    else if (type == _ADDER || type == _SUBTRACTOR || type == _4x2ENCODER){
+    else if (type == _ADDER || type == _SUBTRACTOR || type == _4x2ENCODER|| type == _DFF ||type == _SRLATCH ||type == _TFF ||type == _JKFF ||type == _SRFF){
         outPin[0].pos->x = 141;
-        outPin[0].pos->y = 38;
+        outPin[0].pos->y = 39;
         outPin[1].pos->x = 141;
         outPin[1].pos->y = 70;
     }
@@ -211,6 +232,27 @@ void Component::setPinPos(){
         inPin[1].pos->y = 70;
         inPin[2].pos->x = 73;
         inPin[2].pos->y = 105;
+    }
+    else if (type == _SRLATCH){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 38;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 70;
+    }
+    else if (type == _DFF || type == _TFF){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 30;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 52;
+    }
+    else if (type == _SRFF || type == _JKFF){
+        std::cout<<"JK";
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 30;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 52;
+        inPin[2].pos->x = 4;
+        inPin[2].pos->y = 79;
     }
     // two input pins
     else{                                           
@@ -308,6 +350,10 @@ Pin* Component::getOutPinAddress(int i){
 
 int * Component::getInputs(){
     return(input);
+}
+
+int * Component::getOutputs(){
+    return(output);
 }
 
 bool Component::sendOutput(){

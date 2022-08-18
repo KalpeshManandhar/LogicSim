@@ -65,51 +65,158 @@ inline int Logic::DECODERLogic(int * inputs){
     return(k);
 }
 
-int Logic::handleLogic(c_type type, int * input){
-    int output = 0;
+template <int in_num>
+inline int Logic::MUXLogic(int * inputs){
+    int i,n,j=0;
+    for (n = 5; n>0;n--){
+        if (in_num > (1<<n))
+            break;
+    }
+    for (i=n; i>0; i--){
+        j = inputs[in_num - i]|(j<<1);
+    }
+    return(inputs[j]);
+}
+
+template <int in_num>
+inline int Logic::DEMUXLogic(int * inputs){
+    int i,n,j = 0;
+    n = 0|inputs[0];
+    for (i=1; i>in_num - 1 ; i++){
+        j = inputs[i]|(j<<1);
+    }
+    n = n<<((2<<(in_num-1))-j);
+    return(n);
+}
+
+inline int Logic::JKFFLogic(int * inputs, int * outputs){
+    int memory = 0;
+    memory = memory|(outputs[0]<<1)|outputs[1];
+    if (inputs[1] == 1){
+        if (inputs[0] == 1 && inputs[2] == 0)
+            memory = 2;
+        else if (inputs[0] == 0 && inputs[2] == 1)
+            memory = 1;
+        else if (inputs[0] == 0 && inputs[2] == 0){}
+        else if (inputs[0] == 1 && inputs[2] == 1)
+            memory = (memory==1)?2:1;
+    }
+    return(memory);
+}
+
+inline int Logic::TFFLogic(int *inputs, int * outputs){
+    int memory = 0;
+    memory = memory|(outputs[0]<<1)|outputs[1];
+    if (memory == 0)
+        memory = 2;
+    if (inputs[1] == 1){
+        if(inputs[0] == 1)
+            memory = (memory==1)?2:1;
+    }
+    return(memory);
+}
+
+inline int Logic::SRFFLogic(int *inputs, int * outputs){
+    int memory = 0;
+    memory = memory|(outputs[0]<<1)|outputs[1];
+    if (inputs[1] == 1){
+        if (inputs[0] == 1 && inputs[2] == 0)
+            memory = 2;
+        else if (inputs[0] == 0 && inputs[2] == 1)
+            memory = 1;
+        else if (inputs[0] == 0 && inputs[2] == 0){}
+        else if (inputs[0] == 1 && inputs[2] == 1)
+            memory = 0; 
+    }
+    return(memory);
+}
+
+
+inline int Logic::DFFLogic(int *inputs, int * outputs){
+    int memory;
+    memory = memory|(outputs[0]<<1)|outputs[1];
+    if (inputs[1] == 1){
+        if(inputs[0] == 1)
+            memory = 2;
+        else
+            memory = 1;
+    }
+    return(memory);
+}
+
+inline int Logic::SRLatchLogic(int *inputs, int * outputs){
+    int memory = 0;
+    memory = memory|(outputs[0]<<1)|outputs[1];
+    if(inputs[0] == 1 && inputs[1] == 0)
+        memory = 2;
+    else if (inputs[0] == 0 && inputs[1] == 1)
+        memory = 1;
+    else if (inputs[0] == 0 && inputs[1] == 1){}
+    else if (inputs[0] == 1 && inputs[1] == 1)
+        memory = 0;
+    return(memory);
+}
+
+int Logic::handleLogic(c_type type, int * input, int * output){
+    int op = 0;
     // blank (-1) inputs result in 0 output
     if (input[0] == -1 || input[1] == -1)
-        return(output);
+        return(op);
     
     switch (type)
     {
     case _AND:
-        output = ANDLogic(input[0], input[1]);
+        op = ANDLogic(input[0], input[1]);
         break;
     case _OR:
-        output = ORLogic(input[0], input[1]);
+        op = ORLogic(input[0], input[1]);
         break;
     case _NOT:
-        output = NOTLogic(input[0]);
+        op = NOTLogic(input[0]);
         break;
     case _NAND:
-        output = NANDLogic(input[0], input[1]);
+        op = NANDLogic(input[0], input[1]);
         break;
     case _NOR:
-        output = NORLogic(input[0], input[1]);
+        op = NORLogic(input[0], input[1]);
         break;
     case _XOR:
-        output = XORLogic(input[0], input[1]);
+        op = XORLogic(input[0], input[1]);
         break;
     case _XNOR:
-        output = XNORLogic(input[0], input[1]);
+        op = XNORLogic(input[0], input[1]);
         break;
     case _ADDER:
-        output = ADDERLogic(input[0], input[1], input[2]);
+        op = ADDERLogic(input[0], input[1], input[2]);
         break;
     case _SUBTRACTOR:
-        output = SUBTRACTLogic(input[0], input[1], input[2]);
+        op = SUBTRACTLogic(input[0], input[1], input[2]);
         break;
     case _4x2ENCODER:
-        output = ENCODERLogic<4>(input);
+        op = ENCODERLogic<4>(input);
         break;
     case _2x4DECODER:
-        output = DECODERLogic<2>(input); 
+        op = DECODERLogic<2>(input); 
+        break;
+    case _JKFF:
+        op = JKFFLogic(input, output);
+        break;
+    case _TFF:
+        op = TFFLogic(input, output);
+        break;
+    case _DFF:
+        op = DFFLogic(input, output);
+        break;
+    case _SRFF:
+        op = SRFFLogic(input, output);
+        break;
+    case _SRLATCH:
+        op = SRLatchLogic(input, output);
         break;
     default:
         break;
     }
-    return(output);
+    return(op);
     
 }
 

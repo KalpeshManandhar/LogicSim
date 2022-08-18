@@ -8,7 +8,7 @@
 #define WIN_HEIGHT 760
 #define WIN_WIDTH 1440
 
-#define FPS 32
+#define FPS 60
 #define FRAME_LIMIT (1000/FPS)
 
 Component *components[MAX_COMPONENTS];
@@ -156,19 +156,63 @@ void Graphics::componentLoad()
     comb.draw(renderer);
     ff.draw(renderer);
 
-    int shift=30;
     static SDL_Rect source = {0,0,146,72}, destination = {0,Y_BOUND(windowSize.y)-60,(int)(146*0.7),(int)(72*0.7)};
-    for(short i=compLoadType * 10;i< compLoadType *10 + 9;i++){
-        source.x = (i%5)*146;
-        source.y = (i/5)*72;
-        destination.x = shift + (shift + destination.w)* (i%10);
-        destination.y = Y_BOUND(windowSize.y)-60;
-        comp_spawn[i%10][0]=destination.x;
-        comp_spawn[i%10][1]=destination.y;
-        comp_spawn[i%10][2]=destination.w;
-        comp_spawn[i%10][3]=destination.h;
-        SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    int num = (compLoadType == _GATES)?9:8;
+    int shift = (X_BOUND(windowSize.x) - 10 - num * destination.w)/(num+1);
+    short i = 0;
+    if (compLoadType == _GATES)
+        for(i=0;i< 7;i++){
+            source.x = (i%5)*146;
+            source.y = (i/5)*72;
+            destination.x = shift + (shift + destination.w)* (i);
+            destination.y = Y_BOUND(windowSize.y)-45;
+            comp_spawn[i][0]=destination.x;
+            comp_spawn[i][1]=destination.y;
+            comp_spawn[i][2]=destination.w;
+            comp_spawn[i][3]=destination.h;
+            SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+        }
+    else if (compLoadType == _COMBINATIONAL){
+        for(i=0;i< 6;i++){
+            source.x = (i%5)*146;
+            source.y = (i/5+2)*72;
+            destination.x = shift + (shift + destination.w)* (i);
+            destination.y = Y_BOUND(windowSize.y)-45;
+            comp_spawn[i][0]=destination.x;
+            comp_spawn[i][1]=destination.y;
+            comp_spawn[i][2]=destination.w;
+            comp_spawn[i][3]=destination.h;
+            SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+        }
     }
+    else {
+        for(i=0;i< 6;i++){
+            source.x = (i%5)*146;
+            source.y = (i/5+4)*72;
+            destination.x = shift + (shift + destination.w)* (i);
+            destination.y = Y_BOUND(windowSize.y)-45;
+            comp_spawn[i][0]=destination.x;
+            comp_spawn[i][1]=destination.y;
+            comp_spawn[i][2]=destination.w;
+            comp_spawn[i][3]=destination.h;
+            SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+        }
+    }
+    source.y = 72;
+    source.x = 2*146;
+    destination.x = shift + (shift + destination.w)* ((i++%10));
+    comp_spawn[7][0] = destination.x;
+    comp_spawn[7][1]=destination.y;
+    comp_spawn[7][2]=destination.w;
+    comp_spawn[7][3]=destination.h;
+    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
+    source.x = 3*146;
+    destination.x = shift + (shift + destination.w)* ((i%10));
+    comp_spawn[8][0] = destination.x;
+    comp_spawn[8][1]=destination.y;
+    comp_spawn[8][2]=destination.w;
+    comp_spawn[8][3]=destination.h;
+    SDL_RenderCopy(renderer, textureOfGates, &source, &destination);
 }
 
 void Graphics::drawWires(){
@@ -197,7 +241,7 @@ void Graphics::callLogic(){
                     break;
                 // computes the logic for the component
                 default:
-                    components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs()));
+                    components[i]->setOutput(logicHandler.handleLogic(components[i]->getType(), components[i]->getInputs(), components[i]->getOutputs()));
                     break;
             }
 
