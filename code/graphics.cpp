@@ -132,6 +132,18 @@ void Graphics::drawComponents(){
         if (components[i]->getType() != _NOTHING)
             components[i]->draw(renderer, textureOfGates);
     }
+    if (Component::selectedCompNo != -1){
+        static SDL_Rect selected;
+        static SDL_Rect box;
+        selected = components[Component::selectedCompNo]->getCompRect();
+        box.x = selected.x - 5;
+        box.y = selected.y - 5;
+        box.w = selected.w + 10;
+        box.h = selected.h + 10;
+        SDL_SetRenderDrawColor(renderer, SELECT_GREEN);
+        SDL_RenderDrawRect(renderer, &box);
+    }
+
 }
 
 SDL_Renderer* Graphics::getRenderer(){
@@ -228,6 +240,7 @@ void Graphics::callLogic(){
     static Logic logicHandler;
     bool clockPulse;
     int i,j,k,l;
+
     // loops twice as components aren't stored in order of connection 
     // that caused the logic to be wrong on some frames when input changed
     for (k = 0; k<1; k++){
@@ -252,7 +265,7 @@ void Graphics::callLogic(){
                         if (wires[j].getStatus() == _COMPLETE)
                             wires[j].sendLogic(components[i]->getOutPinAddress(l), -1);
                     }
-                    else{
+                    else if (components[i]->getType() == _CLOCK){
                         if (wires[j].getStatus() == _COMPLETE)
                             wires[j].sendLogic(components[i]->getOutPinAddress(l), 0);
                     }

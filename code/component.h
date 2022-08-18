@@ -69,6 +69,8 @@ public:
     int * getInputs();
     int * getOutputs();
     bool sendOutput();
+    void setSendOp(bool);
+    SDL_Rect getCompRect();
 };
 
 
@@ -101,6 +103,7 @@ class Clock:public InputComponent{
 public:
     Clock(float timePeriod);
     void setOutput(int frameTime);
+    void sendFlipFlopOutput(bool send);
 };
 
 

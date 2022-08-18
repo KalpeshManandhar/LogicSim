@@ -360,6 +360,10 @@ bool Component::sendOutput(){
     return(sendOp);
 }
 
+void Component::setSendOp(bool send){
+    sendOp = send;
+}
+
 void Component::setOutput(int op){
     int i;
     if (op == -1) op = 3;
@@ -373,6 +377,10 @@ void Component::setOutput(int op){
     for (i=0; i< outputNo; i++){
         output[outputNo - 1 -i] = (op>>i)&1;
     }
+}
+
+SDL_Rect Component::getCompRect(){
+    return(compPos);
 }
 
 
@@ -477,10 +485,12 @@ void Clock::setOutput(int FPS){
     static float Tseconds = T/1000;
     // sendOp sends HIGH only on first frame for transition activation
     sendOp = false;
+    sendFlipFlopOutput(false);
     // half cycle 
     if (duration == ((FPS * Tseconds/2 ))){
         std::cout<<"half";
         sendOp = true;
+        sendFlipFlopOutput(true);
         output[0] = 1;
     }
     // full cycle
@@ -490,4 +500,19 @@ void Clock::setOutput(int FPS){
         duration = 0;
     }
     duration ++;
+}
+
+void Clock::sendFlipFlopOutput(bool send){
+    int i;
+    for (i = 0;i<Component::componentNo;i++){
+        switch (components[i]->getType()){
+            case _JKFF:
+            case _SRLATCH:
+            case _SRFF:
+            case _TFF:
+            case _DFF:
+                components[i]->setSendOp(send);
+        }
+    }
+    int memory;
 }
