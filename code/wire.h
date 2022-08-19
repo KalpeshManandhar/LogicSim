@@ -29,7 +29,7 @@ public:
     bool validWire(Pin * endPin);
     void completeWire(Pin * endPin);
     void addVertex(vec2 vertex);
-    void sendLogic();
+    void sendLogic(Pin* opPin, int op);
     void removeWire();
     void removeWiresToComponent(Component * c);
 

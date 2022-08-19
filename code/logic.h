@@ -4,7 +4,7 @@
 
 class Logic{
 public:
-    int handleLogic(c_type type, int * input);
+    int handleLogic(c_type type, int * input, int * output);
 
     int ANDLogic(int i1, int i2);
     int ORLogic(int i1, int i2);
@@ -19,5 +19,17 @@ public:
     template <int in_num>
     int ENCODERLogic(int * inputs);   
     template <int in_num>
-    int DECODERLogic(int * inputs);   
+    int DECODERLogic(int * inputs);
+    template <int in_num>
+    int MUXLogic(int *inputs);
+    template <int in_num>
+    int DEMUXLogic(int *inputs);
+
+    int JKFFLogic(int * inputs, int * outputs);
+    int TFFLogic(int * inputs, int * outputs);
+    int DFFLogic(int * inputs, int* outputs);
+    int SRFFLogic(int * inputs, int * outputs);
+    int SRLatchLogic(int * inputs, int * outputs);
+    
+
 };

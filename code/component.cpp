@@ -18,6 +18,8 @@ Component::Component(){
     compPos.x = -200;
     compPos.y = -200;
     int i;
+    sendOp = true;
+    computedFlag = false;
     for (i = 0; i<MAX_INPUTS; i++)
         inPin[i].pos = new vec2;
     for (i = 0; i<MAX_OUTPUTS; i++)
@@ -75,25 +77,36 @@ void Component::setValues(c_type type, vec2 &mousePos, int availableIndex){
 
 // sets the sprite source positions
 void Component::setSprites(){
-    if (type < 5){
+    if (type < 10){
         compPos.h = 72;
-        spriteSrc.y = 0;
         spriteSrc.h = 72;
+        spriteSrc.y = (type/5)*72;
     }
-    else if (type < 10){
+    else if (type == _8x1MUX || type == _1x8DEMUX){
+        compPos.h = 216;
+        spriteSrc.h = 216;
+        spriteSrc.y = 648;
+    }
+    else if (type ==_CLOCK){
         compPos.h = 72;
-        spriteSrc.y = 72;
         spriteSrc.h = 72;
+        spriteSrc.y = 5*72;
     }
-    else {
+    else if (type < 20){
         compPos.h = 108;
-        spriteSrc.y = 216;
+        spriteSrc.y = 6*72;
         spriteSrc.h = 108;
     }
+    else{
+        compPos.h = 108;
+        spriteSrc.y = 6*72 + 108;
+        spriteSrc.h = 108;
+    }
+
     spriteSrc.x = (type%5) * 146; 
 }
 
-// sets the number of input pins
+// sets the number of input and output pins
 void Component::setPinNo(){
     switch (type)
     {
@@ -105,6 +118,7 @@ void Component::setPinNo(){
         outputNo = 0;
         inputNo = 1;
         break;
+    case _CLOCK:
     case _INPUT:
         inputNo = 0;
         outputNo = 1;
@@ -124,14 +138,32 @@ void Component::setPinNo(){
         outputNo = 2;
         break;
     case _4x2ENCODER:
-        inputNo = 4;
+        inputNo = 5;
         outputNo = 2;
         break;
     case _2x4DECODER:
-        inputNo = 2;
+        inputNo = 3;
         outputNo = 4;
         break;
-
+    case _8x1MUX:
+        inputNo = 11;
+        outputNo = 1;
+        break;
+    case _1x8DEMUX:
+        inputNo = 4;
+        outputNo = 8;
+        break;
+    case _DFF:
+    case _TFF:
+    case _SRLATCH:
+        inputNo = 2;
+        outputNo = 2;
+        break;
+    case _JKFF:
+    case _SRFF:
+        inputNo = 3;
+        outputNo = 2;
+        break;
     default:
         break;
     }
@@ -145,9 +177,9 @@ void Component::setPinPos(){
         outPin[0].pos->y = -400;       
     }
     // two output pins
-    else if (type == _ADDER || type == _SUBTRACTOR || type == _4x2ENCODER){
+    else if (type == _ADDER || type == _SUBTRACTOR || type == _4x2ENCODER|| type == _DFF ||type == _SRLATCH ||type == _TFF ||type == _JKFF ||type == _SRFF){
         outPin[0].pos->x = 141;
-        outPin[0].pos->y = 38;
+        outPin[0].pos->y = 39;
         outPin[1].pos->x = 141;
         outPin[1].pos->y = 70;
     }
@@ -162,6 +194,28 @@ void Component::setPinPos(){
         outPin[3].pos->x = 141;
         outPin[3].pos->y = 86;
     }
+    else if (type == _8x1MUX){
+        outPin[0].pos->x = 141;
+        outPin[0].pos->y = 100;
+    }
+    else if (type == _1x8DEMUX){
+        outPin[0].pos->x = 141;
+        outPin[0].pos->y = 19;
+        outPin[1].pos->x = 141;
+        outPin[1].pos->y = 41;
+        outPin[2].pos->x = 141;
+        outPin[2].pos->y = 65;
+        outPin[3].pos->x = 141;
+        outPin[3].pos->y = 87;
+        outPin[4].pos->x = 141;
+        outPin[4].pos->y = 109;
+        outPin[5].pos->x = 141;
+        outPin[5].pos->y = 131;
+        outPin[6].pos->x = 141;
+        outPin[6].pos->y = 155;
+        outPin[7].pos->x = 141;
+        outPin[7].pos->y = 177;
+    }
     // one output pin
     else{
         outPin[0].pos->x = 141;
@@ -174,7 +228,7 @@ void Component::setPinPos(){
         inPin[0].pos->y = 36;
     }
     // zero input pins
-    else if (type == _INPUT){                       
+    else if (type == _INPUT || type == _CLOCK){                       
         inPin[0].pos->x = -200;
         inPin[0].pos->y = -400;
     }
@@ -204,6 +258,62 @@ void Component::setPinPos(){
         inPin[0].pos->y = 38;
         inPin[1].pos->x = 4;
         inPin[1].pos->y = 70;
+        inPin[2].pos->x = 73;
+        inPin[2].pos->y = 105;
+    }
+    else if (type == _SRLATCH){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 38;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 70;
+    }
+    else if (type == _DFF || type == _TFF){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 30;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 52;
+    }
+    else if (type == _SRFF || type == _JKFF){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 30;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 52;
+        inPin[2].pos->x = 4;
+        inPin[2].pos->y = 79;
+    }
+    else if (type == _8x1MUX){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 19;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 41;
+        inPin[2].pos->x = 4;
+        inPin[2].pos->y = 65;
+        inPin[3].pos->x = 4;
+        inPin[3].pos->y = 87;
+        inPin[4].pos->x = 4;
+        inPin[4].pos->y = 109;
+        inPin[5].pos->x = 4;
+        inPin[5].pos->y = 131;
+        inPin[6].pos->x = 4;
+        inPin[6].pos->y = 155;
+        inPin[7].pos->x = 4;
+        inPin[7].pos->y = 177;
+        inPin[8].pos->x = 51;
+        inPin[8].pos->y = 209;
+        inPin[9].pos->x = 72;
+        inPin[9].pos->y = 209;
+        inPin[10].pos->x = 97;
+        inPin[10].pos->y = 209;
+    }
+    else if (type == _1x8DEMUX){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 100;
+        inPin[1].pos->x = 51;
+        inPin[1].pos->y = 209;
+        inPin[2].pos->x = 72;
+        inPin[2].pos->y = 209;
+        inPin[3].pos->x = 97;
+        inPin[3].pos->y = 209;
     }
     // two input pins
     else{                                           
@@ -303,17 +413,20 @@ int * Component::getInputs(){
     return(input);
 }
 
+int * Component::getOutputs(){
+    return(output);
+}
+
+bool Component::sendOutput(){
+    return(sendOp);
+}
+
+void Component::setSendOp(bool send){
+    sendOp = send;
+}
+
 void Component::setOutput(int op){
     int i;
-    
-    // if (type == _2x4DECODER){
-    //     for (i=0; i< outputNo; i++){
-    //         output[i] = 0;
-    //     }
-    //     output[op] = 1;
-    //     return;
-    // }
-
     if (op == -1) op = 3;
 
     // assigns the bits of the bitmask to the outputs eg 1000
@@ -327,6 +440,13 @@ void Component::setOutput(int op){
     }
 }
 
+SDL_Rect Component::getCompRect(){
+    return(compPos);
+}
+
+void Component::setComputedFlag(bool flag){
+    computedFlag = flag;
+}
 
 
 //  INPUT COMPONENT FUNCTIONS
@@ -374,11 +494,11 @@ void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
 
 bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
     // if button is pressed, isPressed() is called
-    if ((mousePos.x > compPos.x) && (mousePos.x < (compPos.x + compPos.w)) && (mousePos.y > compPos.y) && (mousePos.y < (compPos.y + compPos.h))){
-        if ((mousePos.x > inputButton.button.x) && (mousePos.x < (inputButton.button.x + inputButton.button.w)) && (mousePos.y > inputButton.button.y) && (mousePos.y < inputButton.button.y + inputButton.button.h)){
-            onPressed();
-        }
-    } 
+    if (inputButton.mouseHover(mousePos))
+        onPressed();
+    // if ((mousePos.x > inputButton.button.x) && (mousePos.x < (inputButton.button.x + inputButton.button.w)) && (mousePos.y > inputButton.button.y) && (mousePos.y < inputButton.button.y + inputButton.button.h)){
+    //     onPressed();
+    // }
     return(Component::mouseHover(mousePos, pinHover));
 }
 
@@ -416,4 +536,47 @@ void OutputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
     else 
         SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
     SDL_RenderFillRect(renderer, &display);
+}
+
+// default frequency of clock 1HZ
+Clock::Clock(float timePeriod){
+    T = timePeriod;
+    duration = 0;
+    sendOp = true;
+}
+
+void Clock::setOutput(int FPS){
+    static float Tseconds = T/1000;
+    // sendOp sends HIGH only on first frame for transition activation
+    sendOp = false;
+    sendFlipFlopOutput(false);
+    // half cycle 
+    if (duration == ((FPS * Tseconds/2 ))){
+        std::cout<<"half";
+        sendOp = true;
+        sendFlipFlopOutput(true);
+        output[0] = 1;
+    }
+    // full cycle
+    else if (duration == FPS * Tseconds){
+        std::cout<<"full";
+        output[0] = 0;
+        duration = 0;
+    }
+    duration ++;
+}
+
+void Clock::sendFlipFlopOutput(bool send){
+    int i;
+    for (i = 0;i<Component::componentNo;i++){
+        switch (components[i]->getType()){
+            case _JKFF:
+            case _SRLATCH:
+            case _SRFF:
+            case _TFF:
+            case _DFF:
+                components[i]->setSendOp(send);
+        }
+    }
+    int memory;
 }
