@@ -9,7 +9,7 @@
 #define MAX_PROBES 5
 
 #define Y_BOUND(Y) (Y - 60)
-#define X_BOUND(X) (X - 80)
+#define X_BOUND(X) (X - 90)
 
 
 
@@ -40,7 +40,7 @@ protected:
     int inputNo, outputNo;                          // no of inputs/ outputs for each component
     int output[MAX_OUTPUTS], input[MAX_INPUTS];
     Pin inPin[MAX_INPUTS], outPin[MAX_OUTPUTS];     // only one output + different number of inputs for different components
-    bool sendOp;
+    bool sendOp, computedFlag;
 public:
     static short componentNo;                       // total no of components added init 0
     static short selectedCompNo;                    // currently selected component index init -1
@@ -71,6 +71,7 @@ public:
     bool sendOutput();
     void setSendOp(bool);
     SDL_Rect getCompRect();
+    void setComputedFlag(bool);
 };
 
 

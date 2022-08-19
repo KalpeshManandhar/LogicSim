@@ -22,7 +22,6 @@ int comp_spawn[13][4];
 
 Graphics::Graphics(){
     wires = new Wire[MAX_WIRES];
-
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         std::cout<<"Error initializing SDL"<<std::endl;
     }
@@ -81,7 +80,7 @@ int Graphics::mainLoop(){
         callLogic();
 
         // clear screen and draw the components/ wires
-        clearScreen(68,75,110, false);        
+        clearScreen();        
         componentLoad();
 
         drawComponents();
@@ -106,12 +105,39 @@ void Graphics::display(){
 }
 
 
-void Graphics::clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid){       
-    SDL_SetRenderDrawColor(renderer, r,g,b,255);
+void Graphics::clearScreen(){       
+    SDL_SetRenderDrawColor(renderer,BACKGROUND_BLUE);
     SDL_RenderClear(renderer); 
+
+    static SDL_Rect removeText = {292, 652, 42, 216}, spawnText = {334, 652, 292, 12};
+    static SDL_Rect removeArea, spawnArea;
+    removeArea.x = X_BOUND(windowSize.x);
+    removeArea.y = 0;
+    removeArea.h = Y_BOUND(windowSize.y) - 55;
+    removeArea.w = windowSize.x - removeArea.x;
+    SDL_SetRenderDrawColor(renderer, REMOVE_AREA_BLUE);
+    SDL_RenderFillRect(renderer, &removeArea);
+    removeArea.x += 20;
+    removeArea.w -= 40;
+    removeArea.y += 15;
+    removeArea.h -= 30;
+    SDL_RenderCopy(renderer, textureOfGates, &removeText, &removeArea);
+
+    spawnArea.x = 0;
+    spawnArea.y = Y_BOUND(windowSize.y) - 55;
+    spawnArea.h = 115;
+    spawnArea.w = windowSize.x;
+    SDL_SetRenderDrawColor(renderer, SPAWN_AREA_BLACK);
+    SDL_RenderFillRect(renderer, &spawnArea);
+    spawnArea.x = windowSize.x * 0.5 - 146;
+    spawnArea.y += 7;
+    spawnArea.h = 15;
+    spawnArea.w = 292;
+    SDL_RenderCopy(renderer, textureOfGates, &spawnText, &spawnArea);
+
      
-    if(grid)
-        SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
+    // if(grid)
+    //     SDL_RenderCopy(renderer,textureOfGrid,NULL,NULL);
     
 }
 
@@ -121,9 +147,9 @@ void Graphics::loadSpriteAndGrid()
     loadingSurface = IMG_Load("assets/spritesheet.png");
     textureOfGates = SDL_CreateTextureFromSurface(renderer,loadingSurface);
     SDL_FreeSurface(loadingSurface);
-    loadingSurface = IMG_Load("assets/grid_new.png");
-    textureOfGrid = SDL_CreateTextureFromSurface(renderer,loadingSurface);
-    SDL_FreeSurface(loadingSurface);    
+    // loadingSurface = IMG_Load("assets/grid_new.png");
+    // textureOfGrid = SDL_CreateTextureFromSurface(renderer,loadingSurface);
+    // SDL_FreeSurface(loadingSurface);    
 }
 
 void Graphics::drawComponents(){
@@ -157,12 +183,12 @@ SDL_Texture* Graphics::getTexture(){
 // spawn area components
 void Graphics::componentLoad()
 {
-    gate.button.x = X_BOUND(windowSize.x) - 10;
-    gate.button.y = Y_BOUND(windowSize.y) - 55;
-    comb.button.x = X_BOUND(windowSize.x) - 10;
-    comb.button.y = Y_BOUND(windowSize.y) - 30;
-    ff.button.x = X_BOUND(windowSize.x) - 10;
-    ff.button.y = Y_BOUND(windowSize.y) - 5;
+    gate.button.x = X_BOUND(windowSize.x) + 10;
+    gate.button.y = Y_BOUND(windowSize.y) - 35;
+    comb.button.x = X_BOUND(windowSize.x) + 10;
+    comb.button.y = Y_BOUND(windowSize.y) - 10;
+    ff.button.x = X_BOUND(windowSize.x) + 10;
+    ff.button.y = Y_BOUND(windowSize.y) + 15;
     
     gate.draw(renderer);
     comb.draw(renderer);
@@ -177,7 +203,7 @@ void Graphics::componentLoad()
             source.x = (i%5)*146;
             source.y = (i/5)*72;
             destination.x = shift + (shift + destination.w)* (i);
-            destination.y = Y_BOUND(windowSize.y)-45;
+            destination.y = Y_BOUND(windowSize.y)-25;
             comp_spawn[i][0]=destination.x;
             comp_spawn[i][1]=destination.y;
             comp_spawn[i][2]=destination.w;
@@ -189,7 +215,7 @@ void Graphics::componentLoad()
             source.x = (i%5)*146;
             source.y = (i/5+2)*72;
             destination.x = shift + (shift + destination.w)* (i);
-            destination.y = Y_BOUND(windowSize.y)-45;
+            destination.y = Y_BOUND(windowSize.y)-25;
             comp_spawn[i][0]=destination.x;
             comp_spawn[i][1]=destination.y;
             comp_spawn[i][2]=destination.w;
@@ -202,7 +228,7 @@ void Graphics::componentLoad()
             source.x = (i%5)*146;
             source.y = (i/5+4)*72;
             destination.x = shift + (shift + destination.w)* (i);
-            destination.y = Y_BOUND(windowSize.y)-45;
+            destination.y = Y_BOUND(windowSize.y)-25;
             comp_spawn[i][0]=destination.x;
             comp_spawn[i][1]=destination.y;
             comp_spawn[i][2]=destination.w;

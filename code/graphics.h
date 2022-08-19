@@ -27,7 +27,7 @@ public:
 	void delay(Uint32 ms);
 	void display();
 	void loadSpriteAndGrid();
-	void clearScreen(Uint8 r, Uint8 g, Uint8 b, bool grid);
+	void clearScreen();
 
 	void drawComponents();
 	void drawWires();

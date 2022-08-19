@@ -19,6 +19,7 @@ Component::Component(){
     compPos.y = -200;
     int i;
     sendOp = true;
+    computedFlag = false;
     for (i = 0; i<MAX_INPUTS; i++)
         inPin[i].pos = new vec2;
     for (i = 0; i<MAX_OUTPUTS; i++)
@@ -383,6 +384,9 @@ SDL_Rect Component::getCompRect(){
     return(compPos);
 }
 
+void Component::setComputedFlag(bool flag){
+    computedFlag = flag;
+}
 
 
 //  INPUT COMPONENT FUNCTIONS
