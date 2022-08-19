@@ -82,10 +82,11 @@ template <int in_num>
 inline int Logic::DEMUXLogic(int * inputs){
     int i,n,j = 0;
     n = 0|inputs[0];
-    for (i=1; i>in_num - 1 ; i++){
-        j = inputs[i]|(j<<1);
+    for (i=1; i<in_num ; i++){
+        j = j<<1;
+        j = inputs[i]|j;// 101
     }
-    n = n<<((2<<(in_num-1))-j);
+    n = n<<((1<<(in_num-1))-1-j);
     return(n);
 }
 
@@ -197,6 +198,12 @@ int Logic::handleLogic(c_type type, int * input, int * output){
         break;
     case _2x4DECODER:
         op = DECODERLogic<2>(input); 
+        break;
+    case _8x1MUX:
+        op = MUXLogic<11>(input);
+        break;
+    case _1x8DEMUX:
+        op = DEMUXLogic<4>(input);
         break;
     case _JKFF:
         op = JKFFLogic(input, output);

@@ -109,7 +109,7 @@ void Graphics::clearScreen(){
     SDL_SetRenderDrawColor(renderer,BACKGROUND_BLUE);
     SDL_RenderClear(renderer); 
 
-    static SDL_Rect removeText = {292, 652, 42, 216}, spawnText = {334, 652, 292, 12};
+    static SDL_Rect removeText = {292, 652, 42, 216}, spawnText = {334, 652, 250, 12};
     static SDL_Rect removeArea, spawnArea;
     removeArea.x = X_BOUND(windowSize.x);
     removeArea.y = 0;
@@ -129,10 +129,10 @@ void Graphics::clearScreen(){
     spawnArea.w = windowSize.x;
     SDL_SetRenderDrawColor(renderer, SPAWN_AREA_BLACK);
     SDL_RenderFillRect(renderer, &spawnArea);
-    spawnArea.x = windowSize.x * 0.5 - 146;
+    spawnArea.x = windowSize.x * 0.5 - 125;
     spawnArea.y += 7;
     spawnArea.h = 15;
-    spawnArea.w = 292;
+    spawnArea.w = 250;
     SDL_RenderCopy(renderer, textureOfGates, &spawnText, &spawnArea);
 
      

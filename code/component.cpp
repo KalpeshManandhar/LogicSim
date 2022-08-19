@@ -82,15 +82,20 @@ void Component::setSprites(){
         spriteSrc.h = 72;
         spriteSrc.y = (type/5)*72;
     }
-    else if (type < 20){
-        compPos.h = 108;
-        spriteSrc.y = 6*72;
-        spriteSrc.h = 108;
+    else if (type == _8x1MUX || type == _1x8DEMUX){
+        compPos.h = 216;
+        spriteSrc.h = 216;
+        spriteSrc.y = 648;
     }
     else if (type ==_CLOCK){
         compPos.h = 72;
         spriteSrc.h = 72;
         spriteSrc.y = 5*72;
+    }
+    else if (type < 20){
+        compPos.h = 108;
+        spriteSrc.y = 6*72;
+        spriteSrc.h = 108;
     }
     else{
         compPos.h = 108;
@@ -189,6 +194,28 @@ void Component::setPinPos(){
         outPin[3].pos->x = 141;
         outPin[3].pos->y = 86;
     }
+    else if (type == _8x1MUX){
+        outPin[0].pos->x = 141;
+        outPin[0].pos->y = 100;
+    }
+    else if (type == _1x8DEMUX){
+        outPin[0].pos->x = 141;
+        outPin[0].pos->y = 19;
+        outPin[1].pos->x = 141;
+        outPin[1].pos->y = 41;
+        outPin[2].pos->x = 141;
+        outPin[2].pos->y = 65;
+        outPin[3].pos->x = 141;
+        outPin[3].pos->y = 87;
+        outPin[4].pos->x = 141;
+        outPin[4].pos->y = 109;
+        outPin[5].pos->x = 141;
+        outPin[5].pos->y = 131;
+        outPin[6].pos->x = 141;
+        outPin[6].pos->y = 155;
+        outPin[7].pos->x = 141;
+        outPin[7].pos->y = 177;
+    }
     // one output pin
     else{
         outPin[0].pos->x = 141;
@@ -247,13 +274,46 @@ void Component::setPinPos(){
         inPin[1].pos->y = 52;
     }
     else if (type == _SRFF || type == _JKFF){
-        std::cout<<"JK";
         inPin[0].pos->x = 4;
         inPin[0].pos->y = 30;
         inPin[1].pos->x = 4;
         inPin[1].pos->y = 52;
         inPin[2].pos->x = 4;
         inPin[2].pos->y = 79;
+    }
+    else if (type == _8x1MUX){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 19;
+        inPin[1].pos->x = 4;
+        inPin[1].pos->y = 41;
+        inPin[2].pos->x = 4;
+        inPin[2].pos->y = 65;
+        inPin[3].pos->x = 4;
+        inPin[3].pos->y = 87;
+        inPin[4].pos->x = 4;
+        inPin[4].pos->y = 109;
+        inPin[5].pos->x = 4;
+        inPin[5].pos->y = 131;
+        inPin[6].pos->x = 4;
+        inPin[6].pos->y = 155;
+        inPin[7].pos->x = 4;
+        inPin[7].pos->y = 177;
+        inPin[8].pos->x = 51;
+        inPin[8].pos->y = 209;
+        inPin[9].pos->x = 72;
+        inPin[9].pos->y = 209;
+        inPin[10].pos->x = 97;
+        inPin[10].pos->y = 209;
+    }
+    else if (type == _1x8DEMUX){
+        inPin[0].pos->x = 4;
+        inPin[0].pos->y = 100;
+        inPin[1].pos->x = 51;
+        inPin[1].pos->y = 209;
+        inPin[2].pos->x = 72;
+        inPin[2].pos->y = 209;
+        inPin[3].pos->x = 97;
+        inPin[3].pos->y = 209;
     }
     // two input pins
     else{                                           
