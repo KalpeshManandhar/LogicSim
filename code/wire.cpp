@@ -43,7 +43,6 @@ Wire::~Wire(){
 
 
 void Wire::addWire(Pin *startPin, vec2 *endPoint, int availableIndex){
-
     if (availableIndex == -1){
         index = totalWires;
         totalWires++;
@@ -160,6 +159,7 @@ void Wire::removeWiresToComponent(Component * c){
 // op to send specific logic
 void Wire::sendLogic(Pin* opPin, int op){
     int output = (op == -1)?(*(logic)):op;
+
     if (start == opPin || end ==opPin){
         if (start->type == _IN)
             *(start->logic) = output;

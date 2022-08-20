@@ -72,15 +72,17 @@ int Graphics::mainLoop(){
             break;
         }
 
-        // handle mouse inputs
+        // handle mouse and keyboard inputs
         input.getMouseState();
+        input.getKeyboardState();
         input.handleMouseInput(windowSize, compLoadType);
+        input.handleKeyInput();
 
         // logic computation
         callLogic();
 
         // clear screen and draw the components/ wires
-        clearScreen();        
+        clearScreen();
         componentLoad();
 
         drawComponents();
@@ -264,12 +266,12 @@ void Graphics::drawWires(){
 
 void Graphics::callLogic(){
     static Logic logicHandler;
-    bool clockPulse;
+
     int i,j,k,l;
 
     // loops twice as components aren't stored in order of connection 
     // that caused the logic to be wrong on some frames when input changed
-    for (k = 0; k<1; k++){
+    // for (k = 0; k<1; k++){
         for (i = 0; i<Component::componentNo; i++){
             switch(components[i]->getType()){
                 case _INPUT:
@@ -298,17 +300,10 @@ void Graphics::callLogic(){
                 }
             }
         }   
-    }
+    // }
 }
 
 
 void Graphics::getWindowSize(){
     SDL_GetWindowSize(window, &windowSize.x, &windowSize.y);
-}
-
-// 0 for width 1 for height
-int Graphics::windowDim(int a){
-    if (a == 0)
-        return(windowSize.x);
-    return(windowSize.y);
 }

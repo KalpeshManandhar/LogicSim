@@ -11,6 +11,24 @@ void Input::getMouseState(){
     mouseButtons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
 }
 
+// gets state of keyboard keys
+void Input::getKeyboardState(){
+    keyStates = SDL_GetKeyboardState(NULL);
+}
+
+// checks if a given key is pressed or not
+b_States Input::isKeyPressed(SDL_Scancode keyCode){
+    static int pressedFrameNo = 0;
+    if (keyStates[keyCode] == 1){
+        pressedFrameNo++;
+        if (pressedFrameNo == 1)
+            return(PRESSED);
+        return(HELD);
+    }
+    pressedFrameNo = 0;
+    return(IDLE);
+}
+
 // checks if a given mouse button is pressed or not
 b_States Input::isPressed(int buttonKey){  
     int i = (buttonKey == 1)?0:1;
@@ -57,7 +75,6 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
     switch (isPressed(SDL_BUTTON_LEFT))
     {
     case CLICKED:{
-        std::cout<<"leftCLick";
         int i;
         // adds a new component
         if (mousePos.y>(bounds.y-50) && mousePos.y<(windowSize.y) && Component::componentNo != MAX_COMPONENTS){
@@ -165,7 +182,7 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
             gate.pressedFlag = false;
             type = _SEQUENTIAL;
         }
-            
+
         // selecting a component
         for(i=0;i<Component::componentNo; i++){
             if (components[i]->mouseHover(mousePos, pinHoverFlag) == true){
@@ -231,6 +248,18 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
         wires[Wire::selectedWireNo].removeWire();
     }
     
+}
+
+
+void Input::handleKeyInput(){
+    if (isKeyPressed(SDL_SCANCODE_DELETE) == PRESSED && Component::selectedCompNo != -1){
+        int i;
+        // removes the wires associated with the component
+        for (i = 0; i < Wire::totalWires; i++)
+            wires[i].removeWiresToComponent(components[Component::selectedCompNo]);
+        // removes the component
+        components[Component::selectedCompNo]->removeComponent();
+    }
 }
 
 void Input::addComponent(c_type type){

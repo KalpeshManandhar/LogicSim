@@ -32,7 +32,7 @@ inline int Logic::XNORLogic(int i1, int i2){
 
 // these functions create a bit mask of the outputs because why not
 inline int Logic::ADDERLogic(int i1, int i2, int i3){
-    return(i1+i2+i3);
+    return(i1+i2+i3); 
 }
 
 inline int Logic::SUBTRACTLogic(int i1, int i2, int i3){
@@ -83,8 +83,7 @@ inline int Logic::DEMUXLogic(int * inputs){
     int i,n,j = 0;
     n = 0|inputs[0];
     for (i=1; i<in_num ; i++){
-        j = j<<1;
-        j = inputs[i]|j;// 101
+        j = inputs[i]|(j<<1);
     }
     n = n<<((1<<(in_num-1))-1-j);
     return(n);
@@ -224,7 +223,6 @@ int Logic::handleLogic(c_type type, int * input, int * output){
         break;
     }
     return(op);
-    
 }
 
 
