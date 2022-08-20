@@ -168,3 +168,9 @@ void Wire::sendLogic(Pin* opPin, int op){
     }
     
 }
+
+bool Wire::containsPin(Pin* pin){
+    if (start == pin || end == pin)
+        return(true);
+    return(false);
+}

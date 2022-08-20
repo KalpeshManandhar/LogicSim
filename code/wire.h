@@ -34,6 +34,7 @@ public:
     void removeWiresToComponent(Component * c);
 
     wire_Condtion getStatus();
+    bool containsPin(Pin*);
 };
 
 
