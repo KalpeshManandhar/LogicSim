@@ -379,8 +379,6 @@ void Component::updateSelectedComp(vec2 &mousePos, vec2 &prev){
 }
 
 void Component::removeComponent(){
-    spriteSrc.y = 216;
-    spriteSrc.x = 0;
     compPos.x = -200;
     compPos.y = -200;
     type = _NOTHING;
@@ -545,21 +543,19 @@ Clock::Clock(float timePeriod){
     sendOp = true;
 }
 
-void Clock::setOutput(int FPS){
-    static float Tseconds = T/1000;
+void Clock::setOutput(int FPS){//60
+    float Tseconds = T/1000; //1
     // sendOp sends HIGH only on first frame for transition activation
     sendOp = false;
     sendFlipFlopOutput(false);
     // half cycle 
     if (duration == ((FPS * Tseconds/2 ))){
-        std::cout<<"half";
         sendOp = true;
         sendFlipFlopOutput(true);
         output[0] = 1;
     }
     // full cycle
     else if (duration == FPS * Tseconds){
-        std::cout<<"full";
         output[0] = 0;
         duration = 0;
     }

@@ -4,7 +4,7 @@
 #include "component.h"
 #include "SDL.h"
 
-#define MAX_WIRES 50
+#define MAX_WIRES 80
 
 enum wire_Condtion{
     _COMPLETE, _INCOMPLETE, _ISBLANK 

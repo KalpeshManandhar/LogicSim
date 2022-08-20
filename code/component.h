@@ -54,7 +54,7 @@ public:
 
     virtual void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
     virtual void setValues(c_type type, vec2 &mousePos, int availableIndex);
-    virtual bool mouseHover(vec2 &mousePos, int & pinHover);
+    virtual bool mouseHover(vec2 &mousePos, int &pinHover);
     virtual void updateSelectedComp(vec2 &mousePos, vec2 &prev);
     virtual void setOutput(int op);
 
