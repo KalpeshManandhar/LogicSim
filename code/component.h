@@ -16,6 +16,7 @@
 struct Button{
     SDL_Rect button;
     bool pressedFlag;
+    
     bool mouseHover(vec2 mousePos){
         if ((mousePos.x > button.x) && (mousePos.x < (button.x + button.w)) && (mousePos.y > button.y) && (mousePos.y < button.y + button.h))
             return(true);
@@ -79,7 +80,7 @@ class InputComponent:public Component{
     Button inputButton;
 public:
     void setButtonPos();
-    virtual void onPressed();
+    void onPressed();
 
     void setValues(c_type type,vec2 &mousePos, int availableIndex );
     void draw(SDL_Renderer* renderer, SDL_Texture* spritesheet);
@@ -100,7 +101,6 @@ public:
 class Clock:public InputComponent{
     float duration;
     float T;
-    bool logicToSend;
 public:
     Clock(float timePeriod);
     void setOutput(int frameTime);

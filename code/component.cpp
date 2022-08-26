@@ -480,13 +480,21 @@ void InputComponent::setValues(c_type type, vec2 &mousePos, int availableIndex){
 void InputComponent::draw(SDL_Renderer* renderer, SDL_Texture* spritesheet){
     SDL_RenderCopy(renderer, spritesheet, &spriteSrc, &compPos);
     
+    SDL_Rect srcText = {0,701, 20,20}, destText = {0, 0, 20, 30};
+    destText.x = inputButton.button.x + 10;
+    destText.y = inputButton.button.y + 5;
     //  1 = RED button
-    if (output[0] == 1)
+    if (output[0] == 1){
+        srcText.x = 334;
         SDL_SetRenderDrawColor(renderer, 200, 0, 0,255);
+    }
     //  0 = BLUE button
-    else 
+    else {
+        srcText.x = 354;
         SDL_SetRenderDrawColor(renderer, 0, 0, 200, 255);
+    }
     SDL_RenderFillRect(renderer, &inputButton.button);
+    SDL_RenderCopy(renderer, spritesheet, &srcText, &destText);
 }
 
 
@@ -494,9 +502,6 @@ bool InputComponent::mouseHover(vec2 &mousePos, int & pinHover){
     // if button is pressed, isPressed() is called
     if (inputButton.mouseHover(mousePos))
         onPressed();
-    // if ((mousePos.x > inputButton.button.x) && (mousePos.x < (inputButton.button.x + inputButton.button.w)) && (mousePos.y > inputButton.button.y) && (mousePos.y < inputButton.button.y + inputButton.button.h)){
-    //     onPressed();
-    // }
     return(Component::mouseHover(mousePos, pinHover));
 }
 

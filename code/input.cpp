@@ -194,12 +194,20 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
 
         // pin clicked?
         if (pinHoverFlag == 1){
+            if (Component::selectedPin->type == _IN && Wire::selectedWireNo == -1){
+                int i;
+                for (i=0; i<Wire::totalWires; i++){
+                    if (wires[i].getStatus() == _COMPLETE && wires[i].containsPin(Component::selectedPin))
+                        Wire::selectedWireNo = i;
+                }
+
+            }
             // adds wire if no wire is currently selected (start pin)
-            if (Wire::selectedWireNo == -1)
+            else if (Wire::selectedWireNo == -1)
                 addWire();
 
             // checks if the wire is valid (end pin)
-            else{
+            else if (wires[Wire::selectedWireNo].getStatus() == _INCOMPLETE){
                 if (wires[Wire::selectedWireNo].validWire(Component::selectedPin))
                     wires[Wire::selectedWireNo].completeWire(Component::selectedPin);
                 else
@@ -208,7 +216,7 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
         }
         // adds anchor points for wire if clicked on empty space
         else{
-            if (Wire::selectedWireNo != -1){
+            if (Wire::selectedWireNo != -1 && wires[Wire::selectedWireNo].getStatus() == _INCOMPLETE){
                 wires[Wire::selectedWireNo].addVertex(mousePos);
             }
         }
@@ -252,13 +260,18 @@ void Input::handleMouseInput(vec2 windowSize, load_type &type){
 
 
 void Input::handleKeyInput(){
-    if (isKeyPressed(SDL_SCANCODE_DELETE) == PRESSED && Component::selectedCompNo != -1){
-        int i;
-        // removes the wires associated with the component
-        for (i = 0; i < Wire::totalWires; i++)
-            wires[i].removeWiresToComponent(components[Component::selectedCompNo]);
-        // removes the component
-        components[Component::selectedCompNo]->removeComponent();
+    if (isKeyPressed(SDL_SCANCODE_DELETE) == PRESSED){
+        if (Wire::selectedWireNo != -1){
+            wires[Wire::selectedWireNo].removeWire();
+        }
+        else if (Component::selectedCompNo != -1){
+            int i;
+            // removes the wires associated with the component
+            for (i = 0; i < Wire::totalWires; i++)
+                wires[i].removeWiresToComponent(components[Component::selectedCompNo]);
+            // removes the component
+            components[Component::selectedCompNo]->removeComponent();
+        }
     }
 }
 
