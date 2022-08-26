@@ -19,12 +19,12 @@ public:
     vec2 mousePos, prevMousePos;
     b_States isPressed(int buttonKey);
     b_States isKeyPressed(SDL_Scancode keyCode);
-    void getMouseState();
     int pollEvents();
+    void getMouseState();
+    void getKeyboardState();
     void printMousePos();
     void handleMouseInput(vec2 windowSize, load_type & type);
     void addWire();
     void addComponent(c_type type);
-    void getKeyboardState();
     void handleKeyInput();
 };
